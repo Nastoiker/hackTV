@@ -1,5 +1,6 @@
 
 import {siteConfig} from "@/config/site";
+import {Like} from "@/components/like/Like";
 
 export default function IndexPage() {
   return <>
@@ -36,6 +37,7 @@ export default function IndexPage() {
 
       </p>
     </div>
+    <Like />
   </section>
   </>
 }

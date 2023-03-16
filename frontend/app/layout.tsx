@@ -3,6 +3,7 @@ import { Inter as FontSans } from "@next/font/google"
 import {ThemeProvider} from "next-themes";
 import {SiteHeader} from "@/components/site-header";
 import "@/styles/globals.css"
+import {Search} from "@/components/search/search";
 const fontSans = FontSans({
   subsets: ["latin"],
   variable: "--font-sans",
@@ -23,6 +24,10 @@ export default function RootLayout({children}: RootLayoutProps) {
         fontSans.variable
       )}
     >
+    <header>
+      <Search />
+
+    </header>
     {children}
     </body>
     </html></>)
