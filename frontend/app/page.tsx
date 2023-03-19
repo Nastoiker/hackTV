@@ -1,6 +1,7 @@
 
 import {siteConfig} from "@/config/site";
 import {Like} from "@/components/like/Like";
+import {Video} from "@/components/video/video";
 
 export default function IndexPage() {
   return <>
@@ -38,6 +39,7 @@ export default function IndexPage() {
       </p>
     </div>
     <Like />
+    <Video />
   </section>
   </>
 }

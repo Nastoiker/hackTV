@@ -2,7 +2,6 @@ import {siteConfig} from "@/config/site";
 
 export default function Head() {
   const url = process.env.NEXT_PUBLIC_APP_URL
-  const ogUrl = new URL(`${url}/og.jpg`)
   return (
     <>
       <title>{`${siteConfig.name} - ${siteConfig.description}`}</title>
