@@ -5,6 +5,8 @@ import {SiteHeader} from "@/components/site-header";
 import "@/styles/globals.css"
 import {Search} from "@/components/search/search";
 import {Header} from "@/components/Header/Header";
+import {IVideo} from "@/types/Video.interface";
+import {IUser} from "@/types/User.interface";
 const fontSans = FontSans({
   subsets: ["latin"],
   variable: "--font-sans",
@@ -16,6 +18,7 @@ interface RootLayoutProps {
 }
 
 export default function RootLayout({children}: RootLayoutProps) {
+
   return (<>
     <html lang="en" >
     <head />
@@ -26,7 +29,7 @@ export default function RootLayout({children}: RootLayoutProps) {
       )}
     >
     <header>
-      <Header user={false} setIsLogin={() => '' } setIsLogout={() => ''} />
+      {/*<Header user={User} setIsLogin={() => '' } setIsLogout={() => ''} />*/}
     </header>
     {children}
     </body>

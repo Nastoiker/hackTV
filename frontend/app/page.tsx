@@ -2,8 +2,35 @@
 import {siteConfig} from "@/config/site";
 import {Like} from "@/components/like/Like";
 import {Video} from "@/components/video/video";
+import {IUser} from "@/types/User.interface";
+import {IVideo} from "@/types/Video.interface";
+import UserIcon from '@/public/User.svg';
+
 
 export default function IndexPage() {
+  const User: IUser = {
+    id: '1',
+    authorUrl: 'string',
+    email: 'damur@gmail.com',
+    login: 'idiot',
+    avatar: UserIcon.src,
+  }
+  const Comment = [{
+    id: 'string',
+    comment: 'string'
+  }];
+  const VideoObject: IVideo = {
+    secondCategoryId: '',
+    tagId: '',
+    id: '1',
+    user: User,
+    comments: Comment,
+    title: 'DAMIR',
+    subTitle: 'ETO PIZDA',
+    isActive: true,
+    updated_at: new Date().toString(),
+    createdAt: new Date().toString(),
+  }
   return <>
   <section className={" grid bg-amber-200 "}>
     <div className="flex max-w-[980px] flex-col items-start gap-2">
@@ -39,7 +66,8 @@ export default function IndexPage() {
       </p>
     </div>
     <Like />
-    <Video />
+    <Video video={VideoObject}/>
+    <Video video={VideoObject}/>
   </section>
   </>
 }

@@ -5,7 +5,6 @@ export interface ICommentProps {
 interface  Comment {
   comment: string;
   id: string;
-  user: User;
 }
 interface User {
 

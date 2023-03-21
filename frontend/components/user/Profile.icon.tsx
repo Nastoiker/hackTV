@@ -1,7 +1,9 @@
 import Image from "next/image";
 import Profile from './Profile.svg';
-export const ProfileIcon = (user: User) => {
-  return <div className={''}>
+import {IUser} from "@/types/User.interface";
+import {ProfileIconProps} from "@/components/user/ProfileIcon.props";
+export const ProfileIcon = ({user}: ProfileIconProps) => {
+  return <>
     {
       user.avatar ? <div>
         <Image alt={'avatar'} src={user.avatar}/>
@@ -9,5 +11,5 @@ export const ProfileIcon = (user: User) => {
         <Image alt='defaultAvatar' src={Profile.src}></Image>
       </div>
     }
-  </div>
+  </>
 }

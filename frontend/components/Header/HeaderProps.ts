@@ -1,5 +1,7 @@
+import {IUser} from "@/types/User.interface";
+
 export interface IHeaderProps {
-  user: User;
+  user: IUser;
   setIsLogin: () => {};
   setIsLogout: () => {};
 }

@@ -1,8 +1,12 @@
 import {useState} from "react";
+import {Button} from "@/components/ui/button";
+import {SubscribeProps} from "@/components/Subscribe/Subscribe.props";
 
-export const Subscribe = () => {
-  const [isSubscribe, setIsSubscribe] = useState<boolean>();
+export const SubscribeButton = ({folow, setIsFolow}: SubscribeProps) => {
   return <div>
-      <button></button>
+    {
+      folow ? <Button className={"bg-red"} onClick={setIsFolow}>Подписаться</Button> : <Button className={"bg-white border-red"} onClick={setIsFolow} >Отписаться</Button>
+    }
+
   </div>
 }

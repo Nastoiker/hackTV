@@ -3,13 +3,13 @@ import {Button} from "@/components/ui/button";
 import Link from "next/link";
 import {IHeaderProps} from "@/components/Header/HeaderProps";
 import {redirect} from "next/navigation";
-import {ProfileIcon} from "@/components/User/Profile.icon";
+import {ProfileIcon} from "@/components/user/Profile.icon";
 export const Header = ({user, setIsLogin, setIsLogout}: IHeaderProps) => {
   return <div>
       <Search />
     {
       user ? <div onClick={ () => redirect('./Profile')}>
-        <ProfileIcon />
+        <ProfileIcon user={user} />
       </div> : <div><Button> <Link href={'Authorization'} > Регистрация </Link></Button> <Button variant="ghost"><Link href={'Registration'} > Регистрация </Link></Button></div>
     }
   </div>
