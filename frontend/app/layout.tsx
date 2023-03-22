@@ -7,6 +7,7 @@ import {Search} from "@/components/search/search";
 import {Header} from "@/components/Header/Header";
 import {IVideo} from "@/types/Video.interface";
 import {IUser} from "@/types/User.interface";
+import UserIcon from "@/public/User.svg";
 const fontSans = FontSans({
   subsets: ["latin"],
   variable: "--font-sans",
@@ -16,7 +17,13 @@ const fontSans = FontSans({
 interface RootLayoutProps {
   children: React.ReactNode
 }
-
+const User: IUser = {
+  id: '1',
+  authorUrl: 'string',
+  email: 'damur@gmail.com',
+  login: 'idiot',
+  avatar: UserIcon.src,
+}
 export default function RootLayout({children}: RootLayoutProps) {
 
   return (<>
@@ -29,7 +36,7 @@ export default function RootLayout({children}: RootLayoutProps) {
       )}
     >
     <header>
-      {/*<Header user={User} setIsLogin={() => '' } setIsLogout={() => ''} />*/}
+      <Header user={User} setIsLogin={() => {} } setIsLogout={() => {}} />
     </header>
     {children}
     </body>

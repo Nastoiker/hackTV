@@ -6,7 +6,7 @@ export const ProfileIcon = ({user}: ProfileIconProps) => {
   return <>
     {
       user.avatar ? <div>
-        <Image alt={'avatar'} src={user.avatar}/>
+        {/*<Image alt={'avatar'} src={user.avatar}/>*/}
       </div> : <div>
         <Image alt='defaultAvatar' src={Profile.src}></Image>
       </div>

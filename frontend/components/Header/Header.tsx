@@ -8,9 +8,9 @@ export const Header = ({user, setIsLogin, setIsLogout}: IHeaderProps) => {
   return <div>
       <Search />
     {
-      user ? <div onClick={ () => redirect('./Profile')}>
+      user ? <Link href={'/profile'}>
         <ProfileIcon user={user} />
-      </div> : <div><Button> <Link href={'Authorization'} > Регистрация </Link></Button> <Button variant="ghost"><Link href={'Registration'} > Регистрация </Link></Button></div>
+      </Link> : <div><Button> <Link href={'Authorization'} > Регистрация </Link></Button> <Button variant="ghost"><Link href={'Registration'} > Регистрация </Link></Button></div>
     }
   </div>
 }

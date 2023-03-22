@@ -32,7 +32,7 @@ export default function IndexPage() {
     createdAt: new Date().toString(),
   }
   return <>
-  <section className={" grid bg-amber-200 "}>
+  <section className={" grid  "}>
     <div className="flex max-w-[980px] flex-col items-start gap-2">
       <h1 className="text-3xl font-extrabold leading-tight tracking-tighter md:text-5xl lg:text-6xl lg:leading-[1.1]">
         Beautifully designed components <br className="hidden sm:inline" />
