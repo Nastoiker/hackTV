@@ -1,7 +1,7 @@
 import {IUser} from "@/types/User.interface";
 
 export interface IHeaderProps {
-  user: IUser;
+  user?: IUser;
   setIsLogin: () => void;
   setIsLogout: () => void;
 }

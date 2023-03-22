@@ -10,11 +10,11 @@ export const Search = () => {
   //     body: formData
   //   })
   // }
-  return <div className={" bg-white w-full"}>
+  return <div className={"px-10 bg-white w-full"}>
     <form onSubmit={() => {}}>
-      <img className={"absolute my-2"} src={SearchIcon.src}  alt=""/>
+      <img className={"absolute my-2 mx-4"} src={SearchIcon.src}  alt=""/>
 
-      <Input placeholder='         поиск'/>
+      <Input placeholder=' поиск' className={"indent-16 "}/>
     </form>
   </div>
 }

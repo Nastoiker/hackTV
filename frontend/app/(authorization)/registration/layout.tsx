@@ -14,18 +14,6 @@ const fontSans = FontSans({
   variable: "--font-sans",
   display: "swap",
 })
-
-interface RootLayoutProps {
-  children: React.ReactNode
-}
-const User: IUser = {
-  id: '1',
-  authorUrl: 'string',
-  email: 'damur@gmail.com',
-  login: 'idiot',
-  avatar: UserIcon.src,
-}
-const categoriesOb = [{ name: 'Popular', alias: 'Popular'}, { name: 'Poasdasdasdasdpular', alias: 'Popular'}, { name: 'Popular', alias: 'Popular'}, { name: 'Popular', alias: 'Popular'}]
 export default function RootLayout({children}: RootLayoutProps) {
 
   return (<>
@@ -38,15 +26,6 @@ export default function RootLayout({children}: RootLayoutProps) {
       )}
     >
     <header>
-      <div className={"flex"}>
-        <div className={"grid justify-items-center border-r"}>
-          <div className={"m-10 border-b"}>HackTv</div>
-          <Categories categories={categoriesOb} />
-        </div>
-
-        <Header setIsLogin={() => {} } setIsLogout={() => {}} />
-      </div>
-
     </header>
     {children}
     </body>

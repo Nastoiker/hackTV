@@ -17,7 +17,7 @@ export const SubscribeChannel = ({video, isSubscribe, setIsSubscribe}: { video: 
 
       :
         <>  <Image width={50} height={50} alt={'userSubs'} src={video.user.avatar}/>
-          <Button className={"bg-white border-red mx-36"}>Подписаться</Button>
+          <Button className={"bg-red-500 border-red mx-36"}>Подписаться</Button>
         </>
     }
   </div>

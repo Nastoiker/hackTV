@@ -9,7 +9,7 @@ import {Comments} from "@/components/Comment/Comments";
 import {Report} from "@/components/Report/Report";
 import View from "./View.svg";
 import {Repost} from "@/components/Repost/Repost";
-export const Video = ({video}: VideoProps): JSX.Element => {
+export const Video = ({video, className, ...props}: VideoProps): JSX.Element => {
   const videoRef = useRef(null);
   const [isFolowing, setIsFolowing] = useState<boolean>();
   const [isPlaying, setIsPlaying] = useState<boolean>(false);
@@ -42,7 +42,7 @@ export const Video = ({video}: VideoProps): JSX.Element => {
       setIsFolowing(true)
       return new Promise( (resolve) => { setTimeout(() => resolve(''), 1000)});
   }
-  return <div className={""}>
+  return <div className={className}>
       <SubscribeChannel video={video} isSubscribe={isFolowing} setIsSubscribe={() => Folowing}/>
 
 
