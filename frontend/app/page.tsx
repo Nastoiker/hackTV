@@ -35,24 +35,23 @@ export default function IndexPage() {
   <section className={" grid  "}>
     <div className="flex max-w-[980px] flex-col items-start gap-2">
       <h1 className="text-3xl font-extrabold leading-tight tracking-tighter md:text-5xl lg:text-6xl lg:leading-[1.1]">
-
+        Категория
       </h1>
 
     </div>
 
-    <div className="flex flex-col space-y-4 sm:flex-row sm:space-y-0 sm:space-x-4 md:flex-row">
+    {/*<div className="flex flex-col space-y-4 sm:flex-row sm:space-y-0 sm:space-x-4 md:flex-row">*/}
 
-        GitHub
+    {/*    GitHub*/}
 
 
-    </div>
-    <div>
-      <p className="text-sm text-slate-500 dark:text-slate-400">
-        You are looking at an early preview. You can follow the progress on{" "}
+    {/*</div>*/}
+    {/*<div>*/}
+    {/*  <p className="text-sm text-slate-500 dark:text-slate-400">*/}
+    {/*    You are looking at an early preview. You can follow the progress on{" "}*/}
 
-      </p>
-    </div>
-    <Like />
+    {/*  </p>*/}
+    {/*</div>*/}
     <Video className={"mx-auto"} video={VideoObject}/>
     <Video  className={"mx-auto"} video={VideoObject}/>
   </section>

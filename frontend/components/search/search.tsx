@@ -10,7 +10,7 @@ export const Search = () => {
   //     body: formData
   //   })
   // }
-  return <div className={"px-10 bg-white w-full"}>
+  return <div className={"mx-10 bg-white w-full"}>
     <form onSubmit={() => {}}>
       <img className={"absolute my-2 mx-4"} src={SearchIcon.src}  alt=""/>
 
