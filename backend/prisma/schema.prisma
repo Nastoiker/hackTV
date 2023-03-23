@@ -1,0 +1,145 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+
+model UserModel {
+  id           String    @id @default(uuid())
+  authorUrl    String
+  email        String
+  login        String
+  phone        String?
+  hashpassword String
+  AccessToken  String
+  isActive     Boolean
+  Comment      Comment[] @relation("CommentWritenBy")
+  videos       Video[]   @relation("UserVideo")
+  avatar       String?
+  Like         Like[]    @relation("LikedBy")
+}
+
+model FirstLevelCategory {
+  id                  String                @id @default(uuid())
+  name                String
+  alias               String
+  secondLevelCategory SecondLevelCategory[] @relation("firstCategory")
+}
+
+
+model SecondLevelCategory {
+  id                 String             @id @default(uuid())
+  name               String             @unique
+  alias              String
+  firstLevelCategory FirstLevelCategory @relation("firstCategory", fields: [firstLevelId], references: [id])
+  firstLevelId       String
+  videos             Video[]            @relation("VideoOnSeconCategory")
+}
+
+model Video {
+  isActive         Boolean
+  updated_at       DateTime            @updatedAt
+  createdAt        DateTime            @default(now())
+  id               String              @id @default(uuid())
+  secondCategory   SecondLevelCategory @relation("VideoOnSeconCategory", fields: [secondCategoryId], references: [id], onUpdate: NoAction)
+  secondCategoryId String
+  tag              TagOnVideo[]
+  tagId            String
+  Title            String
+  duration         String
+  embed_link       String
+  embed_html       String
+  share_url        String
+  cover_image_url  String
+  VideoDescription String
+  Type             String
+  width            Int
+  height           Int
+  share_count      Int
+  view_count       Int                 @default(0)
+  comment_count    Int                 @default(0)
+  likesCount       Int                 @default(0)
+  likes            Like[]              @relation("LikeVideos")
+  user             UserModel           @relation("UserVideo", fields: [userId], references: [id])
+  userId           String
+  ReportOnVideo    ReportOnVideo[]
+}
+
+// model Brand {
+//   id                  String                  @id @default(uuid())
+//   name                String
+//   Product             Product[]               @relation("BrandDevices")
+//   secondLevelCategory BrandOnSecondCategory[]
+//   model               ModelDevice[]           @relation("BrandByModel")
+// }
+
+model TagOnVideo {
+  video   Video  @relation(fields: [videoId], references: [id])
+  videoId String
+  tag     Tag    @relation(fields: [tagId], references: [id])
+  tagId   String
+  @@id([tagId, videoId])
+}
+
+// model ModelDevice {
+//   id               String              @id @default(uuid())
+//   name             String
+//   product          Product[]           @relation("ModelByProduct")
+//   secondCategoryId String
+//   brandId          String
+//   secondCategory   SecondLevelCategory @relation("ModelDevice", fields: [secondCategoryId], references: [id], onUpdate: NoAction)
+//   Comment          Comment[]           @relation("CommentProduct")
+//   brand            Brand               @relation("BrandByModel", fields: [brandId], references: [id])
+// }
+
+model Comment {
+  id            String    @id @default(uuid())
+  createdAt     DateTime  @default(now())
+  title         String
+  pictures      String?
+  comment       String
+  writtenById   String
+  modelDeviceId String
+  writtenBy     UserModel @relation("CommentWritenBy", fields: [writtenById], references: [id])
+}
+
+model Like {
+  id        String    @id @default(uuid())
+  createdAt DateTime  @default(now())
+  like      Boolean
+  likeById  String
+  videoId   String
+  likeBy    UserModel @relation("LikedBy", fields: [likeById], references: [id])
+  videos    Video     @relation("LikeVideos", fields: [videoId], references: [id], onUpdate: NoAction)
+}
+
+model ReportOnVideo {
+  video    Video       @relation(fields: [videoId], references: [id])
+  videoId  String
+  report   ReportVideo @relation(fields: [reportId], references: [id])
+  reportId String
+
+  @@id([videoId, reportId])
+}
+
+model ReportVideo {
+  id      String          @id @default(uuid())
+  code    String
+  message String
+  video   ReportOnVideo[]
+}
+
+model Tag {
+  id     String       @id @default(uuid())
+  name   String       @unique
+  videos TagOnVideo[]
+}
