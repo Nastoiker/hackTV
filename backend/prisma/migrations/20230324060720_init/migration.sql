@@ -8,7 +8,18 @@ CREATE TABLE "UserModel" (
     "hashpassword" TEXT NOT NULL,
     "AccessToken" TEXT NOT NULL,
     "isActive" BOOLEAN NOT NULL,
-    "avatar" TEXT
+    "avatar" TEXT,
+    "following_count" INTEGER NOT NULL,
+    "LikeCount" INTEGER NOT NULL
+);
+
+-- CreateTable
+CREATE TABLE "Music" (
+    "id" TEXT NOT NULL PRIMARY KEY,
+    "name" TEXT NOT NULL,
+    "userId" TEXT NOT NULL,
+    "alias" TEXT NOT NULL,
+    CONSTRAINT "Music_userId_fkey" FOREIGN KEY ("userId") REFERENCES "UserModel" ("id") ON DELETE RESTRICT ON UPDATE CASCADE
 );
 
 -- CreateTable
@@ -19,7 +30,6 @@ CREATE TABLE "FirstLevelCategory" (
 );
 
 -- CreateTable
-
 CREATE TABLE "SecondLevelCategory" (
     "id" TEXT NOT NULL PRIMARY KEY,
     "name" TEXT NOT NULL,
@@ -30,6 +40,8 @@ CREATE TABLE "SecondLevelCategory" (
 
 -- CreateTable
 CREATE TABLE "Video" (
+    "name" TEXT NOT NULL,
+    "alias" TEXT NOT NULL,
     "isActive" BOOLEAN NOT NULL,
     "updated_at" DATETIME NOT NULL,
     "createdAt" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -42,16 +54,18 @@ CREATE TABLE "Video" (
     "embed_html" TEXT NOT NULL,
     "share_url" TEXT NOT NULL,
     "cover_image_url" TEXT NOT NULL,
-    "VideoDescription" TEXT NOT NULL,
+    "Description" TEXT NOT NULL,
     "Type" TEXT NOT NULL,
     "width" INTEGER NOT NULL,
     "height" INTEGER NOT NULL,
+    "musicId" TEXT NOT NULL,
     "share_count" INTEGER NOT NULL,
     "view_count" INTEGER NOT NULL DEFAULT 0,
     "comment_count" INTEGER NOT NULL DEFAULT 0,
     "likesCount" INTEGER NOT NULL DEFAULT 0,
     "userId" TEXT NOT NULL,
     CONSTRAINT "Video_secondCategoryId_fkey" FOREIGN KEY ("secondCategoryId") REFERENCES "SecondLevelCategory" ("id") ON DELETE RESTRICT ON UPDATE NO ACTION,
+    CONSTRAINT "Video_musicId_fkey" FOREIGN KEY ("musicId") REFERENCES "Music" ("id") ON DELETE RESTRICT ON UPDATE CASCADE,
     CONSTRAINT "Video_userId_fkey" FOREIGN KEY ("userId") REFERENCES "UserModel" ("id") ON DELETE RESTRICT ON UPDATE CASCADE
 );
 
@@ -110,6 +124,12 @@ CREATE TABLE "Tag" (
     "id" TEXT NOT NULL PRIMARY KEY,
     "name" TEXT NOT NULL
 );
+
+-- CreateIndex
+CREATE UNIQUE INDEX "Music_name_key" ON "Music"("name");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "Music_alias_key" ON "Music"("alias");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "SecondLevelCategory_name_key" ON "SecondLevelCategory"("name");

@@ -25,9 +25,19 @@ model UserModel {
   Comment      Comment[] @relation("CommentWritenBy")
   videos       Video[]   @relation("UserVideo")
   avatar       String?
+  following_count Int
+  music Music[] @relation("UserMusic")
+  LikeCount Int
   Like         Like[]    @relation("LikedBy")
 }
-
+model Music {
+    id String  @id @default(uuid())
+    name String @unique
+    user UserModel @relation("UserMusic", fields: [userId], references: [id])
+    userId String
+    alias String @unique
+    videos       Video[]   @relation("MusicVideo")
+}
 model FirstLevelCategory {
   id                  String                @id @default(uuid())
   name                String
@@ -46,6 +56,8 @@ model SecondLevelCategory {
 }
 
 model Video {
+   name String
+   alias String
   isActive         Boolean
   updated_at       DateTime            @updatedAt
   createdAt        DateTime            @default(now())
@@ -60,10 +72,12 @@ model Video {
   embed_html       String
   share_url        String
   cover_image_url  String
-  VideoDescription String
+  Description String
   Type             String
   width            Int
   height           Int
+  musicId String
+  music Music    @relation("MusicVideo", fields: [musicId], references: [id])
   share_count      Int
   view_count       Int                 @default(0)
   comment_count    Int                 @default(0)
