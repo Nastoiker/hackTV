@@ -20,7 +20,6 @@ model UserModel {
   login        String
   phone        String?
   hashpassword String
-  AccessToken  String
   isActive     Boolean
   Comment      Comment[] @relation("CommentWritenBy")
   videos       Video[]   @relation("UserVideo")
@@ -62,8 +61,8 @@ model Video {
   updated_at       DateTime            @updatedAt
   createdAt        DateTime            @default(now())
   id               String              @id @default(uuid())
-  secondCategory   SecondLevelCategory @relation("VideoOnSeconCategory", fields: [secondCategoryId], references: [id], onUpdate: NoAction)
   secondCategoryId String
+  secondCategory   SecondLevelCategory @relation("VideoOnSeconCategory", fields: [secondCategoryId], references: [id], onUpdate: NoAction)
   tag              TagOnVideo[]
   tagId            String
   Title            String
@@ -83,8 +82,8 @@ model Video {
   comment_count    Int                 @default(0)
   likesCount       Int                 @default(0)
   likes            Like[]              @relation("LikeVideos")
-  user             UserModel           @relation("UserVideo", fields: [userId], references: [id])
   userId           String
+  authorVideo             UserModel           @relation("UserVideo", fields: [userId], references: [id])
   ReportOnVideo    ReportOnVideo[]
 }
 

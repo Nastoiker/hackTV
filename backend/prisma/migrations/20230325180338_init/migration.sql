@@ -6,7 +6,6 @@ CREATE TABLE "UserModel" (
     "login" TEXT NOT NULL,
     "phone" TEXT,
     "hashpassword" TEXT NOT NULL,
-    "AccessToken" TEXT NOT NULL,
     "isActive" BOOLEAN NOT NULL,
     "avatar" TEXT,
     "following_count" INTEGER NOT NULL,
