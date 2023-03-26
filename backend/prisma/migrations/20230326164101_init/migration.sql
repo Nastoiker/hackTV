@@ -8,6 +8,7 @@ CREATE TABLE "UserModel" (
     "hashpassword" TEXT NOT NULL,
     "isActive" BOOLEAN NOT NULL,
     "avatar" TEXT,
+    "role" TEXT NOT NULL,
     "following_count" INTEGER NOT NULL,
     "LikeCount" INTEGER NOT NULL
 );

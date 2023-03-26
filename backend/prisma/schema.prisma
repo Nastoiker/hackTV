@@ -24,6 +24,7 @@ model UserModel {
   Comment      Comment[] @relation("CommentWritenBy")
   videos       Video[]   @relation("UserVideo")
   avatar       String?
+  role String
   following_count Int
   music Music[] @relation("UserMusic")
   LikeCount Int

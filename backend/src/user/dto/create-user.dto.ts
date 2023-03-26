@@ -8,6 +8,8 @@ export class CreateUserDto {
 
     @IsString({ message: 'Логин должен быть строкой' })
     login: string;
+    @IsString({ message: 'Роль должна быть строкой' })
+    role: 'user' | 'admin';
     isActive: boolean;
     following_count: number;
     @IsOptional()
@@ -20,6 +22,4 @@ export class CreateUserDto {
     @IsOptional()
     @IsString({ message: 'URL аватара должен быть строкой' })
     avatar?: string | null;
-
-
 }

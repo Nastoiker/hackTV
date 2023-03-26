@@ -2,6 +2,8 @@ import { Injectable } from '@nestjs/common';
 import {PrismaService} from "../prisma/prisma-service";
 import {Prisma, UserModel, Video} from "@prisma/client";
 import {createVideoDto} from "./dto/create-video.dto";
+import {writeFile} from "fs-extra";
+import {path} from "app-root-path";
 
 @Injectable()
 export class VideoService {
@@ -32,7 +34,9 @@ export class VideoService {
         });
     }
 
-    async createVideo(data: createVideoDto): Promise<Video> {
+    async createVideo(file: Express.Multer.File, data: createVideoDto): Promise<Video> {
+        const UploadFolder = `${path}/uploads/videos/${data.userId}/${data.alias}`;
+        await writeFile(`${UploadFolder}/${data.name}`, file.buffer);
         // @ts-ignore
         return this.prisma.video.create({data: {...data}});
     }
