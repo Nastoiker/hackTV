@@ -8,9 +8,9 @@ import {
     Controller,
     Delete,
     Get,
-    HttpCode,
+    HttpCode, HttpStatus,
     NotFoundException,
-    Param,
+    Param, ParseFilePipeBuilder,
     Patch,
     Post, UploadedFile,
     UseGuards,
@@ -30,7 +30,15 @@ export class VideoController {
     constructor(private readonly videoService: VideoService) {}
     @UseGuards(JwtAuthGuard)
     @Post('create')
-    async create(@UploadedFile() video: Express.Multer.File, @Body() dto: createVideoDto) {
+    async create(@UploadedFile(
+        new ParseFilePipeBuilder()
+            .addFileTypeValidator({
+                fileType: 'mp4',
+            })
+            .build({
+                errorHttpStatusCode: HttpStatus.UNPROCESSABLE_ENTITY
+            }),
+    ) video: Express.Multer.File, @Body() dto: createVideoDto) {
         if (!video) {
             throw new BadRequestException('Please upload a video file.');
         }
@@ -80,6 +88,15 @@ export class VideoController {
     @UseGuards(JwtAuthGuard)
     @Patch(':id')
     async patch(@Param('id', IdValidationpipe) id: string, @Body() dto: VideoModel) {
+        const UpdatedProduct = await this.videoService.updateVideo({ where: {id}, data: dto });
+        if (!UpdatedProduct) {
+            throw new NotFoundException(VideoIdNotFoundForUpd);
+        }
+        return UpdatedProduct;
+    }
+    @UseGuards(JwtAuthGuard)
+    @Post('ReportOnVideo')
+    async reportOnVideo(@Body() dto: VideoModel) {
         const UpdatedProduct = await this.videoService.updateVideo({ where: {id}, data: dto });
         if (!UpdatedProduct) {
             throw new NotFoundException(VideoIdNotFoundForUpd);

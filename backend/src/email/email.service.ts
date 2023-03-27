@@ -7,7 +7,9 @@ export class EmailService {
   create(createEmailDto: CreateEmailDto) {
     return 'This action adds a new email';
   }
+  validate() {
 
+  };
   findAll() {
     return `This action returns all email`;
   }

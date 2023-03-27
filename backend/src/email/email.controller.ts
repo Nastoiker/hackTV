@@ -8,7 +8,7 @@ export class EmailController {
   constructor(private readonly emailService: EmailService) {}
 
   @Post()
-  create(@Body() createEmailDto: CreateEmailDto) {
+  validate(@Body() createEmailDto: CreateEmailDto) {
     return this.emailService.create(createEmailDto);
   }
 

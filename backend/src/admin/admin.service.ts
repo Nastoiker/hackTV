@@ -1,11 +1,53 @@
 import { Injectable } from '@nestjs/common';
 import { CreateAdminDto } from './dto/create-admin.dto';
 import { UpdateAdminDto } from './dto/update-admin.dto';
+import {PrismaService} from "../prisma/prisma-service";
+import {JwtService} from "@nestjs/jwt";
 
 @Injectable()
 export class AdminService {
-  create(createAdminDto: CreateAdminDto) {
-    return 'This action adds a new admin';
+  constructor(
+  private prisma: PrismaService) {
+  }
+  async createAdmin(id: string) {
+    return this.prisma.userModel.update({
+          where: {
+            id
+          },
+          data: {
+            role: 'admin'
+          }
+        }
+    );
+  }
+  async removeAdminAbility(id: string) {
+    return  this.prisma.userModel.update({
+          where: {
+            id
+          },
+          data: {
+            role: 'user'
+          }
+        }
+    );
+  }
+  async banOne(id: string) {
+    return this.prisma.userModel.update({
+      where: {
+        id
+      },
+      data: {
+        isActive: false,
+      }
+    })
+  }
+  async removeVideo(id: string) {
+    return this.prisma.video.delete({
+      where: {
+        id
+      }
+    }
+    );
   }
 
   findAll() {
@@ -20,7 +62,7 @@ export class AdminService {
     return `This action updates a #${id} admin`;
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} admin`;
+  remove(id: string) {
+    return ;
   }
 }

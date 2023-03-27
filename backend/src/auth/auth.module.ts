@@ -7,10 +7,12 @@ import { AuthController } from './auth.controller';
 import { AuthService } from './auth.service';
 import { JwtStratagy } from './strategies/jwt.stratagy';
 import {PrismaService} from "../prisma/prisma-service";
+import {EmailModule} from "../email/email.module";
 
 @Module({
 	controllers: [AuthController],
 	imports: [
+		EmailModule,
 		ConfigModule,
 		JwtModule.registerAsync({
 			imports: [ConfigModule],

@@ -16,7 +16,9 @@ export class VideoService {
             where: userWhereUniqueInput,
         });
     }
-
+    async reportVideo(report: ReportDto) {
+        return this.prisma.reportVideo.create();
+    }
     async videos(params: {
         skip?: number;
         take?: number;

@@ -1,26 +1,35 @@
 import { Injectable } from '@nestjs/common';
 import { CreateMusicDto } from './dto/create-music.dto';
 import { UpdateMusicDto } from './dto/update-music.dto';
+import {PrismaService} from "../prisma/prisma-service";
 
 @Injectable()
 export class MusicService {
-  create(createMusicDto: CreateMusicDto) {
-    return 'This action adds a new music';
+  constructor(private readonly prismaService: PrismaService) {
+  }
+  async create(createMusicDto: CreateMusicDto) {
+    return this.prismaService.music.create({
+      data: createMusicDto
+    });
   }
 
-  findAll() {
-    return `This action returns all music`;
+  async findAll() {
+    return this.prismaService.music.findMany({
+      where:{}
+    });
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} music`;
+  findOne(id: string) {
+    return  this.prismaService.music.findFirst({
+      where:{ id }
+    });
   }
-
   update(id: number, updateMusicDto: UpdateMusicDto) {
     return `This action updates a #${id} music`;
   }
-
-  remove(id: number) {
-    return `This action removes a #${id} music`;
+  remove(id: string) {
+    return  this.prismaService.music.delete({
+      where:{ id }
+    });;
   }
 }
