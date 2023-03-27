@@ -2,8 +2,9 @@ import { Injectable } from '@nestjs/common';
 import {PrismaService} from "../prisma/prisma-service";
 import {Prisma, UserModel, Video} from "@prisma/client";
 import {createVideoDto} from "./dto/create-video.dto";
-import {writeFile} from "fs-extra";
+import {unlink, writeFile} from "fs-extra";
 import {path} from "app-root-path";
+import {VideoReportDto} from "./dto/report-video.dto";
 
 @Injectable()
 export class VideoService {
@@ -16,8 +17,10 @@ export class VideoService {
             where: userWhereUniqueInput,
         });
     }
-    async reportVideo(report: ReportDto) {
-        return this.prisma.reportVideo.create();
+    async reportVideo(report: VideoReportDto) {
+        return this.prisma.reportOnVideo.create({data: {
+                ...report
+            }});
     }
     async videos(params: {
         skip?: number;
@@ -55,6 +58,9 @@ export class VideoService {
     }
 
     async deleteVideo(where: Prisma.VideoWhereUniqueInput): Promise<Video> {
+        const video = await this.prisma.video.findFirst({ where,  select: { userId: true, alias: true},});
+        const pathDelete = `uploads/videos/${video.userId}/${video.alias}`;
+        await unlink(pathDelete);
         return this.prisma.video.delete({
             where,
         });

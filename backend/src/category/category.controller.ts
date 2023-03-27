@@ -20,9 +20,9 @@ export class CategoryController {
   }
   @Delete('deleteFirstCategory:id')
   deleteFirstCategory(@Body() id: string) {
-    return this.categoryService.createFirstCategory(id);
+    return this.categoryService.deleteFirstCategory(id);
   }
   @Delete('deleteSecondCategory:id') deleteSecondCategory(@Param('id') id: string) {
-    return this.categoryService.createSecondCategory(id);
+    return this.categoryService.deleteFirstCategory(id);
   }
 }

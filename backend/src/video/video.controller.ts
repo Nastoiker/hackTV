@@ -13,7 +13,7 @@ import {
     Param, ParseFilePipeBuilder,
     Patch,
     Post, UploadedFile,
-    UseGuards,
+    UseGuards, UseInterceptors,
     UsePipes,
     ValidationPipe,
 } from '@nestjs/common';
@@ -22,14 +22,19 @@ import {FindVideoDto} from "./dto/find-video.dto";
 import {VideoModel} from "./video.model";
 import {createVideoDto} from "./dto/create-video.dto";
 import {VideoService} from "./video-service";
+import {VideoReportDto} from "./dto/report-video.dto";
+import {FileInterceptor} from "@nestjs/platform-express";
+import {path} from "app-root-path";
+import {writeFile} from "fs-extra";
 
 
 
 @Controller('Video')
 export class VideoController {
     constructor(private readonly videoService: VideoService) {}
-    @UseGuards(JwtAuthGuard)
+    // @UseGuards(JwtAuthGuard)
     @Post('create')
+    @UseInterceptors(FileInterceptor('files'))
     async create(@UploadedFile(
         new ParseFilePipeBuilder()
             .addFileTypeValidator({
@@ -47,26 +52,33 @@ export class VideoController {
         }
         const inputPath = video.path;
         const outputPath = `${inputPath}.mp4`;
+        const UploadFolder = `${path}/uploads/videos`;
+        await writeFile(`${UploadFolder}/${video.originalname}`, video.buffer);
+        const videopath = `${UploadFolder}/${video.originalname}`
+
         await new Promise((resolve, reject) => {
-            ffmpeg(inputPath)
-                .outputOptions('-c:v libx264')
-                .outputOptions('-crf 22')
-                .outputOptions('-preset veryfast')
-                .outputOptions('-c:a copy')
+              ffmpeg(videopath)
                 .output(outputPath)
+                .videoCodec('libx264')
+                .audioCodec('copy')
+                  .size('1080x1920')
+                  .audioBitrate('128k')
+                  .audioChannels(2)
+                .outputOptions(['-preset ultrafast'])
                 .on('end', () => {
-                    console.log('Video conversion complete');
+                    console.log('file has been converted successfully');
                     resolve('');
                 })
                 .on('error', (err) => {
-                    console.log(`Error converting video: ${err.message}`);
-                    reject(err);
+                    console.log(`an error happened: ${err.message}`);
+                    reject(`an error happened: ${err.message}`);
                 })
                 .run();
         });
 
         // возвращаем URL конвертированного файла
-        return this.videoService.createVideo(video, dto);
+        // return this.videoService.createVideo(video, dto);
+        return UploadFolder;
     }
 
     @Get(':id')
@@ -96,12 +108,12 @@ export class VideoController {
     }
     @UseGuards(JwtAuthGuard)
     @Post('ReportOnVideo')
-    async reportOnVideo(@Body() dto: VideoModel) {
-        const UpdatedProduct = await this.videoService.updateVideo({ where: {id}, data: dto });
-        if (!UpdatedProduct) {
+    async reportOnVideo(@Body() dto: VideoReportDto) {
+        const reportVideo = await this.videoService.reportVideo(dto)
+        if (!reportVideo) {
             throw new NotFoundException(VideoIdNotFoundForUpd);
         }
-        return UpdatedProduct;
+        return reportVideo;
     }
     // @UsePipes(new ValidationPipe())
     // @HttpCode(200)

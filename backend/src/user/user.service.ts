@@ -16,7 +16,9 @@ export class UserService {
       where: userWhereUniqueInput,
     });
   }
-
+  async updateAvatar() {
+    return '';
+  }
     async users(params: {
     skip?: number;
     take?: number;

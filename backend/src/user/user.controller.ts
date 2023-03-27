@@ -23,6 +23,7 @@ export class UserController {
   create(@Body() createUserDto: CreateUserDto) {
     return this.userService.createUser(createUserDto);
   }
+
   @Post('updateAvatar')
   @UseInterceptors(FileInterceptor('file'))
   async updateAvatar(@UploadedFile(
@@ -35,7 +36,7 @@ export class UserController {
             errorHttpStatusCode: HttpStatus.UNPROCESSABLE_ENTITY
           }),
   ) mp4: Express.Multer.File) {
-
+    return this.userService.updateAvatar();
   }
   @Get()
   findAll() {
