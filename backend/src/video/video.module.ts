@@ -4,8 +4,15 @@ import {UserService} from "../user/user.service";
 import {PrismaService} from "../prisma/prisma-service";
 import {VideoController} from "./video.controller";
 import {VideoService} from "./video-service";
+import {ServeStaticModule} from "@nestjs/serve-static";
+import {path} from "app-root-path";
 
-@Module({ controllers: [VideoController],
+@Module({
+    imports: [ServeStaticModule.forRoot({
+        rootPath: `${path}/uploads/videos`,
+        serveRoot: '/video',
+    }),],
+    controllers: [VideoController],
     providers: [VideoService, PrismaService],})
 export class VideoModule {
 

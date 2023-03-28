@@ -62,10 +62,9 @@ export class VideoController {
                 .audioCodec('copy')
                 .audioChannels(2)
                 .size('1080x1920')
-                .audioChannels(2)
+                .aspect('9:16')
         .autopad(true, 'black')
                 .videoCodec('libx264')
-
                 .on('end', () => {
                     console.log('file has been converted successfully');
                     resolve('');
@@ -78,7 +77,9 @@ export class VideoController {
         })
         dto.embed_link = UploadFolder + '/converted/' + video.originalname;
         // возвращаем URL конвертированного файла
-        return this.videoService.createVideo(video, dto);
+        // return this.videoService.createVideo(video, dto);
+        return  dto.embed_link;
+
     }
 
     @Get(':id')

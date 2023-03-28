@@ -12,6 +12,7 @@ import { CategoryModule } from './category/category.module';
 import { AdminModule } from './admin/admin.module';
 import {AuthModule} from "./auth/auth.module";
 
+
 @Module({
   imports: [VideoModule, ConvertVideoModule, EmailModule, UserModule, MusicModule, CategoryModule, AdminModule, AuthModule],
   controllers: [AppController],

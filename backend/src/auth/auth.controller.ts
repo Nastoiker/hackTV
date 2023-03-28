@@ -1,9 +1,9 @@
 import {
 	BadRequestException,
 	Body,
-	Controller,
+	Controller, Get,
 	HttpCode,
-	Post,
+	Post, Query,
 	UsePipes,
 	ValidationPipe,
 } from '@nestjs/common';
@@ -32,5 +32,11 @@ export class AuthController {
 	async login(@Body() { email, password }: AuthDto) {
 		const some = await this.authService.validateUser(email, password);
 		return this.authService.login(some.email);
+	}
+	@UsePipes(new ValidationPipe())
+	@HttpCode(200)
+	@Get ('authByJwt')
+	async authByJwt(@Query() query) {
+		return query.user;
 	}
 }
