@@ -34,7 +34,7 @@ export class AuthService {
 		return { email: User.email };
 	}
 	async login(email: string) {
-		const payLoad = { email };
+		const payLoad = { email, role: 'user' };
 		return {
 			accesToken: await this.jwtService.signAsync(payLoad),
 		};

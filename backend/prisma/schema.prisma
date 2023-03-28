@@ -16,7 +16,7 @@ datasource db {
 model UserModel {
   id           String    @id @default(uuid())
   authorUrl    String
-  email        String
+  email        String @unique()
   login        String
   phone        String?
   hashpassword String

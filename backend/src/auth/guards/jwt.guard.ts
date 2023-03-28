@@ -1,22 +1,12 @@
 import { AuthGuard } from '@nestjs/passport';
 import {PrismaService} from "../../prisma/prisma-service";
-import {ExecutionContext} from "@nestjs/common";
+import {ExecutionContext, Injectable} from "@nestjs/common";
+import {ConfigService} from "@nestjs/config";
+import {ExtractJwt} from "passport-jwt";
+import { UserModel } from '@prisma/client'
+import {Observable} from "rxjs";
 
+@Injectable()
 export class JwtAuthGuard extends AuthGuard('jwt') {
-    constructor(private readonly prisma: PrismaService) {
-        super();
-    }
 
-    async canActivate(context: ExecutionContext) {
-        const request = context.switchToHttp().getRequest();
-        const user = request.user;
-        if (!user) {
-            return false;
-        }
-        const userData = await this.prisma.userModel.findUnique({
-            where: { id: user.sub },
-            select: { role: true, isActive: true },
-        });
-        return userData && userData.isActive;
-    }
 }

@@ -1,14 +1,16 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import {Controller, Get, Post, Body, Patch, Param, Delete, UploadedFile, UseInterceptors} from '@nestjs/common';
 import { MusicService } from './music.service';
 import { CreateMusicDto } from './dto/create-music.dto';
 import { UpdateMusicDto } from './dto/update-music.dto';
+import {FileInterceptor} from "@nestjs/platform-express";
 
 @Controller('music')
 export class MusicController {
   constructor(private readonly musicService: MusicService) {}
 
   @Post()
-  create(@Body() createMusicDto: CreateMusicDto) {
+  @UseInterceptors(FileInterceptor('music'))
+  create(@UploadedFile() music: Express.Multer.File, @Body() createMusicDto: CreateMusicDto) {
     return this.musicService.create(createMusicDto);
   }
 

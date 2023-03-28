@@ -21,6 +21,6 @@ import {EmailModule} from "../email/email.module";
 		}),
 		PassportModule,
 	],
-	providers: [AuthService, JwtStratagy,  PrismaService],
+	providers: [AuthService, JwtStratagy,  PrismaService, ConfigService],
 })
 export class AuthModule {}

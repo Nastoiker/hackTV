@@ -57,14 +57,15 @@ export class VideoController {
         const videopath = `${UploadFolder}/${video.originalname}`
 
         await new Promise((resolve, reject) => {
-              ffmpeg(videopath)
-                .output(outputPath)
-                .videoCodec('libx264')
+            ffmpeg(videopath)
+                .output(UploadFolder + '/converted/' + video.originalname)
                 .audioCodec('copy')
-                  .size('1080x1920')
-                  .audioBitrate('128k')
-                  .audioChannels(2)
-                .outputOptions(['-preset ultrafast'])
+                .audioChannels(2)
+                .size('1080x1920')
+                .audioChannels(2)
+        .autopad(true, 'black')
+                .videoCodec('libx264')
+
                 .on('end', () => {
                     console.log('file has been converted successfully');
                     resolve('');
@@ -74,11 +75,10 @@ export class VideoController {
                     reject(`an error happened: ${err.message}`);
                 })
                 .run();
-        });
-
+        })
+        dto.embed_link = UploadFolder + '/converted/' + video.originalname;
         // возвращаем URL конвертированного файла
-        // return this.videoService.createVideo(video, dto);
-        return UploadFolder;
+        return this.videoService.createVideo(video, dto);
     }
 
     @Get(':id')

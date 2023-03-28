@@ -1,17 +1,32 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+  UseGuards,
+  Query,
+  UnauthorizedException
+} from '@nestjs/common';
 import { CategoryService } from './category.service';
 import {CreateCategoryDto, createFirstCategoryDto, createSecondCategoryDto} from './dto/create-category.dto';
 import { UpdateCategoryDto } from './dto/update-category.dto';
+import {JwtAuthGuard} from "../auth/guards/jwt.guard";
+import {AdminJwtAuthGuard} from "../auth/guards/admin.guard";
 
 @Controller('category')
 export class CategoryController {
   constructor(private readonly categoryService: CategoryService) {}
-
-  @Post()
-  createFirstCategory(@Body() createFirstCategory: createFirstCategoryDto) {
+  @UseGuards(AdminJwtAuthGuard)
+  @Post('createFirstCategory')
+  createFirstCategory(@Query() query, @Body() createFirstCategory: createFirstCategoryDto) {
     return this.categoryService.createFirstCategory(createFirstCategory);
   }
-  @Post() createSecondCategory(@Body() createSecondCategory: createSecondCategoryDto) {
+  @UseGuards(AdminJwtAuthGuard)
+
+  @Post('createSecondCategory') createSecondCategory(@Body() createSecondCategory: createSecondCategoryDto) {
     return this.categoryService.createSecondCategory(createSecondCategory);
   }
   @Get()
