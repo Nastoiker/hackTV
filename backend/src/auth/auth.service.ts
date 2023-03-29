@@ -6,6 +6,8 @@ import { USER_NOT_FOUND_ERROR, WRONG_PASSWORD_ERROR } from './auth.constants';
 import { JwtService } from '@nestjs/jwt';
 import {PrismaService} from "../prisma/prisma-service";
 import {CreateUserDto} from "../user/dto/create-user.dto";
+import * as fs from "fs";
+import {type} from "os";
 @Injectable()
 export class AuthService {
 	constructor(
@@ -17,7 +19,12 @@ export class AuthService {
 
 		const password = dto.hashpassword ;
 		dto.hashpassword = await hash(password, salt);
-		return this.prisma.userModel.create({data: {...dto}});
+		const user = await  this.prisma.userModel.create({data: {...dto}});
+		fs.mkdirSync('uploads/users/' + user.id);
+		fs.mkdirSync('uploads/users/' + user.id + '/video');
+		fs.mkdirSync('uploads/users/' + user.id + '/music');
+		fs.mkdirSync('uploads/users/' + user.id + '/avatar');
+		return user;
 	}
 	async findUser(email: string): Promise<UserModel | null> {
 		return this.prisma.userModel.findFirst({where: { email }});

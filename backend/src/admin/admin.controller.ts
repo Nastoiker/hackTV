@@ -3,21 +3,31 @@ import { AdminService } from './admin.service';
 import { CreateAdminDto } from './dto/create-admin.dto';
 import { UpdateAdminDto } from './dto/update-admin.dto';
 import {JwtAuthGuard} from "../auth/guards/jwt.guard";
+import {AdminJwtAuthGuard} from "../auth/guards/admin.guard";
 
 @Controller('admin')
 export class AdminController {
   constructor(private readonly adminService: AdminService) {}
-  @UseGuards(JwtAuthGuard)
+  @UseGuards(AdminJwtAuthGuard)
   @Post('addAdmin')
   createAdmin(@Body() {id}:  { id: string } ) {
     return this.adminService.createAdmin(id);
   }
-  @UseGuards(JwtAuthGuard)
+  @UseGuards(AdminJwtAuthGuard)
   @Post('banAdmin')
   banAdmin(@Body() {id}:  { id: string }) {
     return this.adminService.removeAdminAbility(id);
   }
-
+  @UseGuards(AdminJwtAuthGuard)
+  @Post('banAdmin')
+  unBanUser(@Body() {id}:  { id: string }) {
+    return this.adminService.removeAdminAbility(id);
+  }
+  @UseGuards(AdminJwtAuthGuard)
+  @Post('removeAdmin')
+  removeAdminAbility(@Body() {id}:  { id: string }) {
+    return this.adminService.removeAdminAbility(id);
+  }
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.adminService.findOne(+id);

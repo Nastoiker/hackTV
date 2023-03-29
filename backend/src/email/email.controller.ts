@@ -11,7 +11,10 @@ export class EmailController {
   validate(@Body() createEmailDto: CreateEmailDto) {
     return this.emailService.create(createEmailDto);
   }
-
+  @Post()
+  validate(@Body() createEmailDto: CreateEmailDto) {
+    return this.emailService.create(createEmailDto);
+  }
   @Get()
   findAll() {
     return this.emailService.findAll();

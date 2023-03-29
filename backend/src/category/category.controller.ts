@@ -33,6 +33,7 @@ export class CategoryController {
   findAll() {
     return this.categoryService.categories();
   }
+  @UseGuards(AdminJwtAuthGuard)
   @Delete('deleteFirstCategory:id')
   deleteFirstCategory(@Body() id: string) {
     return this.categoryService.deleteFirstCategory(id);

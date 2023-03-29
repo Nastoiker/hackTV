@@ -90,6 +90,14 @@ export class VideoController {
         }
         return product;
     }
+    @Get(':TagId')
+    async getById(@Param('TagId', IdValidationpipe) id: string) {
+        const product = await this.videoService.video({id});
+        if (!product) {
+            throw new NotFoundException(VideoByIdNotFount);
+        }
+        return product;
+    }
     @UseGuards(JwtAuthGuard)
     @Delete(':id')
     async delete(@Param('id', IdValidationpipe) id: string) {
