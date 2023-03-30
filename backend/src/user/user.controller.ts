@@ -8,7 +8,7 @@ import {
   Delete,
   UploadedFile,
   ParseFilePipeBuilder,
-  HttpStatus, UseInterceptors, UseGuards, Query
+  HttpStatus, UseInterceptors, UseGuards, Query, Req
 } from '@nestjs/common';
 import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
@@ -32,7 +32,7 @@ export class UserController {
   @Post('updateAvatar')
   @UseGuards(JwtAuthGuard)
   @UseInterceptors(FileInterceptor('file'))
-  async updateAvatar(@Query() query, @UploadedFile(
+  async updateAvatar(@Req() query, @UploadedFile(
       new ParseFilePipeBuilder()
           .addFileTypeValidator({
             fileType: 'webp, jpg',
@@ -52,9 +52,25 @@ export class UserController {
   findOne(@Param('id') id: string) {
     return this.userService.user({id});
   }
+  @Post('likeVideo')
+  likeVideo(@Req() query, @Body() { videoId }: { videoId: string }) {
+    const userId = query.user.id;
+    return this.userService.like(userId, videoId);
+  }
+  @Post('unLikeVideo')
+  unLikeVideo(@Req() query, @Body() { videoId }: { videoId: string }) {
+    const userId = query.user.id;
+    return this.userService.unLike(userId, videoId);
+  }
   @Post('followChannel')
-  followChannel(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
-    return this.userService.followChannel();
+  followChannel(@Req() query, @Body() { authorId }: { authorId: string }) {
+    const userId = query.user.id;
+    return this.userService.followChannel(userId, authorId);
+  }
+  @Post('unfollowChannel')
+  unfollowChannel(@Req() query, @Body() { authorId }: { authorId: string }) {
+    const userId = query.user.id;
+    return this.userService.unfollowChannel(userId, authorId);
   }
   @Patch(':id')
   update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {

@@ -7,7 +7,9 @@ export class CreateMusicDto {
     @IsString({ message: 'Название должно быть строкой' })
     name: string;
     @IsString({ message: 'ID пользователя должен быть строкой' })
-    userId: string;
+    userId: string = '';
     @IsString({ message: 'Алиас должен быть строкой' })
     alias: string;
+    @IsString()
+    music_url: string = '';
 }

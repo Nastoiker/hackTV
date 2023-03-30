@@ -6,7 +6,7 @@ import {ISendComment} from "@/components/Comment/Comment.props";
 
 export const CommentForm = (comment: Comment) => {
   const { register, control, handleSubmit, formState: {errors}, reset } = useForm<ISendComment>();
-  const onSubmit = async (formData: ICommentForm) => {
+  const onSubmit = async (formData: ISendComment) => {
 
   }
   return <div>

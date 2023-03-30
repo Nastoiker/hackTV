@@ -7,10 +7,7 @@ import { UpdateEmailDto } from './dto/update-email.dto';
 export class EmailController {
   constructor(private readonly emailService: EmailService) {}
 
-  @Post()
-  validate(@Body() createEmailDto: CreateEmailDto) {
-    return this.emailService.create(createEmailDto);
-  }
+
   @Post()
   validate(@Body() createEmailDto: CreateEmailDto) {
     return this.emailService.create(createEmailDto);

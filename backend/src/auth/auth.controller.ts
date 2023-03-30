@@ -3,7 +3,7 @@ import {
 	Body,
 	Controller, Get,
 	HttpCode,
-	Post, Query,
+	Post, Query, Req,
 	UsePipes,
 	ValidationPipe,
 } from '@nestjs/common';
@@ -36,7 +36,7 @@ export class AuthController {
 	@UsePipes(new ValidationPipe())
 	@HttpCode(200)
 	@Get ('authByJwt')
-	async authByJwt(@Query() query) {
+	async authByJwt(@Req() query) {
 		return query.user;
 	}
 }

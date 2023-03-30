@@ -5,6 +5,11 @@ import {createVideoDto} from "./dto/create-video.dto";
 import {unlink, writeFile} from "fs-extra";
 import {path} from "app-root-path";
 import {VideoReportDto} from "./dto/report-video.dto";
+import {Tag} from "./entities/video.entity";
+import fs from "fs";
+ interface tagsOnVideo {
+    tag: { connect: { id: string } };
+}
 
 @Injectable()
 export class VideoService {
@@ -40,10 +45,32 @@ export class VideoService {
     }
 
     async createVideo(file: Express.Multer.File, data: createVideoDto): Promise<Video> {
-        const UploadFolder = `${path}/uploads/videos/${data.userId}/${data.alias}`;
-        await writeFile(`${UploadFolder}/${data.name}`, file.buffer);
+
+        const UploadFolder = `${path}/uploads/users/${data.userId}/video/${data.alias}`;
+        fs.mkdirSync(`${UploadFolder}`);
+
+        const tagId:Tag[] = [];
+        const setTags: tagsOnVideo[] =[]
+        for (const id of data.tagId) {
+            const checkExistTag = await this.prisma.tag.findFirst({ where: { name: id }, select: {id: true, name: true}})
+            if(!checkExistTag) {
+                const tag = await this.prisma.tag.create({ data: { name: id }, select: {id: true, name: true}})
+                tagId.push(tag);
+            } else {
+                tagId.push(checkExistTag);
+            }
+        }
+
+        for (const { id } of tagId) {
+            setTags.push({ tag: { connect: { id: id } } });
+        }
+        data.width = 1080;
+        data.height = 1920;
+        const extension = file.originalname.split('.');
+        await writeFile(`${UploadFolder}/${data.name}.${extension[extension.length-1]}`, file.buffer);
+        data.embed_link = `${UploadFolder}/${data.name}.${extension[extension.length-1]}`;
         // @ts-ignore
-        return this.prisma.video.create({data: {...data}});
+        return this.prisma.video.create({data: {...data, tag: { create: [...setTags]} }});
     }
 
     async updateVideo(params: {

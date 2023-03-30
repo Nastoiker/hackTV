@@ -1,15 +1,29 @@
-import {Controller, Get, Post, Body, Patch, Param, Delete, UploadedFile, UseInterceptors} from '@nestjs/common';
-import { MusicService } from './music.service';
-import { CreateMusicDto } from './dto/create-music.dto';
-import { UpdateMusicDto } from './dto/update-music.dto';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get, HttpStatus,
+  Param, ParseFilePipeBuilder,
+  Post,
+  Query, Req,
+  UploadedFile,
+  UseGuards,
+  UseInterceptors
+} from '@nestjs/common';
+import {MusicService} from './music.service';
+import {CreateMusicDto} from './dto/create-music.dto';
 import {FileInterceptor} from "@nestjs/platform-express";
+import {JwtAuthGuard} from "../auth/guards/jwt.guard";
 
 @Controller('music')
 export class MusicController {
   constructor(private readonly musicService: MusicService) {}
-  @Post()
+  @UseGuards(JwtAuthGuard)
+  @Post('create')
   @UseInterceptors(FileInterceptor('music'))
-  create(@UploadedFile() music: Express.Multer.File, @Body() createMusicDto: CreateMusicDto) {
+  create(@Req() query, @UploadedFile() music: Express.Multer.File, @Body() createMusicDto: CreateMusicDto) {
+    console.log('user' +  query.user);
+    createMusicDto.userId = query.user.id;
     return this.musicService.create(music, createMusicDto);
   }
 

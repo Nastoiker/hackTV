@@ -16,6 +16,7 @@ export class UserService {
   ): Promise<UserModel | null> {
     return this.prisma.userModel.findUnique({
       where: userWhereUniqueInput,
+    include: { Comment: true, folowers: true, folowing: true, videos: true, music: true  }
     });
   }
   async like(likeById: string, videoId: string): Promise<Like> {
@@ -27,10 +28,11 @@ export class UserService {
       }
     });
   }
-  async unLike(id: string, likeById: string, video: Video): Promise<Like> {
+  async unLike(likeById: string, videoId: string): Promise<Like> {
     return this.prisma.like.delete({
       where: {
-        id,
+        likeById,
+        videoId
       }
     });
   }
@@ -55,7 +57,7 @@ export class UserService {
       orderBy,
     });
   }
-  async
+
   async createUser(data: Prisma.UserModelCreateInput): Promise<UserModel> {
     return this.prisma.userModel.create({
       data,
@@ -77,8 +79,77 @@ export class UserService {
      if(checkExist) throw Error('tag is Exist');
       return this.prisma.tag.create({data: {name}});
   }
-  async followChannel() {
-    return '';
+  async unfollowChannel(userId: string, authorId: string) {
+    const folow = await  this.prisma.folower.delete({
+      where: {
+        userId,
+        authorId
+      }
+    });
+    if(!folow) { return };
+    const user =  await this.prisma.userModel.findUnique({
+      where: {
+        id: userId
+      },
+      select: {following_count: true}
+    })
+    const author =  await this.prisma.userModel.findUnique({ where: {
+        id: authorId
+      },
+      select: {subscribers_count: true}
+    })
+    await  this.prisma.userModel.update({
+      where: {
+        id: userId
+      },
+      data: {
+        following_count:  user.following_count - 1,
+      }
+    });
+    await  this.prisma.userModel.update({
+      where: {
+        id: authorId
+      },
+      data: {
+        subscribers_count: author.subscribers_count - 1,
+      }
+    });
+  }
+  async followChannel(userId: string, authorId: string) {
+    const folow = await  this.prisma.folower.create({
+      data: {
+        userId,
+        authorId
+      }
+    });
+    if(!folow) { return };
+    const user =  await this.prisma.userModel.findUnique({
+      where: {
+        id: userId
+      },
+      select: {following_count: true}
+    })
+    const author =  await this.prisma.userModel.findUnique({ where: {
+        id: authorId
+      },
+    select: {subscribers_count: true}
+    })
+    await  this.prisma.userModel.update({
+      where: {
+        id: userId
+      },
+      data: {
+        following_count:  user.following_count + 1,
+      }
+    });
+    await  this.prisma.userModel.update({
+      where: {
+        id: authorId
+      },
+      data: {
+        subscribers_count: author.subscribers_count + 1,
+      }
+    });
   }
   async deleteUser(where: Prisma.UserModelWhereUniqueInput): Promise<UserModel> {
     return this.prisma.userModel.delete({

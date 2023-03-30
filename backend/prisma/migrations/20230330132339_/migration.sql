@@ -6,11 +6,24 @@ CREATE TABLE "UserModel" (
     "login" TEXT NOT NULL,
     "phone" TEXT,
     "hashpassword" TEXT NOT NULL,
-    "isActive" BOOLEAN NOT NULL,
+    "isActive" BOOLEAN NOT NULL DEFAULT false,
     "avatar" TEXT,
-    "role" TEXT NOT NULL,
-    "following_count" INTEGER NOT NULL,
-    "LikeCount" INTEGER NOT NULL
+    "role" TEXT NOT NULL DEFAULT 'user',
+    "subscribers_count" INTEGER NOT NULL DEFAULT 0,
+    "following_count" INTEGER NOT NULL DEFAULT 0,
+    "LikeCount" INTEGER NOT NULL DEFAULT 0,
+    "hisLikes" INTEGER NOT NULL DEFAULT 0
+);
+
+-- CreateTable
+CREATE TABLE "Folower" (
+    "id" TEXT NOT NULL PRIMARY KEY,
+    "createdAt" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "folow" BOOLEAN NOT NULL DEFAULT true,
+    "userId" TEXT NOT NULL,
+    "authorId" TEXT NOT NULL,
+    CONSTRAINT "Folower_userId_fkey" FOREIGN KEY ("userId") REFERENCES "UserModel" ("id") ON DELETE RESTRICT ON UPDATE CASCADE,
+    CONSTRAINT "Folower_authorId_fkey" FOREIGN KEY ("authorId") REFERENCES "UserModel" ("id") ON DELETE RESTRICT ON UPDATE NO ACTION
 );
 
 -- CreateTable
@@ -19,6 +32,7 @@ CREATE TABLE "Music" (
     "name" TEXT NOT NULL,
     "userId" TEXT NOT NULL,
     "alias" TEXT NOT NULL,
+    "music_url" TEXT NOT NULL,
     CONSTRAINT "Music_userId_fkey" FOREIGN KEY ("userId") REFERENCES "UserModel" ("id") ON DELETE RESTRICT ON UPDATE CASCADE
 );
 
@@ -129,13 +143,28 @@ CREATE TABLE "Tag" (
 CREATE UNIQUE INDEX "UserModel_email_key" ON "UserModel"("email");
 
 -- CreateIndex
+CREATE UNIQUE INDEX "Folower_userId_key" ON "Folower"("userId");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "Folower_authorId_key" ON "Folower"("authorId");
+
+-- CreateIndex
 CREATE UNIQUE INDEX "Music_name_key" ON "Music"("name");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "Music_alias_key" ON "Music"("alias");
 
 -- CreateIndex
+CREATE UNIQUE INDEX "Music_music_url_key" ON "Music"("music_url");
+
+-- CreateIndex
 CREATE UNIQUE INDEX "SecondLevelCategory_name_key" ON "SecondLevelCategory"("name");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "Like_likeById_key" ON "Like"("likeById");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "Like_videoId_key" ON "Like"("videoId");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "Tag_name_key" ON "Tag"("name");

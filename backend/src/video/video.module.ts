@@ -9,7 +9,7 @@ import {path} from "app-root-path";
 
 @Module({
     imports: [ServeStaticModule.forRoot({
-        rootPath: `${path}/uploads/videos`,
+        rootPath: `${path}/uploads`,
         serveRoot: '/video',
     }),],
     controllers: [VideoController],

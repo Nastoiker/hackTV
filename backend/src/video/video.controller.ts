@@ -12,7 +12,7 @@ import {
     NotFoundException,
     Param, ParseFilePipeBuilder,
     Patch,
-    Post, UploadedFile,
+    Post, Req, UploadedFile,
     UseGuards, UseInterceptors,
     UsePipes,
     ValidationPipe,
@@ -33,9 +33,10 @@ import {writeFile} from "fs-extra";
 export class VideoController {
     constructor(private readonly videoService: VideoService) {}
     // @UseGuards(JwtAuthGuard)
+    @UseGuards(JwtAuthGuard)
     @Post('create')
     @UseInterceptors(FileInterceptor('files'))
-    async create(@UploadedFile(
+    async create(@Req() request, @UploadedFile(
         new ParseFilePipeBuilder()
             .addFileTypeValidator({
                 fileType: 'mp4',
@@ -50,12 +51,12 @@ export class VideoController {
         if (video.mimetype !== 'video/mp4') {
             throw new BadRequestException('Only MP4 videos are allowed.');
         }
+        dto.userId = request.user.id;
         const inputPath = video.path;
         const outputPath = `${inputPath}.mp4`;
         const UploadFolder = `${path}/uploads/videos`;
         await writeFile(`${UploadFolder}/${video.originalname}`, video.buffer);
         const videopath = `${UploadFolder}/${video.originalname}`
-
         await new Promise((resolve, reject) => {
             ffmpeg(videopath)
                 .output(UploadFolder + '/converted/' + video.originalname)
@@ -77,9 +78,7 @@ export class VideoController {
         })
         dto.embed_link = UploadFolder + '/converted/' + video.originalname;
         // возвращаем URL конвертированного файла
-        // return this.videoService.createVideo(video, dto);
-        return  dto.embed_link;
-
+        return this.videoService.createVideo(video, dto);
     }
 
     @Get(':id')

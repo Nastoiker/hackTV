@@ -9,6 +9,9 @@ import {IVideo} from "@/types/Video.interface";
 import {IUser} from "@/types/User.interface";
 import UserIcon from "@/public/User.svg";
 import {Categories} from "@/components/Categoryes/Categories";
+interface RootLayoutProps {
+  children: React.ReactNode
+}
 const fontSans = FontSans({
   subsets: ["latin"],
   variable: "--font-sans",

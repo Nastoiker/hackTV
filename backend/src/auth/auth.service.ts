@@ -14,9 +14,8 @@ export class AuthService {
 		private prisma: PrismaService,
 		private readonly jwtService: JwtService,
 	) {}
-	async 	createUser(dto: CreateUserDto) {
+	async createUser(dto: CreateUserDto) {
 		const salt = await genSalt(10);
-
 		const password = dto.hashpassword ;
 		dto.hashpassword = await hash(password, salt);
 		const user = await  this.prisma.userModel.create({data: {...dto}});

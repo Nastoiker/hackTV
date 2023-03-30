@@ -8,7 +8,7 @@ import {
   Delete,
   UseGuards,
   Query,
-  UnauthorizedException
+  UnauthorizedException, Req
 } from '@nestjs/common';
 import { CategoryService } from './category.service';
 import {CreateCategoryDto, createFirstCategoryDto, createSecondCategoryDto} from './dto/create-category.dto';
@@ -21,7 +21,7 @@ export class CategoryController {
   constructor(private readonly categoryService: CategoryService) {}
   @UseGuards(AdminJwtAuthGuard)
   @Post('createFirstCategory')
-  createFirstCategory(@Query() query, @Body() createFirstCategory: createFirstCategoryDto) {
+  createFirstCategory(@Req() query, @Body() createFirstCategory: createFirstCategoryDto) {
     return this.categoryService.createFirstCategory(createFirstCategory);
   }
   @UseGuards(AdminJwtAuthGuard)
