@@ -20,6 +20,20 @@ export class UserService {
     });
   }
   async like(likeById: string, videoId: string): Promise<Like> {
+    const checkExist = await this.prisma.like.findMany({where: {
+        likeById
+      },
+    select: {videoId: true, id: true}});
+    let checkExistVideo = null;
+
+    checkExist.forEach( c => { if(videoId=== c.videoId) { return checkExistVideo = c.id}})
+
+    if(checkExistVideo) {
+      return await this.prisma.like.delete({where: {
+         id: checkExistVideo,
+        }});
+    }
+    console.log(checkExistVideo);
     return this.prisma.like.create({
       data: {
         likeById,
@@ -28,14 +42,7 @@ export class UserService {
       }
     });
   }
-  async unLike(likeById: string, videoId: string): Promise<Like> {
-    return this.prisma.like.delete({
-      where: {
-        likeById,
-        videoId
-      }
-    });
-  }
+
   async updateAvatar(user: UserModel, file: Express.Multer.File) {
     if(user.avatar.length > 0) {     await unlink(path + '/uploads/avatar/' + user.avatar); }
     const filePath = path + '/uploads/avatar/' + user.id + '.' +file.mimetype;

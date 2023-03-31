@@ -53,16 +53,14 @@ export class UserController {
     return this.userService.user({id});
   }
   @Post('likeVideo')
+  @UseGuards(JwtAuthGuard)
   likeVideo(@Req() query, @Body() { videoId }: { videoId: string }) {
     const userId = query.user.id;
     return this.userService.like(userId, videoId);
   }
-  @Post('unLikeVideo')
-  unLikeVideo(@Req() query, @Body() { videoId }: { videoId: string }) {
-    const userId = query.user.id;
-    return this.userService.unLike(userId, videoId);
-  }
+
   @Post('followChannel')
+  @UseGuards(JwtAuthGuard)
   followChannel(@Req() query, @Body() { authorId }: { authorId: string }) {
     const userId = query.user.id;
     return this.userService.followChannel(userId, authorId);

@@ -80,9 +80,8 @@ model Video {
   secondCategoryId String
   secondCategory   SecondLevelCategory @relation("VideoOnSeconCategory", fields: [secondCategoryId], references: [id], onUpdate: NoAction)
   tag              TagOnVideo[]
-  tagId            String
   Title            String
-  duration         String
+  duration         Int
   embed_link       String
   embed_html       String
   share_url        String
@@ -91,9 +90,10 @@ model Video {
   Type             String
   width            Int
   height           Int
+  Comment Comment[] @relation("CommentsVideo")
   musicId String
   music Music    @relation("MusicVideo", fields: [musicId], references: [id])
-  share_count      Int
+  share_count      Int                   @default(0)
   view_count       Int                 @default(0)
   comment_count    Int                 @default(0)
   likesCount       Int                 @default(0)
@@ -137,7 +137,11 @@ model Comment {
   pictures      String?
   comment       String
   writtenById   String
-  modelDeviceId String
+  videoId String
+  video Video @relation("CommentsVideo", fields: [videoId], references: [id])
+  childId String?
+  replies  Comment[] @relation("CommentsUser")
+  childComment Comment?  @relation("CommentsUser", fields: [childId], references:[id])
   writtenBy     UserModel @relation("CommentWritenBy", fields: [writtenById], references: [id])
 }
 

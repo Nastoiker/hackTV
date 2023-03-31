@@ -11,20 +11,20 @@ export class createVideoDto {
 	userId: string ;
 	Title: string;
 	duration: number = 0;
-	embed_link: string;
-	embed_html: string;
-	share_url: string;
-	view_count: number
+	embed_link: string = '';
+	embed_html: string  = '';
+	share_url: string  = '';
+	view_count: number = 0;
 	share_count: number = 0;
 	comment_count: number = 0;
-	cover_image_url: string;
+	cover_image_url: string = '';
 	Description: string;
 	secondCategoryId: string;
-	Type: string;
+	Type: string = '';
 	likesCount: number = 0 ;
 	width: number;
 	height: number;
 	musicId: string;
-	isActive: true;
-	tagId: string[];
+	isActive: boolean = true;
+	tagId: string ;
 }

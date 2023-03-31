@@ -6,7 +6,7 @@ import {unlink, writeFile} from "fs-extra";
 import {path} from "app-root-path";
 import {VideoReportDto} from "./dto/report-video.dto";
 import {Tag} from "./entities/video.entity";
-import fs from "fs";
+import { mkdirSync } from "fs";
  interface tagsOnVideo {
     tag: { connect: { id: string } };
 }
@@ -41,36 +41,53 @@ export class VideoService {
             cursor,
             where,
             orderBy,
-        });
+            include: {
+                music: true,
+                tag: true,
+                authorVideo: true,
+                secondCategory: true,
+                likes: true,
+                Comment: true
+            }
+        },
+            );
     }
 
     async createVideo(file: Express.Multer.File, data: createVideoDto): Promise<Video> {
 
         const UploadFolder = `${path}/uploads/users/${data.userId}/video/${data.alias}`;
-        fs.mkdirSync(`${UploadFolder}`);
-
-        const tagId:Tag[] = [];
+        setTimeout(() => {}, 100);
+        mkdirSync(`${UploadFolder}`);
+        let { tagId, ...videoDto} = data;
+        tagId = tagId.replace(' ', '');
+         const strArr = tagId.split(',')
+        console.log('lenght ' + strArr);
+        const tagIdArr:Tag[] = [];
         const setTags: tagsOnVideo[] =[]
-        for (const id of data.tagId) {
-            const checkExistTag = await this.prisma.tag.findFirst({ where: { name: id }, select: {id: true, name: true}})
+        for (const id of strArr) {
+            const checkExistTag = await this.prisma.tag.findUnique({ where: { name: id }, select: {id: true, name: true}})
             if(!checkExistTag) {
                 const tag = await this.prisma.tag.create({ data: { name: id }, select: {id: true, name: true}})
-                tagId.push(tag);
+                tagIdArr.push(tag);
             } else {
-                tagId.push(checkExistTag);
+                tagIdArr.push(checkExistTag);
             }
         }
 
-        for (const { id } of tagId) {
+        for (const { id } of tagIdArr) {
             setTags.push({ tag: { connect: { id: id } } });
         }
-        data.width = 1080;
-        data.height = 1920;
+        videoDto.duration = 0;
+        videoDto.isActive = true;
+        videoDto.cover_image_url = '';
+        videoDto.width = 1080;
+        videoDto.height = 1920;
         const extension = file.originalname.split('.');
-        await writeFile(`${UploadFolder}/${data.name}.${extension[extension.length-1]}`, file.buffer);
-        data.embed_link = `${UploadFolder}/${data.name}.${extension[extension.length-1]}`;
-        // @ts-ignore
-        return this.prisma.video.create({data: {...data, tag: { create: [...setTags]} }});
+        await writeFile(`${UploadFolder}/${videoDto.name}.${extension[extension.length-1]}`, file.buffer);
+        videoDto.embed_link = `/users/${data.userId}/video/${data.alias}/${data.name}.${extension[extension.length-1]}`;
+        console.log(videoDto);
+        const {name, alias, embed_link, userId,share_count, Type,  embed_html, duration, musicId, isActive,cover_image_url, Description, height, width , Title, share_url, secondCategoryId} = videoDto;
+        return this.prisma.video.create({data: { name, share_count, embed_html, duration, musicId, alias, embed_link, userId, isActive, Description, cover_image_url, height, Type, width, secondCategoryId, Title, share_url, tag: { create: [...setTags]} }});
     }
 
     async updateVideo(params: {

@@ -80,10 +80,17 @@ export class VideoController {
         // возвращаем URL конвертированного файла
         return this.videoService.createVideo(video, dto);
     }
-
     @Get(':id')
     async get(@Param('id', IdValidationpipe) id: string) {
         const product = await this.videoService.video({id});
+        if (!product) {
+            throw new NotFoundException(VideoByIdNotFount);
+        }
+        return product;
+    }
+    @Get('')
+    async videos() {
+        const product = await this.videoService.videos( {});
         if (!product) {
             throw new NotFoundException(VideoByIdNotFount);
         }

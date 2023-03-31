@@ -61,9 +61,8 @@ CREATE TABLE "Video" (
     "createdAt" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "id" TEXT NOT NULL PRIMARY KEY,
     "secondCategoryId" TEXT NOT NULL,
-    "tagId" TEXT NOT NULL,
     "Title" TEXT NOT NULL,
-    "duration" TEXT NOT NULL,
+    "duration" INTEGER NOT NULL,
     "embed_link" TEXT NOT NULL,
     "embed_html" TEXT NOT NULL,
     "share_url" TEXT NOT NULL,
@@ -73,7 +72,7 @@ CREATE TABLE "Video" (
     "width" INTEGER NOT NULL,
     "height" INTEGER NOT NULL,
     "musicId" TEXT NOT NULL,
-    "share_count" INTEGER NOT NULL,
+    "share_count" INTEGER NOT NULL DEFAULT 0,
     "view_count" INTEGER NOT NULL DEFAULT 0,
     "comment_count" INTEGER NOT NULL DEFAULT 0,
     "likesCount" INTEGER NOT NULL DEFAULT 0,
@@ -101,7 +100,10 @@ CREATE TABLE "Comment" (
     "pictures" TEXT,
     "comment" TEXT NOT NULL,
     "writtenById" TEXT NOT NULL,
-    "modelDeviceId" TEXT NOT NULL,
+    "videoId" TEXT NOT NULL,
+    "childId" TEXT,
+    CONSTRAINT "Comment_videoId_fkey" FOREIGN KEY ("videoId") REFERENCES "Video" ("id") ON DELETE RESTRICT ON UPDATE CASCADE,
+    CONSTRAINT "Comment_childId_fkey" FOREIGN KEY ("childId") REFERENCES "Comment" ("id") ON DELETE SET NULL ON UPDATE CASCADE,
     CONSTRAINT "Comment_writtenById_fkey" FOREIGN KEY ("writtenById") REFERENCES "UserModel" ("id") ON DELETE RESTRICT ON UPDATE CASCADE
 );
 
@@ -150,6 +152,9 @@ CREATE UNIQUE INDEX "Folower_authorId_key" ON "Folower"("authorId");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "Music_name_key" ON "Music"("name");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "Music_userId_key" ON "Music"("userId");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "Music_alias_key" ON "Music"("alias");
