@@ -96,15 +96,25 @@ CREATE TABLE "TagOnVideo" (
 CREATE TABLE "Comment" (
     "id" TEXT NOT NULL PRIMARY KEY,
     "createdAt" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    "title" TEXT NOT NULL,
+    "likeCount" INTEGER NOT NULL DEFAULT 0,
     "pictures" TEXT,
     "comment" TEXT NOT NULL,
     "writtenById" TEXT NOT NULL,
     "videoId" TEXT NOT NULL,
-    "childId" TEXT,
     CONSTRAINT "Comment_videoId_fkey" FOREIGN KEY ("videoId") REFERENCES "Video" ("id") ON DELETE RESTRICT ON UPDATE CASCADE,
-    CONSTRAINT "Comment_childId_fkey" FOREIGN KEY ("childId") REFERENCES "Comment" ("id") ON DELETE SET NULL ON UPDATE CASCADE,
     CONSTRAINT "Comment_writtenById_fkey" FOREIGN KEY ("writtenById") REFERENCES "UserModel" ("id") ON DELETE RESTRICT ON UPDATE CASCADE
+);
+
+-- CreateTable
+CREATE TABLE "UserCommentOnComment" (
+    "id" TEXT NOT NULL PRIMARY KEY,
+    "createdAt" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "likeCount" INTEGER NOT NULL DEFAULT 0,
+    "comment" TEXT NOT NULL,
+    "parentId" TEXT NOT NULL,
+    "userId" TEXT NOT NULL,
+    CONSTRAINT "UserCommentOnComment_parentId_fkey" FOREIGN KEY ("parentId") REFERENCES "Comment" ("id") ON DELETE RESTRICT ON UPDATE CASCADE,
+    CONSTRAINT "UserCommentOnComment_userId_fkey" FOREIGN KEY ("userId") REFERENCES "UserModel" ("id") ON DELETE RESTRICT ON UPDATE CASCADE
 );
 
 -- CreateTable
@@ -164,12 +174,6 @@ CREATE UNIQUE INDEX "Music_music_url_key" ON "Music"("music_url");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "SecondLevelCategory_name_key" ON "SecondLevelCategory"("name");
-
--- CreateIndex
-CREATE UNIQUE INDEX "Like_likeById_key" ON "Like"("likeById");
-
--- CreateIndex
-CREATE UNIQUE INDEX "Like_videoId_key" ON "Like"("videoId");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "Tag_name_key" ON "Tag"("name");

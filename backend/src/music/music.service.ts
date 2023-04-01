@@ -3,7 +3,7 @@ import { CreateMusicDto } from './dto/create-music.dto';
 import { UpdateMusicDto } from './dto/update-music.dto';
 import {PrismaService} from "../prisma/prisma-service";
 import {path} from "app-root-path";
-import {writeFile} from "fs-extra";
+import {unlink, writeFile} from "fs-extra";
 @Injectable()
 export class MusicService {
   constructor(private readonly prismaService: PrismaService) {
@@ -32,9 +32,14 @@ export class MusicService {
   update(id: number, updateMusicDto: UpdateMusicDto) {
     return `This action updates a #${id} music`;
   }
-  remove(id: string) {
+  async remove(id: string) {
+    const remove = await this.prismaService.music.findFirst({
+      where: {id},
+      select: {music_url: true},
+    });
+    unlink(path +  '/' +  remove.music_url);
     return  this.prismaService.music.delete({
-      where:{ id }
+      where:{ id },
     });;
   }
 }

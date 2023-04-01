@@ -24,15 +24,36 @@ export class UserService {
         likeById
       },
     select: {videoId: true, id: true}});
-    let checkExistVideo = null;
+    let checkExistVideo = { videoId: null, likeId: null, exist: false};
+    checkExist.forEach( c => { if(videoId=== c.videoId) { return checkExistVideo = { videoId: c.videoId, likeId: c.id, exist: true}}})
 
-    checkExist.forEach( c => { if(videoId=== c.videoId) { return checkExistVideo = c.id}})
-
-    if(checkExistVideo) {
+    if(checkExistVideo.exist) {
+      const likesCountVideo = await this.prisma.video.findUnique({where: {
+          id: checkExistVideo.videoId
+        },
+        select: { likesCount: true}
+        })
+      await this.prisma.video.update({where: {
+        id: checkExistVideo.videoId
+        },
+      data: {
+        likesCount: likesCountVideo.likesCount - 1
+      }})
       return await this.prisma.like.delete({where: {
-         id: checkExistVideo,
+         id: checkExistVideo.likeId,
         }});
     }
+    const likesCountVideo = await this.prisma.video.findUnique({where: {
+        id: videoId
+      },
+      select: { likesCount: true}
+    })
+    await this.prisma.video.update({where: {
+        id: videoId
+      },
+      data: {
+        likesCount: likesCountVideo.likesCount + 1
+      }})
     console.log(checkExistVideo);
     return this.prisma.like.create({
       data: {

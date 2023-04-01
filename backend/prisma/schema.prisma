@@ -22,6 +22,7 @@ model UserModel {
   hashpassword String
   isActive     Boolean @default(false)
   Comment      Comment[] @relation("CommentWritenBy")
+  userComment  UserCommentOnComment[] @relation("UserCommentOnUser")
   videos       Video[]   @relation("UserVideo")
   avatar       String?
   role String  @default("user")
@@ -129,28 +130,34 @@ model TagOnVideo {
 //   Comment          Comment[]           @relation("CommentProduct")
 //   brand            Brand               @relation("BrandByModel", fields: [brandId], references: [id])
 // }
-
 model Comment {
   id            String    @id @default(uuid())
   createdAt     DateTime  @default(now())
-  title         String
+  likeCount Int  @default(0)
   pictures      String?
   comment       String
   writtenById   String
   videoId String
   video Video @relation("CommentsVideo", fields: [videoId], references: [id])
-  childId String?
-  replies  Comment[] @relation("CommentsUser")
-  childComment Comment?  @relation("CommentsUser", fields: [childId], references:[id])
   writtenBy     UserModel @relation("CommentWritenBy", fields: [writtenById], references: [id])
+  userComments UserCommentOnComment[]
 }
-
+model UserCommentOnComment {
+   id String @id @default(uuid())
+   createdAt     DateTime  @default(now())
+   likeCount Int  @default(0)
+   comment String
+   parentId String
+   parent Comment @relation(fields: [parentId], references: [id])
+   userId String
+   user UserModel @relation("UserCommentOnUser", fields: [userId], references: [id])
+}
 model Like {
   id        String    @id @default(uuid())
   createdAt DateTime  @default(now())
   like      Boolean
-  likeById  String @unique()
-  videoId   String @unique()
+  likeById  String
+  videoId   String
   likeBy    UserModel @relation("LikedBy", fields: [likeById], references: [id])
   videos    Video     @relation("LikeVideos", fields: [videoId], references: [id], onUpdate: NoAction)
 }

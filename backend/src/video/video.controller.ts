@@ -25,7 +25,7 @@ import {VideoService} from "./video-service";
 import {VideoReportDto} from "./dto/report-video.dto";
 import {FileInterceptor} from "@nestjs/platform-express";
 import {path} from "app-root-path";
-import {writeFile} from "fs-extra";
+import {unlink, writeFile} from "fs-extra";
 
 
 

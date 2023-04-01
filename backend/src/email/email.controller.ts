@@ -16,7 +16,11 @@ export class EmailController {
   findAll() {
     return this.emailService.findAll();
   }
+  @Post()
 
+  async sendNotify(@Body() createEmailDto: CreateEmailDto) {
+    return this.emailService.create(createEmailDto);
+  }
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.emailService.findOne(+id);

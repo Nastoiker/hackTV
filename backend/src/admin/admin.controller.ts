@@ -4,6 +4,7 @@ import { CreateAdminDto } from './dto/create-admin.dto';
 import { UpdateAdminDto } from './dto/update-admin.dto';
 import {JwtAuthGuard} from "../auth/guards/jwt.guard";
 import {AdminJwtAuthGuard} from "../auth/guards/admin.guard";
+import {CreateReportDto} from "./dto/create-report.dto";
 
 @Controller('admin')
 export class AdminController {
@@ -12,6 +13,11 @@ export class AdminController {
   @Post('addAdmin')
   createAdmin(@Body() {id}:  { id: string } ) {
     return this.adminService.createAdmin(id);
+  }
+  @UseGuards(AdminJwtAuthGuard)
+  @Post('createReport')
+  createReport(@Body() dto:  CreateReportDto ) {
+    return this.adminService.createReport(dto);
   }
   @UseGuards(AdminJwtAuthGuard)
   @Post('banAdmin')

@@ -1,17 +1,24 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import {Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, Req} from '@nestjs/common';
 import { CommentService } from './comment.service';
-import { CreateCommentDto } from './dto/create-comment.dto';
+import {CreateCommentDto, CreateCommentOnUserDto} from './dto/create-comment.dto';
 import { UpdateCommentDto } from './dto/update-comment.dto';
+import {JwtAuthGuard} from "../auth/guards/jwt.guard";
 
 @Controller('comment')
 export class CommentController {
   constructor(private readonly commentService: CommentService) {}
-
-  @Post()
-  create(@Body() createCommentDto: CreateCommentDto) {
-    return this.commentService.create(createCommentDto);
+  @UseGuards(JwtAuthGuard)
+  @Post('createCommentOnUser')
+  createUserComment(@Req() request, @Body() createCommentOnUserDto: CreateCommentOnUserDto) {
+    createCommentOnUserDto.userId = request.user.id
+    return this.commentService.createCommentOnUserDto(createCommentOnUserDto);
   }
-
+  @UseGuards(JwtAuthGuard)
+  @Post('createComment')
+  createVideo(@Req() request, @Body() createCommentDto: CreateCommentDto) {
+    createCommentDto.writtenById = request.user.id
+    return this.commentService.createCommentDto(createCommentDto);
+  }
   @Get()
   findAll() {
     return this.commentService.findAll();

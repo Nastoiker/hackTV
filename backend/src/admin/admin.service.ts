@@ -3,6 +3,7 @@ import { CreateAdminDto } from './dto/create-admin.dto';
 import { UpdateAdminDto } from './dto/update-admin.dto';
 import {PrismaService} from "../prisma/prisma-service";
 import {JwtService} from "@nestjs/jwt";
+import {CreateReportDto} from "./dto/create-report.dto";
 
 @Injectable()
 export class AdminService {
@@ -49,7 +50,14 @@ export class AdminService {
     }
     );
   }
-
+  async createReport(dto: CreateReportDto) {
+    return this.prisma.reportVideo.create({
+          data: {
+            ...dto
+          }
+        }
+    );
+  }
   findAll() {
     return `This action returns all admin`;
   }
