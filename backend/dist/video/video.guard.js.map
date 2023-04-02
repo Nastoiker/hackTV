@@ -1,0 +1,1 @@
+{"version":3,"file":"video.guard.js","sourceRoot":"","sources":["../../src/video/video.guard.ts"],"names":[],"mappings":";;;;;;;;;AAAA,2CAA2E;AAIpE,IAAM,UAAU,GAAhB,MAAM,UAAU;IACrB,WAAW,CACT,OAAyB;QAEzB,MAAM,OAAO,GAAG,OAAO,CAAC,YAAY,EAAE,CAAC,UAAU,EAAE,CAAC;QACpD,IAAG,OAAO;YACV,OAAO,IAAI,CAAC;IACd,CAAC;CACF,CAAA;AARY,UAAU;IADtB,IAAA,mBAAU,GAAE;GACA,UAAU,CAQtB;AARY,gCAAU"}

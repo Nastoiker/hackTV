@@ -24,6 +24,7 @@ export class UserController {
   create(@Body() createUserDto: CreateUserDto) {
     return this.userService.createUser(createUserDto);
   }
+
   @Post('createTag')
   @UseGuards(JwtAuthGuard)
   createTag(@Body() dto: {name: string}) {
@@ -34,9 +35,6 @@ export class UserController {
   @UseInterceptors(FileInterceptor('file'))
   async updateAvatar(@Req() query, @UploadedFile(
       new ParseFilePipeBuilder()
-          .addFileTypeValidator({
-            fileType: 'webp, jpg',
-          })
           .addMaxSizeValidator({ maxSize: 5242880 })
           .build({
             errorHttpStatusCode: HttpStatus.UNPROCESSABLE_ENTITY

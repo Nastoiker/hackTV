@@ -3,7 +3,7 @@ import {
 	Body,
 	Controller, Get,
 	HttpCode,
-	Post, Query, Req,
+	Post, Query, Req, UseGuards,
 	UsePipes,
 	ValidationPipe,
 } from '@nestjs/common';
@@ -11,6 +11,7 @@ import { ALREADY_REGISTER_ERROR } from './auth.constants';
 import { AuthService } from './auth.service';
 import { AuthDto } from './dto/auth.dto';
 import {CreateUserDto} from "../user/dto/create-user.dto";
+import {JwtAuthGuard} from "./guards/jwt.guard";
 
 @Controller('auth')
 export class AuthController {
@@ -36,7 +37,9 @@ export class AuthController {
 	@UsePipes(new ValidationPipe())
 	@HttpCode(200)
 	@Get ('authByJwt')
+	@UseGuards(JwtAuthGuard)
 	async authByJwt(@Req() query) {
+		console.log(query.user);
 		return query.user;
 	}
 }

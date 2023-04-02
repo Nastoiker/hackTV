@@ -3,7 +3,7 @@ import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import {UserModel, Prisma, Like, Video} from '@prisma/client';
 import {PrismaService} from "../prisma/prisma-service";
-import {unlink} from "fs-extra";
+import {unlink, writeFile} from "fs-extra";
 import {User} from "./entities/user.entity";
 import {path} from "app-root-path";
 import {Tag} from "../video/entities/video.entity";
@@ -65,9 +65,11 @@ export class UserService {
   }
 
   async updateAvatar(user: UserModel, file: Express.Multer.File) {
-    if(user.avatar.length > 0) {     await unlink(path + '/uploads/avatar/' + user.avatar); }
-    const filePath = path + '/uploads/avatar/' + user.id + '.' +file.mimetype;
-    return this.prisma.userModel.update({ where: { id: user.id  }, data: { avatar: user.id + '.' +file.mimetype}});
+    if( user.avatar && user.avatar.length > 0) {     await unlink(path + user.avatar); }
+    const extension = file.originalname.split('.');
+    const filePath = path + '/uploads/users/' + user.id +'/avatar/'  + user.id + '.' + extension[extension.length-1];
+    await writeFile(filePath, file.buffer);
+    return this.prisma.userModel.update({ where: { id: user.id  }, data: { avatar: '/uploads/users/'   + user.id +'/avatar/' + user.id + '.' +extension[extension.length-1]}});
   }
     async users(params: {
     skip?: number;

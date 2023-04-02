@@ -47,7 +47,7 @@ export class VideoService {
                 authorVideo: true,
                 secondCategory: true,
                 likes: true,
-                Comment: { include: { userComments: true}}
+                Comment: { include: { writtenBy: true, userComments: { include: {user: true} }}}
             }
         },
             );
