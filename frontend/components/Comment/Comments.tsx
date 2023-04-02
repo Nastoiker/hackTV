@@ -1,7 +1,7 @@
-import {ICommentProps} from "./Comment.props";
+import { ICommentsProps} from "./Comment.props";
 import {useState} from "react";
 import { motion } from 'framer-motion';
-export const Comments = ({comments}: ICommentProps): JSX.Element => {
+export const Comments = ({comments}: ICommentsProps): JSX.Element => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
   return <div>
     <button onClick={(o) => !o}>

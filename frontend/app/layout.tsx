@@ -12,6 +12,7 @@ import UserIcon from "@/public/User.svg";
 import {Categories} from "@/components/Categoryes/Categories";
 import {PopularTags} from "@/components/Header/PopularTags";
 import {useState} from "react";
+import Providers from "@/provider/providerRedux";
 const fontSans = FontSans({
   subsets: ["latin"],
   variable: "--font-sans",
@@ -46,34 +47,37 @@ export default function RootLayout({children}: RootLayoutProps) {
   return (<>
     <html lang="en" >
     <head />
+
     <body
       className={cn(
         "max-w-screen-2xl  min-h-screen bg-white font-sans text-slate-900 antialiased ",
         fontSans.variable
       )}
     >
-    <div className={"flex"}>
+    <Providers>
+      <div className={"flex"}>
 
-      <div className={"fixed  right-44 left-44  w-48 my-16  border-r "}>
+        <div className={"fixed  right-44 left-44  w-48 my-16  border-r "}>
           <Categories categories={categoriesOb} />
           <PopularTags tags={TagsObject} />
-      </div>
+        </div>
 
-      <div className={"w-full"}>
-        <header className={"z-40 w-full fixed "}>
-          <Header scrolled={scrolled} setIsLogin={() => {} } setIsLogout={() => {}} />
-        </header>
+        <div className={"w-full"}>
+          <header className={"z-40 w-full fixed "}>
+            <Header scrolled={scrolled} setIsLogin={() => {} } setIsLogout={() => {}} />
+          </header>
           {/*<header className={"z-40 right-44 fixed left-44"}>*/}
           {/*  <Header scrolled={scrolled} setIsLogin={() => {} } setIsLogout={() => {}} />*/}
           {/*</header>*/}
 
 
 
-        <div className={"ml-60 left-60 my-20 relative"}>
-          {children}
+          <div className={"ml-60 left-60 my-20 relative"}>
+            {children}
+          </div>
         </div>
       </div>
-    </div>
+    </Providers>
 
     </body>
     </html></>)

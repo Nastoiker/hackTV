@@ -70,6 +70,8 @@ export default function IndexPage() {
             </SelectContent>
           </Select>
           <RadioGroup { ...register('isActive', {required: true})} id={"isActive"}/>
+          <Label htmlFor={"TagId"}>Tags</Label>
+          <Input { ...register('secondCategoryId', {required: true})} id={"TagId"}/>
           <Label htmlFor={"secondCategoryId"}>secondCategory</Label>
           <Input { ...register('secondCategoryId', {required: true})} id={"secondCategoryId"}/>
           <Label htmlFor={"tagId"}>Name</Label>

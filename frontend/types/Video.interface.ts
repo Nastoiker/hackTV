@@ -1,19 +1,89 @@
 import {IUser} from "@/types/User.interface";
 
 export interface IVideo {
-  secondCategoryId: string;
-  tagId: string;
-  id: string;
-  user: IUser;
-  isActive: boolean;
-  updated_at: string;
-  createdAt: string;
-  title: string;
-  subTitle: string;
-  comments: Comment[];
-
+  name: string
+  alias: string
+  isActive: boolean
+  updated_at: string
+  createdAt: string
+  id: string
+  secondCategoryId: string
+  Title: string
+  duration: number
+  embed_link: string
+  embed_html: string
+  share_url: string
+  cover_image_url: string
+  Description: string
+  Type: string
+  width: number
+  height: number
+  musicId: string
+  share_count: number
+  view_count: number
+  comment_count: number
+  likesCount: number
+  userId: string
+  music: Music
+  tag: Tag[]
+  authorVideo: AuthorVideo
+  secondCategory: SecondCategory
+  likes: any[]
+  Comment: Comment[]
 }
-interface Comment {
-  id: string;
-  comment: string;
+
+export interface Music {
+  id: string
+  name: string
+  userId: string
+  alias: string
+  music_url: string
+}
+
+export interface Tag {
+  videoId: string
+  tagId: string
+}
+
+export interface AuthorVideo {
+  id: string
+  authorUrl: string
+  email: string
+  login: string
+  phone: string
+  hashpassword: string
+  isActive: boolean
+  avatar: string
+  role: string
+  subscribers_count: number
+  following_count: number
+  LikeCount: number
+  hisLikes: number
+}
+
+export interface SecondCategory {
+  id: string
+  name: string
+  alias: string
+  firstLevelId: string
+}
+
+export interface Comment {
+  id: string
+  createdAt: string
+  likeCount: number
+  pictures: any
+  comment: string
+  writtenById: string
+  videoId: string
+  userComments: UserComment[]
+}
+
+export interface UserComment {
+  id: string
+  createdAt: string
+  likeCount: number
+  comment: string
+  parentId: string
+  userId: string
 }

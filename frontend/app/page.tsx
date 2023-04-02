@@ -5,6 +5,8 @@ import {Video} from "@/components/video/video";
 import {IUser} from "@/types/User.interface";
 import {IVideo} from "@/types/Video.interface";
 import UserIcon from '@/public/User.svg';
+import {useAddVideoMutation, useDeleteVideoMutation, useGetVideosQuery} from "@/stores/slices/api";
+import {LayoutVideo} from "@/components/layout.video";
 
 
 export default function IndexPage() {
@@ -31,6 +33,11 @@ export default function IndexPage() {
     updated_at: new Date().toString(),
     createdAt: new Date().toString(),
   }
+
+  //
+  // const [addVideo, { isLoading: isAdding, error: addError }] = useAddVideoMutation();
+  //
+  // const [deleteVideo, { isLoading: isDeleting, error: deleteError }] = useDeleteVideoMutation();
   return <>
   <section className={" grid  "}>
     <div className="flex max-w-[980px] flex-col items-start gap-2">
@@ -52,8 +59,8 @@ export default function IndexPage() {
 
     {/*  </p>*/}
     {/*</div>*/}
-    <Video className={"mx-auto"} video={VideoObject}/>
-    <Video  className={"mx-auto"} video={VideoObject}/>
+    ss
+    <LayoutVideo />
   </section>
   </>
 }
