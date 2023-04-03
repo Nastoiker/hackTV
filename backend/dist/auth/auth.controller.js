@@ -36,7 +36,8 @@ let AuthController = class AuthController {
     }
     async authByJwt(query) {
         console.log(query.user);
-        return query.user;
+        const user = await this.authService.authByJwt(query.user.id);
+        return user;
     }
 };
 __decorate([

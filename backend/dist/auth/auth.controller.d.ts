@@ -9,5 +9,13 @@ export declare class AuthController {
     login({ email, password }: AuthDto): Promise<{
         accesToken: string;
     }>;
-    authByJwt(query: any): Promise<any>;
+    authByJwt(query: any): Promise<import(".prisma/client").UserModel & {
+        Comment: import(".prisma/client").Comment[];
+        userComment: import(".prisma/client").UserCommentOnComment[];
+        videos: import(".prisma/client").Video[];
+        music: import(".prisma/client").Music[];
+        folowing: import(".prisma/client").Folower[];
+        folowers: import(".prisma/client").Folower[];
+        Like: import(".prisma/client").Like[];
+    }>;
 }

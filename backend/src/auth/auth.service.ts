@@ -39,6 +39,12 @@ export class AuthService {
 		}
 		return { email: User.email };
 	}
+	async authByJwt(id: string) {
+		return this.prisma.userModel.findUnique({
+			where: {id},
+			include: {videos: true, Comment: true, folowing: true, folowers: true, Like: true, userComment: true, music: true}
+		});
+	}
 	async login(email: string) {
 		const payLoad = { email, role: 'user' };
 		return {

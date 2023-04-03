@@ -46,6 +46,12 @@ let AuthService = class AuthService {
         }
         return { email: User.email };
     }
+    async authByJwt(id) {
+        return this.prisma.userModel.findUnique({
+            where: { id },
+            include: { videos: true, Comment: true, folowing: true, folowers: true, Like: true, userComment: true, music: true }
+        });
+    }
     async login(email) {
         const payLoad = { email, role: 'user' };
         return {

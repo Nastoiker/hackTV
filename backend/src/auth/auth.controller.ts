@@ -40,6 +40,8 @@ export class AuthController {
 	@UseGuards(JwtAuthGuard)
 	async authByJwt(@Req() query) {
 		console.log(query.user);
-		return query.user;
+		const user = await this.authService.authByJwt(query.user.id);
+
+		return user;
 	}
 }
