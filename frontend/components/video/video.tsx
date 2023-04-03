@@ -52,7 +52,7 @@ export const Video = ({video, className, ...props}: VideoProps): JSX.Element => 
 
     <div className={"flex"}>
       <div>
-        <video width={350} height={350} className={"rounded-3xl"}  onClick={onVideoClick} loop ref={videoRef} src={videoPath}>
+        <video width={350} height={350} className={"rounded-3xl"}  onClick={onVideoClick} loop ref={videoRef} src={videoPath.replace(' ' , '')}>
         </video>
         <div className={"bg-black w-fit rounded-xl p-2 absolute -my-14 mx-64 text-amber-50"}>{Math.floor(currentTime)} : { videoRef.current && Math.floor(videoRef?.current?.duration)}</div>
         <div className={"bg-black text-amber-50 w-fit absolute -my-20  mx-4 opacity-70 p-2 rounded-xl"}>
@@ -63,7 +63,8 @@ export const Video = ({video, className, ...props}: VideoProps): JSX.Element => 
         </div>
         <div className={'flex justify-between px-2'}>
 
-          <div className={"flex items-center "}><Comments comments={video.Comment} /> <h1 className={"mx-6"}>{video.comment_count}</h1></div>
+          <div className={"flex items-center "}><div><Comments comments={video.Comment} /></div>   </div>
+          <h1 className={"mx-6"}>{video.comment_count}</h1>
           <Repost />
         </div>
       </div>

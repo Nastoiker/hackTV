@@ -12,18 +12,21 @@ export const SubscribeChannel = ({video, isSubscribe, setIsSubscribe}: { video: 
 
   }
   const unFolllowChannel = () => {
-    
+
   }
-  return <div className="z-10 mx-4 absolute flex justify-around my-8" onClick={setIsSubscribe}>
+  return <div className="z-10 ml-2 absolute flex justify-between my-8 w-80" onClick={setIsSubscribe}>
     {
       isSubscribe  ? <>
-          <Image width={30} alt={'userSubs'} src={video.authorVideo.avatar ?  UserIcon :  video.authorVideo.avatar }/>
-          <Button onClick={() => {}} className={"bg-red-400 mx-64"} >Отписаться</Button>
+          <Image className={"rounded-3xl"} width={30} alt={'userSubs'} src={video.authorVideo.avatar ?   'http://localhost:8000/user' + video.authorVideo.avatar :  UserIcon}/>
+          <Button onClick={() => {}} className={"bg-red-400 "} >Отписаться</Button>
         </>
 
       :
-        <>  <Image width={50} height={50} alt={'userSubs'} src={video.authorVideo.avatar ?  UserIcon :  video.authorVideo.avatar}/>
-          <Button onClick={() => {}} className={"bg-red-500 border-red mx-36"}>Подписаться</Button>
+        <> <div className={"flex bg-black bg-opacity-70 items-center pr-3.5 rounded-3xl text-white"}><Image className={"rounded-3xl"} width={50} height={50} alt={'userSubs'} src={video.authorVideo.avatar ?  'http://localhost:8000/user' +   video.authorVideo.avatar : UserIcon }/>
+            <div className={" w-fit"}><h4 className={""}>{video.authorVideo.login}</h4></div>
+        </div>
+
+          <Button onClick={() => {}} className={"bg-red-500 border-red right-0"}>Подписаться</Button>
         </>
     }
   </div>
