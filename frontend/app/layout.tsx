@@ -43,7 +43,7 @@ export default function RootLayout({children}: RootLayoutProps) {
     }
   };
 
-  window.addEventListener('scroll', handleScroll);
+  document.addEventListener('scroll', handleScroll);
   return (<>
     <html lang="en" >
     <head />

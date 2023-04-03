@@ -39,10 +39,14 @@ export interface Music {
   alias: string
   music_url: string
 }
-
+export interface TagChild {
+  id: string
+  name: string
+}
 export interface Tag {
   videoId: string
   tagId: string
+  tag: TagChild
 }
 
 export interface AuthorVideo {

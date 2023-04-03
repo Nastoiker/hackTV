@@ -5,10 +5,9 @@ import {CommentForm} from "@/components/Comment/CommentSend";
 
 export default function CommentsModal({comments}: ICommentsProps) {
   return (
-    <div className="modal">
-      <ScrollArea className="h-fit w-64 rounded-md border border-slate-100 dark:border-slate-700">
+    <div className="ml-4 mb-4 modal w-80">
+      <ScrollArea className="h-fit rounded-md border border-slate-100 dark:border-slate-700">
         <div className="p-4">
-          <h4 className="mb-4 text-sm font-medium leading-none">Комментарии</h4>
           {
             comments.map(c => <CommentCard key={c.id} comment={c}/>)
           }

@@ -7,8 +7,17 @@ import {IVideo} from "@/types/Video.interface";
 import UserIcon from '@/public/User.svg';
 import {useAddVideoMutation, useDeleteVideoMutation, useGetVideosQuery} from "@/stores/slices/api";
 import {LayoutVideo} from "@/components/layout.video";
-
-
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover"
+import {
+  HoverCard,
+  HoverCardContent,
+  HoverCardTrigger,
+} from "@/components/ui/hover-card"
+import {Button} from "@/components/ui/button";
 export default function IndexPage() {
   const User: IUser = {
     id: '1',
@@ -59,8 +68,9 @@ export default function IndexPage() {
 
     {/*  </p>*/}
     {/*</div>*/}
-    ss
+
     <LayoutVideo />
+
   </section>
   </>
 }

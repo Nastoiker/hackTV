@@ -3,13 +3,12 @@ import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 export const AuthApi = createApi({
   reducerPath: 'authApi',
   baseQuery: fetchBaseQuery({
-    baseUrl: 'http://localhost:8000/auth/',
+    baseUrl: 'http://localhost:8000/auth',
     prepareHeaders: (headers) => {
       const token = localStorage.getItem('token');
       if (token) {
-        headers.set('authorization', `Bearer ${token}`);
+        headers.set('Authorization', `Bearer ${token}`);
       }
-      headers.set('content-type', 'application/json');
       return headers;
     },
   }),
@@ -22,8 +21,8 @@ export const AuthApi = createApi({
       }),
       transformResponse: (response) => {
         // @ts-ignore
-        const { token } = response;
-        localStorage.setItem('token', token);
+        const { accesToken } = response;
+        localStorage.setItem('token', accesToken);
         return response;
       },
     }),
@@ -35,7 +34,7 @@ export const AuthApi = createApi({
       }),
     }),
     checkAuth: builder.query({
-      query: () => '/check-auth',
+      query: () => '/authByJwt',
     }),
 
   }),
@@ -43,4 +42,4 @@ export const AuthApi = createApi({
 
 // Export hooks for usage in function components, which are
 // auto-generated based on the defined endpoints
-export const {  } = AuthApi
+export const { useAuthorizationQuery, useCheckAuthQuery, useRegistrationMutation  } = AuthApi

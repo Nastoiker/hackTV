@@ -43,7 +43,7 @@ export class VideoService {
             orderBy,
             include: {
                 music: true,
-                tag: true,
+                tag: { include: {tag: true}},
                 authorVideo: true,
                 secondCategory: true,
                 likes: true,

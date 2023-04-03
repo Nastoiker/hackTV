@@ -4,6 +4,7 @@ import {rootSaga} from "@/stores/saga/root.saga";
 import {videoHostingApi} from "@/stores/slices/api";
 
 import {TypedUseSelectorHook, useDispatch, useSelector} from "react-redux";
+import {AuthApi} from "@/stores/slices/regapi";
 export type RootState = ReturnType<typeof store.getState>;
 export type AppDispatch = typeof store.dispatch;
 // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
@@ -13,7 +14,8 @@ export const sagaMiddleWate = createSagaMiddleware();
 export const store = configureStore({
     reducer: {
       [videoHostingApi.reducerPath]: videoHostingApi.reducer,
+      [AuthApi.reducerPath]: AuthApi.reducer,
     },
-  middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(videoHostingApi.middleware, sagaMiddleWate)
+  middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(videoHostingApi.middleware, AuthApi.middleware, sagaMiddleWate)
 })
 sagaMiddleWate.run(rootSaga);
