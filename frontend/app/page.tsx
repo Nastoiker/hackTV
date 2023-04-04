@@ -1,4 +1,4 @@
-
+"use client";
 import {siteConfig} from "@/config/site";
 import {Like} from "@/components/like/Like";
 import {Video} from "@/components/video/video";
@@ -18,30 +18,14 @@ import {
   HoverCardTrigger,
 } from "@/components/ui/hover-card"
 import {Button} from "@/components/ui/button";
+import {useAppDispatch, useAppSelector} from "@/stores";
+import {useEffect} from "react";
+import {getFirstCategory} from "@/stores/slices/category.slice";
+import {useCheckAuthQuery} from "@/stores/slices/regapi";
 export default function IndexPage() {
-  const User: IUser = {
-    id: '1',
-    authorUrl: 'string',
-    email: 'damur@gmail.com',
-    login: 'idiot',
-    avatar: UserIcon.src,
-  }
-  const Comment = [{
-    id: 'string',
-    comment: 'string'
-  }];
-  const VideoObject: IVideo = {
-    secondCategoryId: '',
-    tagId: '',
-    id: '1',
-    user: User,
-    comments: Comment,
-    title: 'DAMIR',
-    subTitle: 'ETO PIZDA',
-    isActive: true,
-    updated_at: new Date().toString(),
-    createdAt: new Date().toString(),
-  }
+
+  const { data, isLoading, error } = useGetVideosQuery({ limit: 10, offset: 0 });
+
 
   //
   // const [addVideo, { isLoading: isAdding, error: addError }] = useAddVideoMutation();
@@ -68,8 +52,10 @@ export default function IndexPage() {
 
     {/*  </p>*/}
     {/*</div>*/}
+    {
+      isLoading ? <div>loading</div>  :  <LayoutVideo  video={data} />
+    }
 
-    <LayoutVideo />
 
   </section>
   </>

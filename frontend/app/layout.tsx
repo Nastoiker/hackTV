@@ -11,8 +11,10 @@ import {IUser} from "@/types/User.interface";
 import UserIcon from "@/public/User.svg";
 import {Categories} from "@/components/Categoryes/Categories";
 import {PopularTags} from "@/components/Header/PopularTags";
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import Providers from "@/provider/providerRedux";
+import {useAppDispatch, useAppSelector} from "@/stores";
+import {getFirstCategory} from "@/stores/slices/category.slice";
 const fontSans = FontSans({
   subsets: ["latin"],
   variable: "--font-sans",
@@ -56,9 +58,8 @@ export default function RootLayout({children}: RootLayoutProps) {
     >
     <Providers>
       <div className={"flex"}>
-
         <div className={"fixed  right-44 left-44  w-48 my-16  border-r "}>
-          <Categories categories={categoriesOb} />
+          <Categories />
           <PopularTags tags={TagsObject} />
         </div>
 

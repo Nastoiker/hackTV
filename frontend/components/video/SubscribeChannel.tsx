@@ -26,7 +26,7 @@ export const SubscribeChannel = ({video, isSubscribe, setIsSubscribe}: { video: 
   return <div className="z-10 ml-2 absolute flex justify-between my-8 w-80" onClick={setIsSubscribe}>
     {
       isSubscribe  ? <>
-             <Image className={"rounded-3xl"} width={30} alt={'userSubs'} src={video.authorVideo.avatar ?   'http://localhost:8000/user' + video.authorVideo.avatar :  UserIcon}/>
+             <Image className={"rounded-full w-28 h-28"} width={28} height={28} alt={'userSubs'} src={video.authorVideo.avatar ?   'http://localhost:8000/user' + video.authorVideo.avatar :  UserIcon}/>
 
 
           <Button onClick={() => {}} className={"bg-red-400 "} >Отписаться</Button>
@@ -35,7 +35,7 @@ export const SubscribeChannel = ({video, isSubscribe, setIsSubscribe}: { video: 
       :
         <> <div className={" bg-black bg-opacity-70  pr-3.5 rounded-3xl text-white"}>
           <HoverCard>
-            <HoverCardTrigger className={"flex items-center"}>          <Image className={"rounded-3xl"} width={50} height={50} alt={'userSubs'} src={video.authorVideo.avatar ?  'http://localhost:8000/user' +   video.authorVideo.avatar : UserIcon }/>
+            <HoverCardTrigger className={"flex items-center"}>          <Image className={"rounded-full w-12 h-12"} width={50} height={50} alt={'userSubs'} src={video.authorVideo.avatar ?  'http://localhost:8000/user' +   video.authorVideo.avatar : UserIcon }/>
               <div className={" w-fit"}><h4 className={""}>{video.authorVideo.login}</h4></div>
 
             </HoverCardTrigger>
@@ -47,7 +47,7 @@ export const SubscribeChannel = ({video, isSubscribe, setIsSubscribe}: { video: 
           </HoverCard>
         </div>
 
-          <Button onClick={() => {}} className={"bg-red-500 border-red right-0"}>Подписаться</Button>
+          <Button onClick={() => {}} className={"bg-red-500 h-12 border-red right-0"}>Подписаться</Button>
         </>
     }
   </div>

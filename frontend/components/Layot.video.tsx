@@ -5,17 +5,26 @@ import ReduxProvider from "@/stores/provider";
 import Providers from "@/provider/providerRedux";
 import {useGetVideosQuery} from "@/stores/slices/api";
 import {Video} from "@/components/video/video";
+import {IVideo} from "@/types/Video.interface";
 import {useCheckAuthQuery} from "@/stores/slices/regapi";
-import {IUser} from "@/types/User.interface";
 
 interface LayoutProps {
-  video: any;
+  children: React.ReactNode
 }
-export  function LayoutVideo({video}: LayoutProps) {
+export  function LayoutVideo({videos} : { videos: IVideo[];} ) {
+  const {data, isLoading}  = useCheckAuthQuery({});
+  if(isLoading) {
+
+    return (
+      <>
+        { videos.map( (v  => <Video  video={v}/>))}
+      </>
+    )
+  }
   // await new Promise((resolve) => setTimeout(() => resolve(''), 1000));
   return (
     <>
-       { video.map( (v  => <Video  video={v}/>))}
+       { videos.map( (v  => <Video user={data} video={v}/>))}
 
     </>
   )

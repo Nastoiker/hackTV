@@ -30,7 +30,7 @@ export class CategoryController {
     return this.categoryService.createSecondCategory(createSecondCategory);
   }
   @Get()
-  findAll() {
+  getCategories() {
     return this.categoryService.categories();
   }
   @UseGuards(AdminJwtAuthGuard)

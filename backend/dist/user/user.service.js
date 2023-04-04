@@ -21,7 +21,12 @@ let UserService = class UserService {
     async user(userWhereUniqueInput) {
         return this.prisma.userModel.findUnique({
             where: userWhereUniqueInput,
-            include: { Comment: true, folowers: true, folowing: true, videos: true, music: true }
+            include: { Comment: true, folowers: true, folowing: true, videos: { include: { music: true,
+                        tag: { include: { tag: true } },
+                        authorVideo: true,
+                        secondCategory: true,
+                        likes: true,
+                        Comment: { include: { writtenBy: true, userComments: { include: { user: true } } } } } }, music: true }
         });
     }
     async like(likeById, videoId) {

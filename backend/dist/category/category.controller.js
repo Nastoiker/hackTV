@@ -27,7 +27,7 @@ let CategoryController = class CategoryController {
     createSecondCategory(createSecondCategory) {
         return this.categoryService.createSecondCategory(createSecondCategory);
     }
-    findAll() {
+    getCategories() {
         return this.categoryService.categories();
     }
     deleteFirstCategory(id) {
@@ -59,7 +59,7 @@ __decorate([
     __metadata("design:type", Function),
     __metadata("design:paramtypes", []),
     __metadata("design:returntype", void 0)
-], CategoryController.prototype, "findAll", null);
+], CategoryController.prototype, "getCategories", null);
 __decorate([
     (0, common_1.UseGuards)(admin_guard_1.AdminJwtAuthGuard),
     (0, common_1.Delete)('deleteFirstCategory:id'),

@@ -11,7 +11,35 @@ import View from "./View.svg";
 import {Repost} from "@/components/Repost/Repost";
 import {useGetVideosQuery, useAddVideoMutation, useDeleteVideoMutation} from "@/stores/slices/api";
 import CommentsModal from "@/components/Comment/commentScrollArea";
-export const Video = ({video, className, ...props}: VideoProps): JSX.Element => {
+import {LikeSimple} from "@/components/like/LikeSimple";
+import {useLikeVideoMutation} from "@/stores/slices/user.api";
+import {useCheckAuthQuery} from "@/stores/slices/regapi";
+import {IUser} from "@/types/User.interface";
+
+export const Video = ({ type, video, className, ...props}: VideoProps): JSX.Element => {
+  const query = {videoId: video.id};
+  const user: any = useCheckAuthQuery({});
+  const  [likeVideo, { isLoading, isError, data, error }] =  useLikeVideoMutation();
+  const [countLike, setCount] = useState<number>(video.likesCount);
+  const [liked, SetLike] = useState<boolean>(false);
+  useEffect(() => {
+  console.log(user.data);
+    if(user.data) {
+    const checkLike = user.data.Like.find( v => v.videoId === video.id);
+    checkLike && SetLike(true);
+  }}, []);
+
+  const handleLikeVideo = async (query) => {
+    if(!user) return;
+    SetLike((l) => !l);
+    try {
+      const result = await likeVideo(query);
+      liked ? setCount((c ) => c  + 1) : setCount((c ) => c  - 1);
+      console.log(result);
+    } catch (err) {
+      console.error(err);
+    }
+  };
   const videoRef = useRef(null);
   const [isFolowing, setIsFolowing] = useState<boolean>();
   const [isPlaying, setIsPlaying] = useState<boolean>(false);
@@ -19,13 +47,16 @@ export const Video = ({video, className, ...props}: VideoProps): JSX.Element => 
   const [isOpen, setIsOpen] = useState<boolean>(false);
   useEffect(() => {
     const handleTimeUpdate = () => {
-      setCurrentTime(videoRef.current.currentTime);
+      setCurrentTime(videoRef.current?.currentTime);
     };
-
+    videoRef.current.addEventListener('loadedmetadata', () => {
+      setCurrentTime(videoRef.current.currentTime);
+    });
     videoRef.current.addEventListener('timeupdate', handleTimeUpdate);
-
     return () => {
-      videoRef.current.removeEventListener('timeupdate', handleTimeUpdate);
+      if (videoRef.current) {
+        videoRef.current.removeEventListener('timeupdate', handleTimeUpdate);
+      }
     };
   }, []);
   const onVideoClick = () => {
@@ -37,14 +68,17 @@ export const Video = ({video, className, ...props}: VideoProps): JSX.Element => 
       setIsPlaying(true);
     }
   };
-
   const Folowing = async () => {
-      if(isFolowing) {
-        setIsFolowing(false)
-        return new Promise( (resolve) => { setTimeout(() => resolve(''), 1000)});
-      }
-      setIsFolowing(true)
-      return new Promise( (resolve) => { setTimeout(() => resolve(''), 1000)});
+    if (isFolowing) {
+      setIsFolowing(false)
+      return new Promise((resolve) => {
+        setTimeout(() => resolve(''), 1000)
+      });
+    }
+    setIsFolowing(true)
+    return new Promise((resolve) => {
+      setTimeout(() => resolve(''), 1000)
+    });
   }
   const videoPath = 'http://localhost:8000/video' + video.embed_link;
   return <div className={className}>
@@ -77,8 +111,8 @@ export const Video = ({video, className, ...props}: VideoProps): JSX.Element => 
 
         </div>
         <div>
-          <Like video={video} user={video.authorVideo}/>
-          <h1 className={"ml-3.5"}>{video.likesCount}</h1>
+          <LikeSimple isLike={liked} setLike={() => handleLikeVideo(query)}/>
+          <h1 className={"ml-3.5"}>{countLike}</h1>
         </div>
 
         <Report videoId={video.id} userId={'1'}/>
@@ -88,6 +122,6 @@ export const Video = ({video, className, ...props}: VideoProps): JSX.Element => 
     {
       isOpen && <CommentsModal comments={video.Comment}/>
     }
-
-</div>};
+</div>
+};
 

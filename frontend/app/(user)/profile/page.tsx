@@ -2,37 +2,40 @@
 import {useCheckAuthQuery} from "@/stores/slices/regapi";
 import Image from "next/image";
 import {Button} from "@/components/ui/button";
+import {Tabs, TabsContent, TabsList, TabsTrigger} from "@/components/ui/tabs";
+import {useGetVideosQuery} from "@/stores/slices/api";
+import {LayoutVideo} from "@/components/Layot.video";
 
 export default function IndexPage() {
   const {data}  = useCheckAuthQuery({});
+  const video = useGetVideosQuery({ limit: 10, offset: 0 });
   return <div>
     {
-      data ? <div>
+      data ? <div className={"space-y-5"}>
         <div className={"flex justify-between"}>
-          <div className={"flex"}>
+          <div className={"flex space-x-8"}>
             <img className={"rounded-full w-40 h-40"} width={70}  height={70} alt={'userSubs'} src={'http://localhost:8000/user' + data.avatar}/>
-            <div><h1>{data.login}</h1><p>{data.email}</p></div></div>
-          <div><h1>{data.subscribers_count}</h1><h1>{data.LikeCount}</h1></div>
+            <div className={"my-5"}>
+              <h1>{data.login}</h1>
+              <p>{data.email}</p>
+            </div>
+          </div>
+          <div className={"text-end my-5"}><h1>Подписчки: {data.subscribers_count}</h1><h1>Лайков: {data.LikeCount}</h1></div>
         </div>
         <div>
           <Button>
             Изменить профиль
           </Button>
         </div>
-        <Tabs defaultValue="account" className="w-[400px]">
+        <Tabs defaultValue="account" className="w-full">
           <TabsList>
-            <TabsTrigger value="account">Account</TabsTrigger>
-            <TabsTrigger value="password">Password</TabsTrigger>
+            <TabsTrigger value="video" ><h1 className={"text-white"}>Ваши видео</h1></TabsTrigger>
+            <TabsTrigger value="likes" className={"text-white"}><h1 className={"text-white"}>Ваши лайки</h1></TabsTrigger>
           </TabsList>
-          <TabsContent value="account">
-            <p className="text-sm text-slate-500 dark:text-slate-400">
-              Make changes to your account here. Click save when you&apos;re done.
-            </p>
+          <TabsContent  value="video">
+            <LayoutVideo videos={data.videos}/>
           </TabsContent>
-          <TabsContent value="password">
-            <p className="text-sm text-slate-500 dark:text-slate-400">
-              Change your password here. After saving, you&apos;ll be logged out.
-            </p>
+          <TabsContent value="likes">
           </TabsContent>
         </Tabs>
       </div>  : <div><Button>Авторизоваться</Button></div>

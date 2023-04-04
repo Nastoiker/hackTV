@@ -10,9 +10,21 @@ export declare class AuthController {
         accesToken: string;
     }>;
     authByJwt(query: any): Promise<import(".prisma/client").UserModel & {
-        Comment: import(".prisma/client").Comment[];
         userComment: import(".prisma/client").UserCommentOnComment[];
-        videos: import(".prisma/client").Video[];
+        videos: (import(".prisma/client").Video & {
+            Comment: (import(".prisma/client").Comment & {
+                writtenBy: import(".prisma/client").UserModel;
+                userComments: (import(".prisma/client").UserCommentOnComment & {
+                    user: import(".prisma/client").UserModel;
+                })[];
+            })[];
+            music: import(".prisma/client").Music;
+            tag: (import(".prisma/client").TagOnVideo & {
+                tag: import(".prisma/client").Tag;
+            })[];
+            authorVideo: import(".prisma/client").UserModel;
+            secondCategory: import(".prisma/client").SecondLevelCategory;
+        })[];
         music: import(".prisma/client").Music[];
         folowing: import(".prisma/client").Folower[];
         folowers: import(".prisma/client").Folower[];

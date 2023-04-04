@@ -10,9 +10,21 @@ export declare class AuthService {
     findUser(email: string): Promise<UserModel | null>;
     validateUser(email: string, password: string): Promise<Pick<UserModel, 'email'>>;
     authByJwt(id: string): Promise<UserModel & {
-        Comment: import(".prisma/client").Comment[];
         userComment: import(".prisma/client").UserCommentOnComment[];
-        videos: import(".prisma/client").Video[];
+        videos: (import(".prisma/client").Video & {
+            Comment: (import(".prisma/client").Comment & {
+                writtenBy: UserModel;
+                userComments: (import(".prisma/client").UserCommentOnComment & {
+                    user: UserModel;
+                })[];
+            })[];
+            music: import(".prisma/client").Music;
+            tag: (import(".prisma/client").TagOnVideo & {
+                tag: import(".prisma/client").Tag;
+            })[];
+            authorVideo: UserModel;
+            secondCategory: import(".prisma/client").SecondLevelCategory;
+        })[];
         music: import(".prisma/client").Music[];
         folowing: import(".prisma/client").Folower[];
         folowers: import(".prisma/client").Folower[];
