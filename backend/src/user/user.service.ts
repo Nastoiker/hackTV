@@ -20,7 +20,7 @@ export class UserService {
           tag: { include: {tag: true}},
           authorVideo: true,
           secondCategory: true,
-          likes: true,
+          likes: { include: { videos: true}},
           Comment: { include: { writtenBy: true, userComments: { include: {user: true} }}}}}, music: true  }
     });
   }

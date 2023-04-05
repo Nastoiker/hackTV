@@ -28,6 +28,21 @@ export declare class AuthController {
         music: import(".prisma/client").Music[];
         folowing: import(".prisma/client").Folower[];
         folowers: import(".prisma/client").Folower[];
-        Like: import(".prisma/client").Like[];
+        Like: (import(".prisma/client").Like & {
+            videos: import(".prisma/client").Video & {
+                Comment: (import(".prisma/client").Comment & {
+                    writtenBy: import(".prisma/client").UserModel;
+                    userComments: (import(".prisma/client").UserCommentOnComment & {
+                        user: import(".prisma/client").UserModel;
+                    })[];
+                })[];
+                music: import(".prisma/client").Music;
+                tag: (import(".prisma/client").TagOnVideo & {
+                    tag: import(".prisma/client").Tag;
+                })[];
+                authorVideo: import(".prisma/client").UserModel;
+                secondCategory: import(".prisma/client").SecondLevelCategory;
+            };
+        })[];
     }>;
 }
