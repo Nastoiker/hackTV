@@ -7,25 +7,17 @@ import {useGetVideosQuery} from "@/stores/slices/api";
 import {Video} from "@/components/video/video";
 import {IVideo} from "@/types/Video.interface";
 import {useCheckAuthQuery} from "@/stores/slices/regapi";
+import {IUser} from "@/types/User.interface";
 
 interface LayoutProps {
   children: React.ReactNode
 }
-export  function LayoutVideo({videos} : { videos: IVideo[];} ) {
-  const {data, isLoading}  = useCheckAuthQuery({});
-  if(isLoading) {
-
-    return (
-      <>
-        { videos.map( (v  => <Video  video={v}/>))}
-      </>
-    )
-  }
+export  function LayoutVideo({videos, user} : { videos: IVideo[], user?: IUser;} ) {
   // await new Promise((resolve) => setTimeout(() => resolve(''), 1000));
+  console.log(videos);
   return (
-    <>
-       { videos.map( (v  => <Video user={data} video={v}/>))}
-
-    </>
+    <div className={"mx-auto"}>
+       { videos.map( (v  => <Video user={user} video={v}/>))}
+    </div>
   )
 }

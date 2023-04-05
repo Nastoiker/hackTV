@@ -19,6 +19,21 @@ export const UserApi = createApi({
         method: 'POST',
         body: {...videoId },
       }),
+
+    }),
+    CommentVideo: builder.mutation({
+      query: (commentVideo) => ({
+        url: '/commentVideo',
+        method: 'POST',
+        body: {...commentVideo },
+      }),
+    }),
+    CreateVideo: builder.mutation({
+      query: (commentVideo) => ({
+        url: '/createVideo',
+        method: 'POST',
+        body: {...commentVideo },
+      }),
     }),
   }),
 });

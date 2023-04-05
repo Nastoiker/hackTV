@@ -6,7 +6,6 @@ import {IUser} from "@/types/User.interface";
 import {IVideo} from "@/types/Video.interface";
 import UserIcon from '@/public/User.svg';
 import {useAddVideoMutation, useDeleteVideoMutation, useGetVideosQuery} from "@/stores/slices/api";
-import {LayoutVideo} from "@/components/layout.video";
 import {
   Popover,
   PopoverContent,
@@ -22,15 +21,12 @@ import {useAppDispatch, useAppSelector} from "@/stores";
 import {useEffect} from "react";
 import {getFirstCategory} from "@/stores/slices/category.slice";
 import {useCheckAuthQuery} from "@/stores/slices/regapi";
+import {LayoutVideo} from "@/components/Layot.video";
 export default function IndexPage() {
-
   const { data, isLoading, error } = useGetVideosQuery({ limit: 10, offset: 0 });
 
-
-  //
-  // const [addVideo, { isLoading: isAdding, error: addError }] = useAddVideoMutation();
-  //
-  // const [deleteVideo, { isLoading: isDeleting, error: deleteError }] = useDeleteVideoMutation();
+  const user = useCheckAuthQuery({ });
+  console.log(data);
   return <>
   <section className={" grid  "}>
     <div className="flex max-w-[980px] flex-col items-start gap-2">
@@ -52,9 +48,11 @@ export default function IndexPage() {
 
     {/*  </p>*/}
     {/*</div>*/}
+    {/*{*/}
     {
-      isLoading ? <div>loading</div>  :  <LayoutVideo  video={data} />
+      (isLoading || user.isLoading ) ? <div>loading</div>  :  <LayoutVideo user={user.data}   videos={data} />
     }
+    {/*}*/}
 
 
   </section>

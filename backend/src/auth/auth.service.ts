@@ -46,7 +46,7 @@ export class AuthService {
 						tag: { include: {tag: true}},
 						authorVideo: true,
 						secondCategory: true,
-						Comment: { include: { writtenBy: true, userComments: { include: {user: true} }}}}}, folowing: true, folowers: true, Like: true, userComment: true, music: true}
+						Comment: { include: { writtenBy: true, userComments: { include: {user: true} }}}}}, folowing: true, folowers: true, userComment: true, music: true}
 		});
 	}
 	async login(email: string) {

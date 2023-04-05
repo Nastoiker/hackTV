@@ -16,29 +16,30 @@ import {useLikeVideoMutation} from "@/stores/slices/user.api";
 import {useCheckAuthQuery} from "@/stores/slices/regapi";
 import {IUser} from "@/types/User.interface";
 
-export const Video = ({ type, video, className, ...props}: VideoProps): JSX.Element => {
+export const Video = ({ user, type, video, className, ...props}: VideoProps): JSX.Element => {
   const query = {videoId: video.id};
-  const user: any = useCheckAuthQuery({});
   const  [likeVideo, { isLoading, isError, data, error }] =  useLikeVideoMutation();
   const [countLike, setCount] = useState<number>(video.likesCount);
   const [liked, SetLike] = useState<boolean>(false);
   useEffect(() => {
-  console.log(user.data);
-    if(user.data) {
-    const checkLike = user.data.Like.find( v => v.videoId === video.id);
+  console.log(user);
+    if(user) {
+    const checkLike = user.Like.find( v => v.videoId === video.id);
     checkLike && SetLike(true);
   }}, []);
 
   const handleLikeVideo = async (query) => {
     if(!user) return;
     SetLike((l) => !l);
+
     try {
       const result = await likeVideo(query);
-      liked ? setCount((c ) => c  + 1) : setCount((c ) => c  - 1);
       console.log(result);
     } catch (err) {
       console.error(err);
     }
+    liked ? setCount(countLike - 1) : setCount(countLike + 1);
+
   };
   const videoRef = useRef(null);
   const [isFolowing, setIsFolowing] = useState<boolean>();
@@ -98,7 +99,7 @@ export const Video = ({ type, video, className, ...props}: VideoProps): JSX.Elem
         </div>
         <div className={'flex justify-between px-2'}>
 
-          <div className={"flex items-center "}><div className={"flex items-center"}><Comments setIsOpen={() => setIsOpen(s => !s)} comments={video.Comment} /> <h1 className={"mx-2"}>{video.comment_count}</h1></div>   </div>
+          <div className={"flex items-center "}><div className={"flex items-center"}><Comments setIsOpen={() => setIsOpen(s => !s)} comments={video.Comment} /> <h1 className={"mx-2"}>{video.Comment.length}</h1></div>   </div>
 
           <Repost />
         </div>

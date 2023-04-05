@@ -11,7 +11,7 @@ import {IUser} from "@/types/User.interface";
 interface LayoutProps {
   video: any;
 }
-export  function LayoutVideo({video}: LayoutProps) {
+export  function asdasdsad({video, user}: LayoutProps) {
   // await new Promise((resolve) => setTimeout(() => resolve(''), 1000));
   return (
     <>
