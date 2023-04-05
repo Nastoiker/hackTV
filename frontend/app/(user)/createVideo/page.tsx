@@ -13,7 +13,7 @@ import {
   SelectValue,
 } from "@/components/ui/select"
 import ImportVideoIcon from './ImportVideo.svg';
-import {useRef} from "react";
+import {useRef, useState} from "react";
 import Image from "next/image";
 import {Textarea} from "@/components/ui/textarea";
 export default function IndexPage() {
@@ -22,22 +22,61 @@ export default function IndexPage() {
   const onSubmit = async (formData: ICreateVideo) => {
 
   }
+  const [file, setFile] = useState<File>();
+  const [onDrag, setOnDrag] = useState<boolean>(false);
+  const [selectedFile, setSelectedFile] = useState<any>();
   const handleDrop = (e) => {
     videoRef.current = e;
   }
+  const uploadedFile = (file: any) => {
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onloadend = () => {
+      setSelectedFile(reader.result);
+
+    };
+  };
+  const onDrop = (e: any) =>  {
+    e.preventDefault();
+    const file = e.dataTransfer.files[0];
+    setFile(file);
+    uploadedFile(file);
+    setOnDrag(true);
+  }
+  const handleDragOver = (e: any) => {
+    e.preventDefault();
+
+    setOnDrag(false);
+  };
   return <div>
-    <form action="" className={"space-y-7 flex items-center justify-around my-20"} onSubmit={handleSubmit(onSubmit)}>
-      <div className={"p-5"}>
+    <form action="" className={"space-y-7 space-x-5 flex items-center justify-around my-20"} onSubmit={handleSubmit(onSubmit)}>
+      <div className={"space-y-12  p-5"}>
         <div className={" outline-dashed outline-2 p-9 -outline-offset-2 w-full"}>
           <h1>Видео</h1>
-          <div className={"bg-gray-200 p-9 m-9"} onDrop={(e) => handleDrop(e)}>
-            <svg width="148" height="173" viewBox="0 0 148 173" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path fill-rule="evenodd" clip-rule="evenodd" d="M78.2432 1.7584C75.9 -0.584668 72.101 -0.584668 69.7578 1.7584L29.7578 41.7584C27.4146 44.1016 27.4146 47.9005 29.7578 50.2437C32.101 52.5868 35.9 52.5868 38.2432 50.2437L68.0005 20.4864V112.666C68.0005 115.98 70.6868 118.666 74.0005 118.666C77.3142 118.666 80.0005 115.98 80.0005 112.666V20.4864L109.759 50.2437C112.101 52.5868 115.9 52.5868 118.243 50.2437C120.587 47.9005 120.587 44.1016 118.243 41.7584L78.2432 1.7584ZM7.33317 119.333C11.015 119.333 13.9998 122.317 13.9998 126V146C13.9998 153.384 19.9418 159.333 27.2845 159.333H120.683C128.039 159.333 134 153.371 134 146V126C134 122.317 136.985 119.333 140.667 119.333C144.348 119.333 147.333 122.317 147.333 126V146C147.333 160.72 135.416 172.667 120.683 172.667H27.2845C12.5357 172.667 0.666504 160.707 0.666504 146V126C0.666504 122.317 3.6513 119.333 7.33317 119.333Z" fill="black"/>
-            </svg>
+          <div className={"bg-gray-200 p-9 m-9"} onDrop={onDrop} onDragOver={handleDragOver}>
+            {
+              onDrag ?
+                <div className={"bg-blue-200 m-9"}>
+                  <svg width="148" height="173" viewBox="0 0 148 173" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path fill-rule="evenodd" clip-rule="evenodd"
+                          d="M78.2432 1.7584C75.9 -0.584668 72.101 -0.584668 69.7578 1.7584L29.7578 41.7584C27.4146 44.1016 27.4146 47.9005 29.7578 50.2437C32.101 52.5868 35.9 52.5868 38.2432 50.2437L68.0005 20.4864V112.666C68.0005 115.98 70.6868 118.666 74.0005 118.666C77.3142 118.666 80.0005 115.98 80.0005 112.666V20.4864L109.759 50.2437C112.101 52.5868 115.9 52.5868 118.243 50.2437C120.587 47.9005 120.587 44.1016 118.243 41.7584L78.2432 1.7584ZM7.33317 119.333C11.015 119.333 13.9998 122.317 13.9998 126V146C13.9998 153.384 19.9418 159.333 27.2845 159.333H120.683C128.039 159.333 134 153.371 134 146V126C134 122.317 136.985 119.333 140.667 119.333C144.348 119.333 147.333 122.317 147.333 126V146C147.333 160.72 135.416 172.667 120.683 172.667H27.2845C12.5357 172.667 0.666504 160.707 0.666504 146V126C0.666504 122.317 3.6513 119.333 7.33317 119.333Z"
+                          fill="black"/>
+                  </svg>
+                </div>
+                :
+                <div className={"m-9"}>
+                  <svg width="148" height="173" viewBox="0 0 148 173" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path fill-rule="evenodd" clip-rule="evenodd"
+                          d="M78.2432 1.7584C75.9 -0.584668 72.101 -0.584668 69.7578 1.7584L29.7578 41.7584C27.4146 44.1016 27.4146 47.9005 29.7578 50.2437C32.101 52.5868 35.9 52.5868 38.2432 50.2437L68.0005 20.4864V112.666C68.0005 115.98 70.6868 118.666 74.0005 118.666C77.3142 118.666 80.0005 115.98 80.0005 112.666V20.4864L109.759 50.2437C112.101 52.5868 115.9 52.5868 118.243 50.2437C120.587 47.9005 120.587 44.1016 118.243 41.7584L78.2432 1.7584ZM7.33317 119.333C11.015 119.333 13.9998 122.317 13.9998 126V146C13.9998 153.384 19.9418 159.333 27.2845 159.333H120.683C128.039 159.333 134 153.371 134 146V126C134 122.317 136.985 119.333 140.667 119.333C144.348 119.333 147.333 122.317 147.333 126V146C147.333 160.72 135.416 172.667 120.683 172.667H27.2845C12.5357 172.667 0.666504 160.707 0.666504 146V126C0.666504 122.317 3.6513 119.333 7.33317 119.333Z"
+                          fill="black"/>
+                  </svg>
+                </div>
+
+            }
           </div>
         </div>
-        <div className={"flex"}>
-
+        <div className={"flex space-x-12"}>
+      <div>
         <h1>Обложка</h1>
         <div className={"p-9 outline-dashed outline-2 -outline-offset-2"} >
 
@@ -45,6 +84,8 @@ export default function IndexPage() {
             <svg className="m-auto" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"><path fill="none" d="M0 0h24v24H0z"/><path d="M4.828 21l-.02.02-.021-.02H2.992A.993.993 0 0 1 2 20.007V3.993A1 1 0 0 1 2.992 3h18.016c.548 0 .992.445.992.993v16.014a1 1 0 0 1-.992.993H4.828zM20 15V5H4v14L14 9l6 6zm0 2.828l-6-6L6.828 19H20v-1.172zM8 11a2 2 0 1 1 0-4 2 2 0 0 1 0 4z"/></svg>
           </div>
         </div>
+      </div>
+
         <div className={""}>
           <Label htmlFor={"musicId"}>Музыка</Label>
           <Input { ...register('musicId', {required: true})} id={"musicId"}/>
