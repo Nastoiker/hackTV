@@ -10,13 +10,12 @@ export declare class AuthController {
         accesToken: string;
     }>;
     authByJwt(query: any): Promise<import(".prisma/client").UserModel & {
-        userComment: import(".prisma/client").UserCommentOnComment[];
         videos: (import(".prisma/client").Video & {
             Comment: (import(".prisma/client").Comment & {
-                writtenBy: import(".prisma/client").UserModel;
                 userComments: (import(".prisma/client").UserCommentOnComment & {
                     user: import(".prisma/client").UserModel;
                 })[];
+                writtenBy: import(".prisma/client").UserModel;
             })[];
             music: import(".prisma/client").Music;
             tag: (import(".prisma/client").TagOnVideo & {
@@ -26,6 +25,7 @@ export declare class AuthController {
             secondCategory: import(".prisma/client").SecondLevelCategory;
         })[];
         music: import(".prisma/client").Music[];
+<<<<<<< HEAD
         folowing: import(".prisma/client").Folower[];
         folowers: import(".prisma/client").Folower[];
         Like: (import(".prisma/client").Like & {
@@ -44,5 +44,11 @@ export declare class AuthController {
                 secondCategory: import(".prisma/client").SecondLevelCategory;
             };
         })[];
+=======
+        Like: import(".prisma/client").Like[];
+        folowers: import(".prisma/client").Folower[];
+        folowing: import(".prisma/client").Folower[];
+        userComment: import(".prisma/client").UserCommentOnComment[];
+>>>>>>> 8d9479c (LikeVideo)
     }>;
 }
