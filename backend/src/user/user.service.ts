@@ -92,7 +92,13 @@ export class UserService {
       orderBy,
     });
   }
-
+  async updateProfile(user: UserModel, file: Express.Multer.File, update: UpdateUserDto) {
+    if( user.avatar && user.avatar.length > 0) {     await unlink(path + user.avatar); }
+    const extension = file.originalname.split('.');
+    const filePath = path + '/uploads/users/' + user.id +'/avatar/'  + user.id + '.' + extension[extension.length-1];
+    await writeFile(filePath, file.buffer);
+    return this.prisma.userModel.update({ where: { id: user.id  }, data: { login: update.login, phone: update.phone ,hashpassword: update.password, avatar: '/uploads/users/'   + user.id +'/avatar/' + user.id + '.' +extension[extension.length-1]}});
+  }
   async createUser(data: Prisma.UserModelCreateInput): Promise<UserModel> {
     return this.prisma.userModel.create({
       data,

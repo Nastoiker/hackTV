@@ -1,9 +1,18 @@
 "use client"
 import {useState} from "react";
-import Calendar from "react-calendar";
+import {useCheckAuthQuery} from "@/stores/slices/regapi";
+import {redirect} from "next/navigation";
 
-const PageAdmin = () => {
+const PageAdmin =  () => {
+  const {data, isLoading, isError}  = useCheckAuthQuery({});
   const [value, onChange] = useState(new Date());
-  return <Calendar onChange={onChange} value={value} />;
+
+  if(isLoading) {
+    return <div>loading</div>
+  }
+  if(data.role !== 'admin') {
+    return redirect('/');
+  }
+  return <div>ADMIN HI</div>;
 }
 export default PageAdmin;

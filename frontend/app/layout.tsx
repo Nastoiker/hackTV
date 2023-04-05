@@ -44,8 +44,8 @@ export default function RootLayout({children}: RootLayoutProps) {
       setScrolled(false);
     }
   };
+  if(document)   document.addEventListener('scroll', handleScroll);
 
-  document.addEventListener('scroll', handleScroll);
   return (<>
     <html lang="en" >
     <head />

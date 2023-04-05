@@ -42,15 +42,29 @@ export class AuthService {
 	async authByJwt(id: string) {
 		return this.prisma.userModel.findUnique({
 			where: {id},
-			include: {Like: { include: { videos: { include: { music: true,
-								tag: { include: {tag: true}},
+			include: {
+				Like: {
+					include: {
+						videos: {
+							include: {
+								music: true,
+								tag: {include: {tag: true}},
 								authorVideo: true,
 								secondCategory: true,
-								Comment: { include: { writtenBy: true, userComments: { include: {user: true} }}}}}}}, videos: { include: { music: true,
-						tag: { include: {tag: true}},
+								Comment: {include: {writtenBy: true, userComments: {include: {user: true}}}}
+							}
+						}
+					}
+				}, videos: {
+					include: {
+						music: true,
+						tag: {include: {tag: true}},
 						authorVideo: true,
 						secondCategory: true,
-						Comment: { include: { writtenBy: true, userComments: { include: {user: true} }}}}}, folowing: true, folowers: true, userComment: true, music: true}
+						Comment: {include: {writtenBy: true, userComments: {include: {user: true}}}}
+					}
+				}, folowing: true, folowers: true, userComment: true, music: true
+			},
 		});
 	}
 	async login(email: string) {

@@ -93,6 +93,15 @@ let UserService = class UserService {
             orderBy,
         });
     }
+    async updateProfile(user, file, update) {
+        if (user.avatar && user.avatar.length > 0) {
+            await (0, fs_extra_1.unlink)(app_root_path_1.path + user.avatar);
+        }
+        const extension = file.originalname.split('.');
+        const filePath = app_root_path_1.path + '/uploads/users/' + user.id + '/avatar/' + user.id + '.' + extension[extension.length - 1];
+        await (0, fs_extra_1.writeFile)(filePath, file.buffer);
+        return this.prisma.userModel.update({ where: { id: user.id }, data: { login: update.login, phone: update.phone, hashpassword: update.password, avatar: '/uploads/users/' + user.id + '/avatar/' + user.id + '.' + extension[extension.length - 1] } });
+    }
     async createUser(data) {
         return this.prisma.userModel.create({
             data,

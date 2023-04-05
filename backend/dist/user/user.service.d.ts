@@ -1,4 +1,5 @@
 /// <reference types="multer" />
+import { UpdateUserDto } from './dto/update-user.dto';
 import { UserModel, Prisma, Like } from '@prisma/client';
 import { PrismaService } from "../prisma/prisma-service";
 import { Tag } from "../video/entities/video.entity";
@@ -15,6 +16,7 @@ export declare class UserService {
         where?: Prisma.UserModelWhereInput;
         orderBy?: Prisma.UserModelOrderByWithRelationInput;
     }): Promise<UserModel[]>;
+    updateProfile(user: UserModel, file: Express.Multer.File, update: UpdateUserDto): Promise<UserModel>;
     createUser(data: Prisma.UserModelCreateInput): Promise<UserModel>;
     updateUser(params: {
         where: Prisma.UserModelWhereUniqueInput;

@@ -32,6 +32,9 @@ let UserController = class UserController {
     async updateAvatar(query, avatar) {
         return this.userService.updateAvatar(query.user, avatar);
     }
+    async updateProfile(query, avatar, body) {
+        return this.userService.updateProfile(query.user, avatar, body);
+    }
     findAll() {
         return this.userService.users({});
     }
@@ -86,6 +89,21 @@ __decorate([
     __metadata("design:paramtypes", [Object, Object]),
     __metadata("design:returntype", Promise)
 ], UserController.prototype, "updateAvatar", null);
+__decorate([
+    (0, common_1.Post)('updateProfile'),
+    (0, common_1.UseGuards)(jwt_guard_1.JwtAuthGuard),
+    (0, common_1.UseInterceptors)((0, platform_express_1.FileInterceptor)('file')),
+    __param(0, (0, common_1.Req)()),
+    __param(1, (0, common_1.UploadedFile)(new common_1.ParseFilePipeBuilder()
+        .addMaxSizeValidator({ maxSize: 5242880 })
+        .build({
+        errorHttpStatusCode: common_1.HttpStatus.UNPROCESSABLE_ENTITY
+    }))),
+    __param(2, (0, common_1.Body)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object, Object, update_user_dto_1.UpdateUserDto]),
+    __metadata("design:returntype", Promise)
+], UserController.prototype, "updateProfile", null);
 __decorate([
     (0, common_1.Get)(),
     __metadata("design:type", Function),

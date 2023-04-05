@@ -42,6 +42,18 @@ export class UserController {
   ) avatar: Express.Multer.File) {
     return this.userService.updateAvatar(query.user, avatar);
   }
+  @Post('updateProfile')
+  @UseGuards(JwtAuthGuard)
+  @UseInterceptors(FileInterceptor('file'))
+  async updateProfile(@Req() query, @UploadedFile(
+      new ParseFilePipeBuilder()
+          .addMaxSizeValidator({ maxSize: 5242880 })
+          .build({
+            errorHttpStatusCode: HttpStatus.UNPROCESSABLE_ENTITY
+          }),
+  ) avatar: Express.Multer.File, @Body() body: UpdateUserDto) {
+    return this.userService.updateProfile(query.user, avatar, body);
+  }
   @Get()
   findAll() {
     return this.userService.users({});

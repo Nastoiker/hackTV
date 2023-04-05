@@ -10,6 +10,7 @@ export declare class UserController {
         name: string;
     }): Promise<import("../video/entities/video.entity").Tag>;
     updateAvatar(query: any, avatar: Express.Multer.File): Promise<import(".prisma/client").UserModel>;
+    updateProfile(query: any, avatar: Express.Multer.File, body: UpdateUserDto): Promise<import(".prisma/client").UserModel>;
     findAll(): Promise<import(".prisma/client").UserModel[]>;
     findOne(id: string): Promise<import(".prisma/client").UserModel>;
     likeVideo(query: any, { videoId }: {

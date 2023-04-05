@@ -9,6 +9,7 @@ import {IVideo} from "@/types/Video.interface";
 import {IUser} from "@/types/User.interface";
 import UserIcon from "@/public/User.svg";
 import {Categories} from "@/components/Categoryes/Categories";
+import Head from 'next/head';
 interface RootLayoutProps {
   children: React.ReactNode
 }
@@ -17,18 +18,13 @@ const fontSans = FontSans({
   variable: "--font-sans",
   display: "swap",
 })
-export default function RootLayout({children}: RootLayoutProps) {
+export default function AdminLayot({children}: RootLayoutProps) {
 
-  return (<>
-    <html lang="en" >
-    <head />
-    <body
-      className={cn(
-        "max-w-screen-2xl mx-auto min-h-screen bg-white font-sans text-slate-900 antialiased ",
-        fontSans.variable
-      )}
-    >
+  return (<div> <Head>
+    <title>My Page Title</title>
+    <meta name="description" content="My page description" />
+    <link rel="icon" href="/favicon.ico" />
+  </Head>
     {children}
-    </body>
-    </html></>)
+  </div>)
 }
