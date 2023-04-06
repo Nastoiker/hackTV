@@ -18,15 +18,26 @@ const admin_service_1 = require("./admin.service");
 const update_admin_dto_1 = require("./dto/update-admin.dto");
 const admin_guard_1 = require("../auth/guards/admin.guard");
 const create_report_dto_1 = require("./dto/create-report.dto");
+const user_service_1 = require("../user/user.service");
+const create_category_dto_1 = require("../category/dto/create-category.dto");
+const category_service_1 = require("../category/category.service");
 let AdminController = class AdminController {
-    constructor(adminService) {
+    constructor(adminService, userService, categoryService) {
         this.adminService = adminService;
+        this.userService = userService;
+        this.categoryService = categoryService;
     }
     createAdmin({ id }) {
         return this.adminService.createAdmin(id);
     }
+    videoWithReport({ id }) {
+        return this.adminService.createAdmin(id);
+    }
     createReport(dto) {
         return this.adminService.createReport(dto);
+    }
+    getAllUsers() {
+        return this.userService.users({});
     }
     banAdmin({ id }) {
         return this.adminService.removeAdminAbility(id);
@@ -46,6 +57,18 @@ let AdminController = class AdminController {
     update(id, updateAdminDto) {
         return this.adminService.update(+id, updateAdminDto);
     }
+    createFirstCategory(query, createFirstCategory) {
+        return this.categoryService.createFirstCategory(createFirstCategory);
+    }
+    createSecondCategory(createSecondCategory) {
+        return this.categoryService.createSecondCategory(createSecondCategory);
+    }
+    deleteFirstCategory(id) {
+        return this.categoryService.deleteFirstCategory(id);
+    }
+    deleteSecondCategory(id) {
+        return this.categoryService.deleteFirstCategory(id);
+    }
     removeVideo(id) {
         return this.adminService.removeVideo(id);
     }
@@ -60,12 +83,27 @@ __decorate([
 ], AdminController.prototype, "createAdmin", null);
 __decorate([
     (0, common_1.UseGuards)(admin_guard_1.AdminJwtAuthGuard),
+    (0, common_1.Post)('addAdmin'),
+    __param(0, (0, common_1.Body)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object]),
+    __metadata("design:returntype", void 0)
+], AdminController.prototype, "videoWithReport", null);
+__decorate([
+    (0, common_1.UseGuards)(admin_guard_1.AdminJwtAuthGuard),
     (0, common_1.Post)('createReport'),
     __param(0, (0, common_1.Body)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [create_report_dto_1.CreateReportDto]),
     __metadata("design:returntype", void 0)
 ], AdminController.prototype, "createReport", null);
+__decorate([
+    (0, common_1.UseGuards)(admin_guard_1.AdminJwtAuthGuard),
+    (0, common_1.Get)('createReport'),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", []),
+    __metadata("design:returntype", void 0)
+], AdminController.prototype, "getAllUsers", null);
 __decorate([
     (0, common_1.UseGuards)(admin_guard_1.AdminJwtAuthGuard),
     (0, common_1.Post)('banAdmin'),
@@ -113,6 +151,38 @@ __decorate([
     __metadata("design:returntype", void 0)
 ], AdminController.prototype, "update", null);
 __decorate([
+    (0, common_1.UseGuards)(admin_guard_1.AdminJwtAuthGuard),
+    (0, common_1.Post)('createFirstCategory'),
+    __param(0, (0, common_1.Req)()),
+    __param(1, (0, common_1.Body)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object, create_category_dto_1.createFirstCategoryDto]),
+    __metadata("design:returntype", void 0)
+], AdminController.prototype, "createFirstCategory", null);
+__decorate([
+    (0, common_1.UseGuards)(admin_guard_1.AdminJwtAuthGuard),
+    (0, common_1.Post)('createSecondCategory'),
+    __param(0, (0, common_1.Body)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [create_category_dto_1.createSecondCategoryDto]),
+    __metadata("design:returntype", void 0)
+], AdminController.prototype, "createSecondCategory", null);
+__decorate([
+    (0, common_1.UseGuards)(admin_guard_1.AdminJwtAuthGuard),
+    (0, common_1.Delete)('deleteFirstCategory:id'),
+    __param(0, (0, common_1.Body)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String]),
+    __metadata("design:returntype", void 0)
+], AdminController.prototype, "deleteFirstCategory", null);
+__decorate([
+    (0, common_1.Delete)('deleteSecondCategory:id'),
+    __param(0, (0, common_1.Param)('id')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String]),
+    __metadata("design:returntype", void 0)
+], AdminController.prototype, "deleteSecondCategory", null);
+__decorate([
     (0, common_1.Delete)('Video:id'),
     __param(0, (0, common_1.Param)('id')),
     __metadata("design:type", Function),
@@ -121,7 +191,7 @@ __decorate([
 ], AdminController.prototype, "removeVideo", null);
 AdminController = __decorate([
     (0, common_1.Controller)('admin'),
-    __metadata("design:paramtypes", [admin_service_1.AdminService])
+    __metadata("design:paramtypes", [admin_service_1.AdminService, user_service_1.UserService, category_service_1.CategoryService])
 ], AdminController);
 exports.AdminController = AdminController;
 //# sourceMappingURL=admin.controller.js.map

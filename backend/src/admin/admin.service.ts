@@ -4,6 +4,7 @@ import { UpdateAdminDto } from './dto/update-admin.dto';
 import {PrismaService} from "../prisma/prisma-service";
 import {JwtService} from "@nestjs/jwt";
 import {CreateReportDto} from "./dto/create-report.dto";
+import {ReportVideo} from "../video/dto/report-video.dto";
 
 @Injectable()
 export class AdminService {
@@ -32,6 +33,11 @@ export class AdminService {
         }
     );
   }
+  // async videoWithReport() : Promise<ReportVideo[] | null>{
+  //     return this.prisma.reportVideo.findMany({orderBy: {
+  //             createdAt: 'asc',
+  //         }, });
+  // }
   async banOne(id: string) {
     return this.prisma.userModel.update({
       where: {

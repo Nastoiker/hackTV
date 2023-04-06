@@ -33,7 +33,9 @@ model UserModel {
   hisLikes  Int @default(0)
   folowing Folower[] @relation("FolowBy")
   folowers Folower[] @relation("FolowChannel")
+  reportsVideo ReportOnVideo[]
   Like         Like[]    @relation("LikedBy")
+  likeComment LikeComment[] @relation("userLikeComment")s
 }
 model Folower {
  id        String    @id @default(uuid())
@@ -142,6 +144,13 @@ model Comment {
   writtenBy     UserModel @relation("CommentWritenBy", fields: [writtenById], references: [id])
   userComments UserCommentOnComment[]
 }
+model LikeComment {
+     id            String    @id @default(uuid())
+      commentId String
+        comment Comment @relation(fields: [parentId], references: [id])
+         userId String
+           user UserModel @relation("userLikeComment", fields: [userId], references: [id])
+}
 model UserCommentOnComment {
    id String @id @default(uuid())
    createdAt     DateTime  @default(now())
@@ -167,8 +176,10 @@ model ReportOnVideo {
   videoId  String
   report   ReportVideo @relation(fields: [reportId], references: [id])
   reportId String
-
-  @@id([videoId, reportId])
+  createdAt DateTime  @default(now())
+  userId String
+  user   UserModel @relation(fields: [userId], references: [id])
+  @@id([videoId, reportId, userId])
 }
 
 model ReportVideo {

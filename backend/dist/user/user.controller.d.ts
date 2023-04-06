@@ -1,11 +1,13 @@
 /// <reference types="multer" />
 import { UserService } from './user.service';
-import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
+import { CreateCommentDto } from "./dto/createComment-dto";
+import { LikeCommentDto } from "./dto/likeComment-dto";
 export declare class UserController {
     private readonly userService;
     constructor(userService: UserService);
-    create(createUserDto: CreateUserDto): Promise<import(".prisma/client").UserModel>;
+    createComment(commentDto: CreateCommentDto): Promise<import(".prisma/client").Comment>;
+    likeComment(likeCommentDto: LikeCommentDto): Promise<import(".prisma/client").Comment>;
     createTag(dto: {
         name: string;
     }): Promise<import("../video/entities/video.entity").Tag>;

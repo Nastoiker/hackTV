@@ -15,14 +15,22 @@ import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import {FileInterceptor} from "@nestjs/platform-express";
 import {JwtAuthGuard} from "../auth/guards/jwt.guard";
+import {CreateCommentDto} from "./dto/createComment-dto";
+import {LikeCommentDto} from "./dto/likeComment-dto";
 
 @Controller('user')
 export class UserController {
   constructor(private readonly userService: UserService) {}
 
-  @Post()
-  create(@Body() createUserDto: CreateUserDto) {
-    return this.userService.createUser(createUserDto);
+  @Post('/createComment')
+  @UseGuards(JwtAuthGuard)
+  createComment(@Body() commentDto: CreateCommentDto) {
+    return this.userService.createComment(commentDto);
+  }
+  @Post('/likeComment')
+  @UseGuards(JwtAuthGuard)
+  likeComment(@Body() likeCommentDto: LikeCommentDto) {
+      return this.userService.likeComment(likeCommentDto);
   }
 
   @Post('createTag')

@@ -8,73 +8,24 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
-var __param = (this && this.__param) || function (paramIndex, decorator) {
-    return function (target, key) { decorator(target, key, paramIndex); }
-};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.CategoryController = void 0;
 const common_1 = require("@nestjs/common");
 const category_service_1 = require("./category.service");
-const create_category_dto_1 = require("./dto/create-category.dto");
-const admin_guard_1 = require("../auth/guards/admin.guard");
 let CategoryController = class CategoryController {
     constructor(categoryService) {
         this.categoryService = categoryService;
     }
-    createFirstCategory(query, createFirstCategory) {
-        return this.categoryService.createFirstCategory(createFirstCategory);
-    }
-    createSecondCategory(createSecondCategory) {
-        return this.categoryService.createSecondCategory(createSecondCategory);
-    }
     getCategories() {
         return this.categoryService.categories();
     }
-    deleteFirstCategory(id) {
-        return this.categoryService.deleteFirstCategory(id);
-    }
-    deleteSecondCategory(id) {
-        return this.categoryService.deleteFirstCategory(id);
-    }
 };
-__decorate([
-    (0, common_1.UseGuards)(admin_guard_1.AdminJwtAuthGuard),
-    (0, common_1.Post)('createFirstCategory'),
-    __param(0, (0, common_1.Req)()),
-    __param(1, (0, common_1.Body)()),
-    __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Object, create_category_dto_1.createFirstCategoryDto]),
-    __metadata("design:returntype", void 0)
-], CategoryController.prototype, "createFirstCategory", null);
-__decorate([
-    (0, common_1.UseGuards)(admin_guard_1.AdminJwtAuthGuard),
-    (0, common_1.Post)('createSecondCategory'),
-    __param(0, (0, common_1.Body)()),
-    __metadata("design:type", Function),
-    __metadata("design:paramtypes", [create_category_dto_1.createSecondCategoryDto]),
-    __metadata("design:returntype", void 0)
-], CategoryController.prototype, "createSecondCategory", null);
 __decorate([
     (0, common_1.Get)(),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", []),
     __metadata("design:returntype", void 0)
 ], CategoryController.prototype, "getCategories", null);
-__decorate([
-    (0, common_1.UseGuards)(admin_guard_1.AdminJwtAuthGuard),
-    (0, common_1.Delete)('deleteFirstCategory:id'),
-    __param(0, (0, common_1.Body)()),
-    __metadata("design:type", Function),
-    __metadata("design:paramtypes", [String]),
-    __metadata("design:returntype", void 0)
-], CategoryController.prototype, "deleteFirstCategory", null);
-__decorate([
-    (0, common_1.Delete)('deleteSecondCategory:id'),
-    __param(0, (0, common_1.Param)('id')),
-    __metadata("design:type", Function),
-    __metadata("design:paramtypes", [String]),
-    __metadata("design:returntype", void 0)
-], CategoryController.prototype, "deleteSecondCategory", null);
 CategoryController = __decorate([
     (0, common_1.Controller)('category'),
     __metadata("design:paramtypes", [category_service_1.CategoryService])

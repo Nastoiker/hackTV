@@ -19,26 +19,9 @@ import {AdminJwtAuthGuard} from "../auth/guards/admin.guard";
 @Controller('category')
 export class CategoryController {
   constructor(private readonly categoryService: CategoryService) {}
-  @UseGuards(AdminJwtAuthGuard)
-  @Post('createFirstCategory')
-  createFirstCategory(@Req() query, @Body() createFirstCategory: createFirstCategoryDto) {
-    return this.categoryService.createFirstCategory(createFirstCategory);
-  }
-  @UseGuards(AdminJwtAuthGuard)
-
-  @Post('createSecondCategory') createSecondCategory(@Body() createSecondCategory: createSecondCategoryDto) {
-    return this.categoryService.createSecondCategory(createSecondCategory);
-  }
   @Get()
   getCategories() {
     return this.categoryService.categories();
   }
-  @UseGuards(AdminJwtAuthGuard)
-  @Delete('deleteFirstCategory:id')
-  deleteFirstCategory(@Body() id: string) {
-    return this.categoryService.deleteFirstCategory(id);
-  }
-  @Delete('deleteSecondCategory:id') deleteSecondCategory(@Param('id') id: string) {
-    return this.categoryService.deleteFirstCategory(id);
-  }
+
 }

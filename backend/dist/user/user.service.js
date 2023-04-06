@@ -29,6 +29,29 @@ let UserService = class UserService {
                         Comment: { include: { writtenBy: true, userComments: { include: { user: true } } } } } }, music: true }
         });
     }
+    async createComment(createVideoDto) {
+        return await this.prisma.comment.create({
+            data: Object.assign({}, createVideoDto)
+        });
+    }
+    async likeComment(likeComment) {
+        const checkExist = await this.prisma.comment.findUnique({
+            where: {
+                id: likeComment.commentId
+            },
+            select: {
+                likeCount: true
+            }
+        });
+        return await this.prisma.comment.update({
+            where: {
+                id: likeComment.commentId
+            },
+            data: {
+                likeCount: checkExist.likeCount + 1,
+            }
+        });
+    }
     async like(likeById, videoId) {
         const checkExist = await this.prisma.like.findMany({ where: {
                 likeById

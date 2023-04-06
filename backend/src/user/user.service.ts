@@ -1,12 +1,12 @@
-import { Injectable } from '@nestjs/common';
-import { CreateUserDto } from './dto/create-user.dto';
-import { UpdateUserDto } from './dto/update-user.dto';
-import {UserModel, Prisma, Like, Video} from '@prisma/client';
+import {Injectable} from '@nestjs/common';
+import {UpdateUserDto} from './dto/update-user.dto';
+import {Comment, Like, Prisma, UserModel} from '@prisma/client';
 import {PrismaService} from "../prisma/prisma-service";
 import {unlink, writeFile} from "fs-extra";
-import {User} from "./entities/user.entity";
 import {path} from "app-root-path";
 import {Tag} from "../video/entities/video.entity";
+import {CreateCommentDto} from "./dto/createComment-dto";
+import {LikeCommentDto} from "./dto/likeComment-dto";
 
 @Injectable()
 export class UserService {
@@ -23,6 +23,30 @@ export class UserService {
           likes: { include: { videos: true}},
           Comment: { include: { writtenBy: true, userComments: { include: {user: true} }}}}}, music: true  }
     });
+  }
+  async createComment(createVideoDto: CreateCommentDto): Promise<Comment> {
+    return await this.prisma.comment.create({
+      data: {...createVideoDto}
+    });
+  }
+  async likeComment(likeComment: LikeCommentDto): Promise<Comment> {
+    const checkExist = await this.prisma.comment.findUnique({
+      where: {
+        id: likeComment.commentId
+      },
+      select: {
+        likeCount: true
+      }
+    });
+   return await this.prisma.comment.update({
+     where: {
+       id: likeComment.commentId
+      },
+     data: {
+       likeCount: checkExist.likeCount + 1,
+     }
+    });
+
   }
   async like(likeById: string, videoId: string): Promise<Like> {
     const checkExist = await this.prisma.like.findMany({where: {
@@ -104,7 +128,6 @@ export class UserService {
       data,
     });
   }
-
   async updateUser(params: {
     where: Prisma.UserModelWhereUniqueInput;
     data: Prisma.UserModelUpdateInput;

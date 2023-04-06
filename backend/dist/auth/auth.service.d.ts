@@ -12,10 +12,10 @@ export declare class AuthService {
     authByJwt(id: string): Promise<UserModel & {
         videos: (import(".prisma/client").Video & {
             Comment: (import(".prisma/client").Comment & {
+                writtenBy: UserModel;
                 userComments: (import(".prisma/client").UserCommentOnComment & {
                     user: UserModel;
                 })[];
-                writtenBy: UserModel;
             })[];
             music: import(".prisma/client").Music;
             tag: (import(".prisma/client").TagOnVideo & {
@@ -28,10 +28,10 @@ export declare class AuthService {
         Like: (import(".prisma/client").Like & {
             videos: import(".prisma/client").Video & {
                 Comment: (import(".prisma/client").Comment & {
+                    writtenBy: UserModel;
                     userComments: (import(".prisma/client").UserCommentOnComment & {
                         user: UserModel;
                     })[];
-                    writtenBy: UserModel;
                 })[];
                 music: import(".prisma/client").Music;
                 tag: (import(".prisma/client").TagOnVideo & {
