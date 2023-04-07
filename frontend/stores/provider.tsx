@@ -1,3 +1,5 @@
+"use client";
+
 import {Provider} from "react-redux";
 import {PropsWithChildren} from "react";
 import {store} from "@/stores/index";

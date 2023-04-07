@@ -1,0 +1,11 @@
+.MainLayout {
+  display: none;
+
+}
+.MainMargin {
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: auto;
+  left: auto;
+  max-width: 1536px;
+}

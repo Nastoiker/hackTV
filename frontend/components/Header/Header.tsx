@@ -1,3 +1,4 @@
+"use client"
 import {Search} from "@/components/search/search";
 import {Button} from "@/components/ui/button";
 import Link from "next/link";
@@ -9,13 +10,25 @@ import {cn} from "@/lib/utils";
 import {AuthComponent} from "@/components/Auth/Auth";
 import {AuthApi, useAuthorizationQuery, useCheckAuthQuery} from "@/stores/slices/regapi";
 import {useAppSelector} from "@/stores";
-export const Header = ({scrolled, user, setIsLogin, setIsLogout}: IHeaderProps) => {
+export const Header = () => {
   const {data}  = useCheckAuthQuery({});
   if(!data) {}
   else{
     console.log('Data:', data.email);
 
   }
+  const [scrolled, setScrolled] = useState(false);
+
+  const handleScroll = () => {
+    const offset = window.scrollY;
+    if (offset > 50) {
+      setScrolled(true);
+    } else {
+      setScrolled(false);
+    }
+  };
+  if(document)   document.addEventListener('scroll', handleScroll);
+
   return <div className={ cn("flex items-center h-16 border-b  pr-44 pl-44 w-full",  scrolled ? "bg-blue-50" : "bg-white")}>
     <div className={"px-auto min-w-68 pr-36"}>
       <Link href={'/'}>HackTv</Link>

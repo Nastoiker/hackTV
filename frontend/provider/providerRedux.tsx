@@ -1,3 +1,4 @@
+"use client";
 import {useServerInsertedHTML} from "next/navigation";
 import ReduxProvider from "@/stores/provider";
 import {PropsWithChildren} from "react";

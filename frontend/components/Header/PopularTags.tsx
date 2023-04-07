@@ -1,3 +1,4 @@
+"use client";
 import {ITag} from "@/types/Tag.interface";
 import Link from "next/link";
 

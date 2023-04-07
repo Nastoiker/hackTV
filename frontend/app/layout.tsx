@@ -1,4 +1,3 @@
-"use client"
 import {cn} from "@/lib/utils";
 import { Inter as FontSans } from "@next/font/google"
 import {ThemeProvider} from "next-themes";
@@ -11,7 +10,6 @@ import {IUser} from "@/types/User.interface";
 import UserIcon from "@/public/User.svg";
 import {Categories} from "@/components/Categoryes/Categories";
 import {PopularTags} from "@/components/Header/PopularTags";
-import {useEffect, useState} from "react";
 import Providers from "@/provider/providerRedux";
 import {useAppDispatch, useAppSelector} from "@/stores";
 import {getFirstCategory} from "@/stores/slices/category.slice";
@@ -34,19 +32,9 @@ const User: IUser = {
 const TagsObject = [{name: 'js', alias: 'js'}, {name: 'js', alias: 'js'}];
 const categoriesOb = [{ name: 'Popular', alias: 'Popular'}, { name: 'Poasdasdasdasdpular', alias: 'Popular'}, { name: 'Popular', alias: 'Popular'}, { name: 'Popular', alias: 'Popular'}]
 export default function RootLayout({children}: RootLayoutProps) {
-  const [scrolled, setScrolled] = useState(false);
 
-  const handleScroll = () => {
-    const offset = window.scrollY;
-    if (offset > 50) {
-      setScrolled(true);
-    } else {
-      setScrolled(false);
-    }
-  };
-  if(document)   document.addEventListener('scroll', handleScroll);
 
-  return (<>
+  return (
     <html lang="en" >
     <head />
 
@@ -58,14 +46,14 @@ export default function RootLayout({children}: RootLayoutProps) {
     >
     <Providers>
       <div className={"flex"}>
-        <div className={"fixed  right-44 left-44  w-48 my-16  border-r "}>
+        <div className={"MainLayout fixed  right-44 left-44  w-48 my-16  border-r "}>
           <Categories />
           <PopularTags tags={TagsObject} />
         </div>
 
         <div className={"w-full"}>
-          <header className={"z-40 w-full fixed "}>
-            <Header scrolled={scrolled} setIsLogin={() => {} } setIsLogout={() => {}} />
+          <header className={" MainLayout z-40 w-full  fixed "}>
+            <Header />
           </header>
           {/*<header className={"z-40 right-44 fixed left-44"}>*/}
           {/*  <Header scrolled={scrolled} setIsLogin={() => {} } setIsLogout={() => {}} />*/}
@@ -73,13 +61,15 @@ export default function RootLayout({children}: RootLayoutProps) {
 
 
 
-          <div className={"ml-60 left-60 my-20 relative"}>
-            {children}
-          </div>
+
         </div>
       </div>
+      <div className={" ml-60 left-60 my-20 relative MainMargin"}>
+        {children}
+      </div>
+
     </Providers>
 
     </body>
-    </html></>)
+    </html>)
 }

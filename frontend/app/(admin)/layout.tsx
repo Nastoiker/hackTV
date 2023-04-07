@@ -1,3 +1,4 @@
+"use client"
 import {cn} from "@/lib/utils";
 import { Inter as FontSans } from "@next/font/google"
 import {ThemeProvider} from "next-themes";
@@ -10,7 +11,9 @@ import {IUser} from "@/types/User.interface";
 import UserIcon from "@/public/User.svg";
 import {Categories} from "@/components/Categoryes/Categories";
 import Head from 'next/head';
-interface RootLayoutProps {
+import Providers from "@/provider/providerRedux";
+import {PopularTags} from "@/components/Header/PopularTags";
+interface AdminLayoutProps {
   children: React.ReactNode
 }
 const fontSans = FontSans({
@@ -18,13 +21,16 @@ const fontSans = FontSans({
   variable: "--font-sans",
   display: "swap",
 })
-export default function AdminLayot({children}: RootLayoutProps) {
+export default function AdminLayot({children}: AdminLayoutProps) {
 
-  return (<div> <Head>
-    <title>My Page Title</title>
-    <meta name="description" content="My page description" />
-    <link rel="icon" href="/favicon.ico" />
-  </Head>
-    {children}
+  return (
+  <div
+    className={cn(
+    "max-w-screen-2xl mx-auto  min-h-screen bg-white font-sans text-slate-900 antialiased ",
+    fontSans.variable
+    )}
+    >
+       {children}
+
   </div>)
 }

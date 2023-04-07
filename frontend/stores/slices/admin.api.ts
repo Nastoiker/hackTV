@@ -28,14 +28,32 @@ export const AdminApi = createApi({
         body: {...commentVideo },
       }),
     }),
-    removeAdmin
-    unBanUser
-    removeAdminAbility
-    createCategory: builder.mutation({
+    removeAdmin: builder.mutation({
+      query: (admin) => ({
+        url: '/commentVideo',
+        method: 'POST',
+        body: {...admin },
+      }),
+    }),
+    unBanUser: builder.mutation({
+      query: (user) => ({
+        url: '/commentVideo',
+        method: 'POST',
+        body: {...user },
+      }),
+    }),
+    removeAdminAbility: builder.mutation({
       query: (commentVideo) => ({
-        url: '/createVideo',
+        url: '/commentVideo',
         method: 'POST',
         body: {...commentVideo },
+      }),
+    }),
+    createCategory: builder.mutation({
+      query: (firstCategory) => ({
+        url: '/createFirstCategory',
+        method: 'POST',
+        body: {...firstCategory },
       }),
     }),
     users: builder.query({
@@ -46,12 +64,12 @@ export const AdminApi = createApi({
       }),
     }),
     createSecondCategory: builder.mutation({
-      query: (commentVideo) => ({
-        url: '/createVideo',
+      query: (secondCategory) => ({
+        url: '//createSecondCategory',
         method: 'POST',
-        body: {...commentVideo },
+        body: {...secondCategory },
       }),
     }),
   }),
 });
-export const { useLikeVideoMutation } = AdminApi;
+export const { useBanUserMutation, useCreateCategoryMutation, useCreateSecondCategoryMutation, useUnBanUserMutation, useUsersQuery, useRemoveAdminMutation, useRemoveAdminAbilityMutation, useDeleteVideoMutation } = AdminApi;
