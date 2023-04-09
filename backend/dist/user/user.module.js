@@ -13,6 +13,8 @@ const user_controller_1 = require("./user.controller");
 const prisma_service_1 = require("../prisma/prisma-service");
 const serve_static_1 = require("@nestjs/serve-static");
 const app_root_path_1 = require("app-root-path");
+const video_service_1 = require("../video/video-service");
+const comment_service_1 = require("../comment/comment.service");
 let UserModule = class UserModule {
 };
 UserModule = __decorate([
@@ -22,7 +24,7 @@ UserModule = __decorate([
                 serveRoot: '/user',
             }),],
         controllers: [user_controller_1.UserController],
-        providers: [user_service_1.UserService, prisma_service_1.PrismaService],
+        providers: [user_service_1.UserService, prisma_service_1.PrismaService, video_service_1.VideoService, comment_service_1.CommentService],
     })
 ], UserModule);
 exports.UserModule = UserModule;

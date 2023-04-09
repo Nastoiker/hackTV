@@ -20,12 +20,26 @@ const platform_express_1 = require("@nestjs/platform-express");
 const jwt_guard_1 = require("../auth/guards/jwt.guard");
 const createComment_dto_1 = require("./dto/createComment-dto");
 const likeComment_dto_1 = require("./dto/likeComment-dto");
+const video_service_1 = require("../video/video-service");
+const create_comment_dto_1 = require("../comment/dto/create-comment.dto");
+const comment_service_1 = require("../comment/comment.service");
 let UserController = class UserController {
-    constructor(userService) {
+    constructor(userService, videoService, commentService) {
         this.userService = userService;
+        this.videoService = videoService;
+        this.commentService = commentService;
     }
-    createComment(commentDto) {
-        return this.userService.createComment(commentDto);
+    createComment(request, createCommentDto) {
+        createCommentDto.writtenById = request.user.id;
+        return this.commentService.createCommentDto(createCommentDto);
+    }
+    async getFollowing(req) {
+        const userId = req.user.id;
+        const folows = await this.userService.getFolows(userId);
+        if (!folows) {
+            return new common_1.BadRequestException('failed');
+        }
+        return folows;
     }
     likeComment(likeCommentDto) {
         return this.userService.likeComment(likeCommentDto);
@@ -53,9 +67,11 @@ let UserController = class UserController {
         const userId = query.user.id;
         return this.userService.followChannel(userId, authorId);
     }
-    unfollowChannel(query, { authorId }) {
+    unfollowChannel(query, { id, authorId }) {
         const userId = query.user.id;
-        return this.userService.unfollowChannel(userId, authorId);
+        if (!userId)
+            return;
+        return this.userService.unfollowChannel(id, userId, authorId);
     }
     update(id, updateUserDto) {
         return this.userService.updateUser({ where: { id }, data: updateUserDto });
@@ -63,15 +79,35 @@ let UserController = class UserController {
     remove(id) {
         return this.userService.deleteUser({ id });
     }
+    DeleteVideo(id) {
+        return this.videoService.deleteVideo({ id });
+    }
+    createUserComment(request, createCommentOnUserDto) {
+        createCommentOnUserDto.userId = request.user.id;
+        return this.commentService.createCommentOnUserDto(createCommentOnUserDto);
+    }
+    createVideo(request, createCommentDto) {
+        createCommentDto.writtenById = request.user.id;
+        return this.commentService.createCommentDto(createCommentDto);
+    }
 };
 __decorate([
-    (0, common_1.Post)('/createComment'),
     (0, common_1.UseGuards)(jwt_guard_1.JwtAuthGuard),
-    __param(0, (0, common_1.Body)()),
+    (0, common_1.Post)('createComment'),
+    __param(0, (0, common_1.Req)()),
+    __param(1, (0, common_1.Body)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [createComment_dto_1.CreateCommentDto]),
+    __metadata("design:paramtypes", [Object, createComment_dto_1.CreateCommentDto]),
     __metadata("design:returntype", void 0)
 ], UserController.prototype, "createComment", null);
+__decorate([
+    (0, common_1.Get)('follows'),
+    (0, common_1.UseGuards)(jwt_guard_1.JwtAuthGuard),
+    __param(0, (0, common_1.Req)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object]),
+    __metadata("design:returntype", Promise)
+], UserController.prototype, "getFollowing", null);
 __decorate([
     (0, common_1.Post)('/likeComment'),
     (0, common_1.UseGuards)(jwt_guard_1.JwtAuthGuard),
@@ -150,6 +186,7 @@ __decorate([
 ], UserController.prototype, "followChannel", null);
 __decorate([
     (0, common_1.Post)('unfollowChannel'),
+    (0, common_1.UseGuards)(jwt_guard_1.JwtAuthGuard),
     __param(0, (0, common_1.Req)()),
     __param(1, (0, common_1.Body)()),
     __metadata("design:type", Function),
@@ -171,9 +208,35 @@ __decorate([
     __metadata("design:paramtypes", [String]),
     __metadata("design:returntype", void 0)
 ], UserController.prototype, "remove", null);
+__decorate([
+    (0, common_1.Delete)(':id'),
+    (0, common_1.UseGuards)(jwt_guard_1.JwtAuthGuard),
+    __param(0, (0, common_1.Param)('id')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String]),
+    __metadata("design:returntype", void 0)
+], UserController.prototype, "DeleteVideo", null);
+__decorate([
+    (0, common_1.UseGuards)(jwt_guard_1.JwtAuthGuard),
+    (0, common_1.Post)('createCommentOnUser'),
+    __param(0, (0, common_1.Req)()),
+    __param(1, (0, common_1.Body)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object, create_comment_dto_1.CreateCommentOnUserDto]),
+    __metadata("design:returntype", void 0)
+], UserController.prototype, "createUserComment", null);
+__decorate([
+    (0, common_1.UseGuards)(jwt_guard_1.JwtAuthGuard),
+    (0, common_1.Post)('createComment'),
+    __param(0, (0, common_1.Req)()),
+    __param(1, (0, common_1.Body)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object, createComment_dto_1.CreateCommentDto]),
+    __metadata("design:returntype", void 0)
+], UserController.prototype, "createVideo", null);
 UserController = __decorate([
     (0, common_1.Controller)('user'),
-    __metadata("design:paramtypes", [user_service_1.UserService])
+    __metadata("design:paramtypes", [user_service_1.UserService, video_service_1.VideoService, comment_service_1.CommentService])
 ], UserController);
 exports.UserController = UserController;
 //# sourceMappingURL=user.controller.js.map

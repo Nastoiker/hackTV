@@ -68,7 +68,7 @@ model SecondLevelCategory {
   id                 String             @id @default(uuid())
   name               String             @unique()
   alias              String
-  firstLevelCategory FirstLevelCategory @relation("firstCategory", fields: [firstLevelId], references: [id])
+  firstLevelCategory FirstLevelCategory @relation("firstCategory", fields: [firstLevelId], references: [id], onDelete: Cascade)
   firstLevelId       String
   videos             Video[]            @relation("VideoOnSeconCategory")
 }
@@ -102,7 +102,7 @@ model Video {
   likesCount       Int                 @default(0)
   likes            Like[]              @relation("LikeVideos")
   userId           String
-  authorVideo             UserModel           @relation("UserVideo", fields: [userId], references: [id])
+  authorVideo             UserModel           @relation("UserVideo", fields: [userId], references: [id], onDelete: Cascade)
   ReportOnVideo    ReportOnVideo[]
 }
 
@@ -141,7 +141,7 @@ model Comment {
   writtenById   String
   videoId String
   video Video @relation("CommentsVideo", fields: [videoId], references: [id])
-  writtenBy     UserModel @relation("CommentWritenBy", fields: [writtenById], references: [id])
+  writtenBy     UserModel @relation("CommentWritenBy", fields: [writtenById], references: [id], onDelete: Cascade)
   userComments UserCommentOnComment[]
 }
 model LikeComment {
@@ -157,7 +157,7 @@ model UserCommentOnComment {
    likeCount Int  @default(0)
    comment String
    parentId String
-   parent Comment @relation(fields: [parentId], references: [id])
+   parent Comment @relation(fields: [parentId], references: [id], onDelete: Cascade)
    userId String
    user UserModel @relation("UserCommentOnUser", fields: [userId], references: [id])
 }

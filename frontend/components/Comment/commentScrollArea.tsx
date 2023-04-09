@@ -3,17 +3,17 @@ import {ICommentsProps} from "@/components/Comment/Comment.props";
 import {CommentCard} from "@/components/Comment/Comment.card";
 import {CommentForm} from "@/components/Comment/CommentSend";
 
-export default function CommentsModal({comments}: ICommentsProps) {
+export default function CommentsModal({video, comments, user}: ICommentsProps) {
   return (
-    <div className="ml-4 mb-4 modal w-80">
-      <ScrollArea className="h-fit rounded-md border border-slate-100 dark:border-slate-700">
+    <div className="mb-4  w-full">
+      <ScrollArea className="max-h-96 h-72 rounded-md border border-slate-100 dark:border-slate-700">
         <div className="p-4">
           {
             comments.map(c => <CommentCard key={c.id} comment={c}/>)
           }
         </div>
       </ScrollArea>
-      <CommentForm />
+      <CommentForm video={video} user={user} />
     </div>
   );
 }

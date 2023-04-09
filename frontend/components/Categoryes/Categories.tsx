@@ -14,7 +14,6 @@ export const Categories = ({categories, className, ...props}: ICategoriesProps) 
   console.log(category);
   return (<div className={"space-y-5 py-5 pb-5 border-b"}>
     <h1>Категории</h1>
-    {category.map( c => <CategoryButton secondLevelCategory={c.secondLevelCategory} name={c.name} alias={c.alias}/>)}
+    {category.map( c => <CategoryButton key={c.alias} secondLevelCategory={c.secondLevelCategory} name={c.name} alias={c.alias}/>)}
   </div>)
 }
-

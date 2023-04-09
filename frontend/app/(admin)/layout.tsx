@@ -1,4 +1,3 @@
-"use client"
 import {cn} from "@/lib/utils";
 import { Inter as FontSans } from "@next/font/google"
 import {ThemeProvider} from "next-themes";
@@ -13,6 +12,8 @@ import {Categories} from "@/components/Categoryes/Categories";
 import Head from 'next/head';
 import Providers from "@/provider/providerRedux";
 import {PopularTags} from "@/components/Header/PopularTags";
+import '/styles/admin.css'
+
 interface AdminLayoutProps {
   children: React.ReactNode
 }
@@ -26,7 +27,7 @@ export default function AdminLayot({children}: AdminLayoutProps) {
   return (
   <div
     className={cn(
-    "max-w-screen-2xl mx-auto  min-h-screen bg-white font-sans text-slate-900 antialiased ",
+    " mx-auto  min-h-screen bg-white font-sans text-slate-900 antialiased ",
     fontSans.variable
     )}
     >

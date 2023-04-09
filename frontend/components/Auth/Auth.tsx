@@ -16,6 +16,8 @@ import {useAuthorizationQuery} from "@/stores/slices/regapi";
 import {useForm} from "react-hook-form";
 import {ILogin} from "@/types/login.interface";
 import {useState} from "react";
+import {redirect} from "next/navigation";
+import Link from "next/link";
 
 export const AuthComponent= () => {
   const [login, setLogin] = useState<ILogin>();
@@ -44,7 +46,6 @@ export const AuthComponent= () => {
           <Input { ...register('password', {required: true})} id={"email"}/>
           <Button type={"submit"}>Авторизация</Button>
         </form>
-
       </DialogContent>
     </Dialog>
   )

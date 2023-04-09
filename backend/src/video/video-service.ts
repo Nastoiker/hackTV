@@ -7,6 +7,7 @@ import {path} from "app-root-path";
 import {VideoReportDto} from "./dto/report-video.dto";
 import {Tag} from "./entities/video.entity";
 import { mkdirSync } from "fs";
+import {SecondLevelCategory} from "../category/entities/category.entity";
  interface tagsOnVideo {
     tag: { connect: { id: string } };
 }
@@ -52,7 +53,29 @@ export class VideoService {
         },
             );
     }
-
+    async videosByCategory(params: {
+        skip?: number;
+        take?: number;
+        cursor?: Prisma.SecondLevelCategoryWhereUniqueInput;
+        where?: Prisma.SecondLevelCategoryWhereInput;
+        orderBy?: Prisma.SecondLevelCategoryOrderByWithRelationInput;
+    }) {
+        const { skip, take, cursor, where, orderBy } = params;
+        return this.prisma.secondLevelCategory.findFirst({
+                where,
+                include: {
+                    videos: {  include: {
+                            music: true,
+                            tag: { include: {tag: true}},
+                            authorVideo: true,
+                            secondCategory: true,
+                            likes: true,
+                            Comment: { include: { writtenBy: true, userComments: { include: {user: true} }}}
+                        }}
+                }
+            },
+        );
+    }
     async createVideo(file: Express.Multer.File, data: createVideoDto): Promise<Video> {
 
         const UploadFolder = `${path}/uploads/users/${data.userId}/video/${data.alias}`;

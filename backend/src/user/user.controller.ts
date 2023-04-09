@@ -8,7 +8,7 @@ import {
   Delete,
   UploadedFile,
   ParseFilePipeBuilder,
-  HttpStatus, UseInterceptors, UseGuards, Query, Req
+  HttpStatus, UseInterceptors, UseGuards, Query, Req, BadRequestException
 } from '@nestjs/common';
 import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
@@ -17,15 +17,45 @@ import {FileInterceptor} from "@nestjs/platform-express";
 import {JwtAuthGuard} from "../auth/guards/jwt.guard";
 import {CreateCommentDto} from "./dto/createComment-dto";
 import {LikeCommentDto} from "./dto/likeComment-dto";
+import {VideoService} from "../video/video-service";
+import {CreateCommentOnUserDto} from "../comment/dto/create-comment.dto";
+import {CommentService} from "../comment/comment.service";
 
 @Controller('user')
 export class UserController {
-  constructor(private readonly userService: UserService) {}
+  constructor(private readonly userService: UserService, private readonly videoService: VideoService, private  readonly commentService: CommentService) {}
 
-  @Post('/createComment')
+  // @Post('/createComment')
+  // @UseGuards(JwtAuthGuard)
+  // createComment(@Body() commentDto: CreateCommentDto) {
+  //   return this.userService.createComment(commentDto);
+  // }
   @UseGuards(JwtAuthGuard)
-  createComment(@Body() commentDto: CreateCommentDto) {
-    return this.userService.createComment(commentDto);
+  @Post('createComment')
+  createComment(@Req() request, @Body() createCommentDto: CreateCommentDto) {
+    createCommentDto.writtenById = request.user.id
+    return this.commentService.createCommentDto(createCommentDto);
+  }
+  // @Get('follows:id')
+  // async getFollowing(@Param('id') id: string) {
+  //
+  //   const userId = id.slice(1,id.length);
+  //   const folows = await this.userService.getFolows(userId);
+  //   if(!folows) {
+  //     return new BadRequestException('failed');
+  //   }
+  //   return folows;
+  // }
+  @Get('follows')
+  @UseGuards(JwtAuthGuard)
+  async getFollowing(@Req() req) {
+
+    const userId = req.user.id;
+    const folows = await this.userService.getFolows(userId);
+    if(!folows) {
+      return new BadRequestException('failed');
+    }
+    return folows;
   }
   @Post('/likeComment')
   @UseGuards(JwtAuthGuard)
@@ -84,9 +114,11 @@ export class UserController {
     return this.userService.followChannel(userId, authorId);
   }
   @Post('unfollowChannel')
-  unfollowChannel(@Req() query, @Body() { authorId }: { authorId: string }) {
+  @UseGuards(JwtAuthGuard)
+  unfollowChannel(@Req() query, @Body() { id, authorId }: { id: string, authorId: string }) {
     const userId = query.user.id;
-    return this.userService.unfollowChannel(userId, authorId);
+    if(!userId) return;
+    return this.userService.unfollowChannel(id, userId, authorId );
   }
   @Patch(':id')
   update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
@@ -96,5 +128,22 @@ export class UserController {
   @Delete(':id')
   remove(@Param('id') id: string) {
     return this.userService.deleteUser({id});
+  }
+  @Delete(':id')
+  @UseGuards(JwtAuthGuard)
+  DeleteVideo(@Param('id') id: string) {
+    return this.videoService.deleteVideo({id});
+  }
+  @UseGuards(JwtAuthGuard)
+  @Post('createCommentOnUser')
+  createUserComment(@Req() request, @Body() createCommentOnUserDto: CreateCommentOnUserDto) {
+    createCommentOnUserDto.userId = request.user.id
+    return this.commentService.createCommentOnUserDto(createCommentOnUserDto);
+  }
+  @UseGuards(JwtAuthGuard)
+  @Post('createComment')
+  createVideo(@Req() request, @Body() createCommentDto: CreateCommentDto) {
+    createCommentDto.writtenById = request.user.id
+    return this.commentService.createCommentDto(createCommentDto);
   }
 }

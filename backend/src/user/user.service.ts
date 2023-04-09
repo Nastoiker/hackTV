@@ -1,6 +1,6 @@
 import {Injectable} from '@nestjs/common';
 import {UpdateUserDto} from './dto/update-user.dto';
-import {Comment, Like, Prisma, UserModel} from '@prisma/client';
+import {Comment, Folower, Like, Prisma, UserModel} from '@prisma/client';
 import {PrismaService} from "../prisma/prisma-service";
 import {unlink, writeFile} from "fs-extra";
 import {path} from "app-root-path";
@@ -47,6 +47,35 @@ export class UserService {
      }
     });
 
+  }
+  async getFolows(userId: string): Promise<Folower[] | null> {
+    return this.prisma.folower.findMany( { where: {
+        userId
+      },
+      include: {author: {include: {
+            Like: {
+              include: {
+                videos: {
+                  include: {
+                    music: true,
+                    tag: {include: {tag: true}},
+                    authorVideo: true,
+                    secondCategory: true,
+                    Comment: {include: {writtenBy: true, userComments: {include: {user: true}}}}
+                  }
+                }
+              }
+            }, videos: {
+              include: {
+                music: true,
+                tag: {include: {tag: true}},
+                authorVideo: true,
+                secondCategory: true,
+                Comment: {include: {writtenBy: true, userComments: {include: {user: true}}}}
+              }
+            }, folowing: true, folowers: true, music: true
+          },}}
+    })
   }
   async like(likeById: string, videoId: string): Promise<Like> {
     const checkExist = await this.prisma.like.findMany({where: {
@@ -143,14 +172,12 @@ export class UserService {
      if(checkExist) throw Error('tag is Exist');
       return this.prisma.tag.create({data: {name}});
   }
-  async unfollowChannel(userId: string, authorId: string) {
+  async unfollowChannel(id: string, userId: string, authorId: string) {
     const folow = await  this.prisma.folower.delete({
       where: {
-        userId,
-        authorId
+       id
       }
     });
-    if(!folow) { return };
     const user =  await this.prisma.userModel.findUnique({
       where: {
         id: userId
@@ -178,42 +205,43 @@ export class UserService {
         subscribers_count: author.subscribers_count - 1,
       }
     });
+    return folow;
   }
   async followChannel(userId: string, authorId: string) {
-    const folow = await  this.prisma.folower.create({
+     const folow = await  this.prisma.folower.create({
       data: {
         userId,
         authorId
       }
     });
-    if(!folow) { return };
-    const user =  await this.prisma.userModel.findUnique({
-      where: {
-        id: userId
-      },
-      select: {following_count: true}
-    })
-    const author =  await this.prisma.userModel.findUnique({ where: {
-        id: authorId
-      },
-    select: {subscribers_count: true}
-    })
-    await  this.prisma.userModel.update({
-      where: {
-        id: userId
-      },
-      data: {
-        following_count:  user.following_count + 1,
-      }
-    });
-    await  this.prisma.userModel.update({
-      where: {
-        id: authorId
-      },
-      data: {
-        subscribers_count: author.subscribers_count + 1,
-      }
-    });
+      const user =  await this.prisma.userModel.findUnique({
+        where: {
+          id: userId
+        },
+        select: {following_count: true}
+      })
+      const author =  await this.prisma.userModel.findUnique({ where: {
+          id: authorId
+        },
+        select: {subscribers_count: true}
+      })
+      await  this.prisma.userModel.update({
+        where: {
+          id: userId
+        },
+        data: {
+          following_count:  user.following_count + 1,
+        }
+      });
+      await  this.prisma.userModel.update({
+        where: {
+          id: authorId
+        },
+        data: {
+          subscribers_count: author.subscribers_count + 1,
+        }
+      });
+    return folow;
   }
   async deleteUser(where: Prisma.UserModelWhereUniqueInput): Promise<UserModel> {
     return this.prisma.userModel.delete({

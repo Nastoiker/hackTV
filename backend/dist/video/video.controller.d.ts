@@ -8,6 +8,23 @@ export declare class VideoController {
     constructor(videoService: VideoService);
     create(request: any, video: Express.Multer.File, dto: createVideoDto): Promise<import(".prisma/client").Video>;
     get(id: string): Promise<import(".prisma/client").Video>;
+    getByCategoryAlias(alias: string): Promise<import(".prisma/client").SecondLevelCategory & {
+        videos: (import(".prisma/client").Video & {
+            music: import(".prisma/client").Music;
+            tag: (import(".prisma/client").TagOnVideo & {
+                tag: import(".prisma/client").Tag;
+            })[];
+            authorVideo: import(".prisma/client").UserModel;
+            secondCategory: import(".prisma/client").SecondLevelCategory;
+            likes: import(".prisma/client").Like[];
+            Comment: (import(".prisma/client").Comment & {
+                writtenBy: import(".prisma/client").UserModel;
+                userComments: (import(".prisma/client").UserCommentOnComment & {
+                    user: import(".prisma/client").UserModel;
+                })[];
+            })[];
+        })[];
+    }>;
     videos(): Promise<import(".prisma/client").Video[]>;
     getById(id: string): Promise<import(".prisma/client").Video>;
     delete(id: string): Promise<void>;

@@ -6,12 +6,13 @@ import {Tabs, TabsContent, TabsList, TabsTrigger} from "@/components/ui/tabs";
 import {useGetVideosQuery} from "@/stores/slices/api";
 import {LayoutVideo} from "@/components/Layot.video";
 import Link from "next/link";
+import {redirect} from "next/navigation";
 
 export default function IndexPage() {
   const {data}  = useCheckAuthQuery({});
   const video = useGetVideosQuery({ limit: 10, offset: 0 });
   console.log(data);
-  return <div>
+  return <div className={"w-full"}>
     {
       data ? <div className={"space-y-5"}>
         <div className={"flex justify-between"}>
@@ -19,13 +20,14 @@ export default function IndexPage() {
             <img className={"rounded-full w-40 h-40"} width={70}  height={70} alt={'userSubs'} src={'http://localhost:8000/user' + data.avatar}/>
             <div className={"my-5"}>
               <h1>{data.login}</h1>
+              <h1>{data.phone}</h1>
               <p>{data.email}</p>
             </div>
           </div>
-          <div className={"text-end my-5"}><h1>Подписчки: {data.subscribers_count}</h1><h1>Лайков: {data.LikeCount}</h1></div>
+          <div className={"text-end my-5"}><h1>Подписчки: {data.subscribers_count}</h1><h1>Лайков: {data.LikeCount}</h1> <Link href={'/folows'}>Подписки: {data.following_count}</Link></div>
         </div>
         <div className={""}>
-          <Button>
+          <Button onClick={() => redirect('/editProfile')}>
             Изменить профиль
           </Button>
           <Link className={"transition-all  p-3 rounded-md hover:bg-blue-100"} href={'createVideo'}>
@@ -38,10 +40,10 @@ export default function IndexPage() {
             <TabsTrigger value="likes" className={"text-white"}><h1 className={"text-white"}>Ваши лайки</h1></TabsTrigger>
           </TabsList>
           <TabsContent  value="video">
-            <LayoutVideo videos={data.videos}/>
+            <LayoutVideo videos={data.videos} user={data}/>
           </TabsContent>
           <TabsContent value="likes">
-            <LayoutVideo videos={data.Like.map(l => l.videos)}/>
+            <LayoutVideo user={data} videos={data.Like.map(l => l.videos)}/>
           </TabsContent>
         </Tabs>
       </div>  : <div><Button>Авторизоваться</Button></div>

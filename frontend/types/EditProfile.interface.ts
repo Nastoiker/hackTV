@@ -1,5 +1,5 @@
 export interface IEditProfileInterface {
-  name: string;
+  login: string;
   password: string;
   oldpassword: string;
   phone: string;

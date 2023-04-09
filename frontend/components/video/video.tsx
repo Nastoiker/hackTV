@@ -83,27 +83,31 @@ export const Video = ({ user, type, video, className, ...props}: VideoProps): JS
   }
   const videoPath = 'http://localhost:8000/video' + video.embed_link;
   return <div className={className}>
-      <SubscribeChannel video={video} isSubscribe={isFolowing} setIsSubscribe={() => Folowing}/>
 
 
-    <div className={"flex"}>
+    <div className={"flex justify-center"}>
       <div>
+        <SubscribeChannel user={user} video={video} isSubscribe={isFolowing} setIsSubscribe={() => Folowing}/>
+
         <video width={350} height={350} className={"rounded-3xl"}  onClick={onVideoClick} loop ref={videoRef} src={videoPath.replace(' ' , '')}>
         </video>
-        <div className={"bg-black w-fit rounded-xl p-2 absolute -my-14 mx-64 text-amber-50"}>{Math.floor(currentTime)} : { videoRef.current && Math.floor(videoRef?.current?.duration)}</div>
+        <div className={"bg-black w-fit rounded-xl p-2 absolute -my-14 ml-64 text-amber-50"}>{Math.floor(currentTime)} : { videoRef.current && Math.floor(videoRef?.current?.duration)}</div>
         <div className={"bg-black text-amber-50 w-fit absolute -my-20  mx-4 opacity-70 p-2 rounded-xl"}>
           {video.Title}
           <p>
             {video.Description}
           </p>
         </div>
-        <div className={'flex justify-between px-2'}>
+        <div> <div className={'flex justify-between px-2'}>
 
           <div className={"flex items-center "}><div className={"flex items-center"}><Comments setIsOpen={() => setIsOpen(s => !s)} comments={video.Comment} /> <h1 className={"mx-2"}>{video.Comment.length}</h1></div>   </div>
 
           <Repost />
         </div>
-      </div>
+
+        </div>
+        </div>
+
       <div className={" my-12 px-4  grid place-content-start gap-y-6 justify-items-center  px-auto"}>
         <div>
           <svg width="37" height="31" viewBox="0 0 37 31" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -120,9 +124,10 @@ export const Video = ({ user, type, video, className, ...props}: VideoProps): JS
         <div className={"bg-gray-100 border-4 border-gray-400 my-24 rounded-3xl p-5"}>{video.tag.map( t => <p key={t.tag.id}>{t.tag.name}</p>)}</div>
       </div>
     </div>
-    {
-      isOpen && <CommentsModal comments={video.Comment}/>
-    }
+    <div className={"w-full"}>{
+      isOpen && <CommentsModal video={video} user={user} comments={video.Comment}/>
+    }</div>
 </div>
+
 };
 

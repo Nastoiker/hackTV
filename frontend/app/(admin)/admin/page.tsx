@@ -16,6 +16,8 @@ const PageAdmin =  () => {
   // if(data.role !== 'admin') {
   //   return redirect('/');
   // }
-  return <div className={"mx-auto"}>ADMIN HI</div>;
+  return <div className={"mx-auto"}>
+  nigga
+  </div>;
 }
 export default PageAdmin;

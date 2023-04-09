@@ -23,7 +23,27 @@ export const UserApi = createApi({
     }),
     CommentVideo: builder.mutation({
       query: (commentVideo) => ({
-        url: '/commentVideo',
+        url: '/createComment',
+        method: 'POST',
+        body: {...commentVideo },
+      }),
+    }),
+    follows: builder.query({
+      query: () => ({
+        url: '/follows',
+        method: 'get',
+      }),
+    }),
+    followChannel: builder.mutation({
+      query: (commentVideo) => ({
+        url: '/followChannel',
+        method: 'POST',
+        body: {...commentVideo },
+      }),
+    }),
+    unfollowChannel: builder.mutation({
+      query: (commentVideo) => ({
+        url: '/unfollowChannel',
         method: 'POST',
         body: {...commentVideo },
       }),
@@ -37,4 +57,4 @@ export const UserApi = createApi({
     }),
   }),
 });
-export const { useLikeVideoMutation } = UserApi;
+export const { useLikeVideoMutation, useCommentVideoMutation, useCreateVideoMutation, useFollowsQuery  } = UserApi;

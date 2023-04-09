@@ -1,6 +1,6 @@
 /// <reference types="multer" />
 import { PrismaService } from "../prisma/prisma-service";
-import { Prisma, Video } from "@prisma/client";
+import { Prisma, UserModel, Video } from "@prisma/client";
 import { createVideoDto } from "./dto/create-video.dto";
 import { VideoReportDto } from "./dto/report-video.dto";
 export declare class VideoService {
@@ -15,6 +15,29 @@ export declare class VideoService {
         where?: Prisma.VideoWhereInput;
         orderBy?: Prisma.VideoOrderByWithRelationInput;
     }): Promise<Video[]>;
+    videosByCategory(params: {
+        skip?: number;
+        take?: number;
+        cursor?: Prisma.SecondLevelCategoryWhereUniqueInput;
+        where?: Prisma.SecondLevelCategoryWhereInput;
+        orderBy?: Prisma.SecondLevelCategoryOrderByWithRelationInput;
+    }): Promise<import(".prisma/client").SecondLevelCategory & {
+        videos: (Video & {
+            music: import(".prisma/client").Music;
+            tag: (import(".prisma/client").TagOnVideo & {
+                tag: import(".prisma/client").Tag;
+            })[];
+            authorVideo: UserModel;
+            secondCategory: import(".prisma/client").SecondLevelCategory;
+            likes: import(".prisma/client").Like[];
+            Comment: (import(".prisma/client").Comment & {
+                writtenBy: UserModel;
+                userComments: (import(".prisma/client").UserCommentOnComment & {
+                    user: UserModel;
+                })[];
+            })[];
+        })[];
+    }>;
     createVideo(file: Express.Multer.File, data: createVideoDto): Promise<Video>;
     updateVideo(params: {
         where: Prisma.VideoWhereUniqueInput;

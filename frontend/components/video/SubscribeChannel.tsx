@@ -15,8 +15,9 @@ import {
 } from "@/components/ui/hover-card"
 //изменить
 import UserIcon from '@/public/User.svg';
+import {IUser} from "@/types/User.interface";
 
-export const SubscribeChannel = ({video, isSubscribe, setIsSubscribe}: { video: IVideo, isSubscribe: boolean ,setIsSubscribe: () => void}): JSX.Element => {
+export const SubscribeChannel = ({video, user, isSubscribe, setIsSubscribe, deleteVideo}: { video: IVideo, user?: IUser, isSubscribe: boolean ,setIsSubscribe: () => void, deleteVideo: () => void}): JSX.Element => {
   const followChannel = () => {
 
   }
@@ -27,7 +28,6 @@ export const SubscribeChannel = ({video, isSubscribe, setIsSubscribe}: { video: 
     {
       isSubscribe  ? <>
              <Image className={"rounded-full w-28 h-28"} width={28} height={28} alt={'userSubs'} src={video.authorVideo.avatar ?   'http://localhost:8000/user' + video.authorVideo.avatar :  UserIcon}/>
-
 
           <Button onClick={() => {}} className={"bg-red-400 "} >Отписаться</Button>
         </>
@@ -46,8 +46,9 @@ export const SubscribeChannel = ({video, isSubscribe, setIsSubscribe}: { video: 
             </HoverCardContent>
           </HoverCard>
         </div>
-
-          <Button onClick={() => {}} className={"bg-red-500 h-12 border-red right-0"}>Подписаться</Button>
+        {
+          video.authorVideo.id === user?.id ?       <Button onClick={() => {}} className={"bg-red-500 h-12 border-red right-0"}>Удалить видео</Button>  :  <Button onClick={() => {}} className={"bg-red-500 h-12 border-red right-0"}>Подписаться</Button>
+        }
         </>
     }
   </div>

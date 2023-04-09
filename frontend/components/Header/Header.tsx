@@ -29,8 +29,8 @@ export const Header = () => {
   };
   if(document)   document.addEventListener('scroll', handleScroll);
 
-  return <div className={ cn("flex items-center h-16 border-b  pr-44 pl-44 w-full",  scrolled ? "bg-blue-50" : "bg-white")}>
-    <div className={"px-auto min-w-68 pr-36"}>
+  return <div className={ cn("flex items-center h-16 border-b  max-w-screen-2xl ",  scrolled ? "bg-blue-50" : "bg-white")}>
+    <div className={"min-w-68 lg:pr-36"}>
       <Link href={'/'}>HackTv</Link>
     </div>
 
@@ -38,10 +38,10 @@ export const Header = () => {
 
       <Search />
     {
-      data ? <Link href={'/profile'}>
-        <ProfileIcon user={data} />
-      </Link> : <div className={"flex"} ><Button> <Link href={'registration'} > Регистрация </Link></Button><AuthComponent/></div>
+      data ? <div className={"flex items-center"}><Link  href={'/profile'}>
+          <ProfileIcon user={data} />
+        </Link>         <Button onClick={() => localStorage.removeItem('token')}><a href={'/'}>Выйти</a></Button></div>
+      : <div className={"flex"} ><Button> <Link href={'registration'} > Регистрация </Link></Button><AuthComponent/></div>
     }
-
     </div>
 }

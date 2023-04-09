@@ -56,6 +56,22 @@ let VideoService = class VideoService {
             }
         });
     }
+    async videosByCategory(params) {
+        const { skip, take, cursor, where, orderBy } = params;
+        return this.prisma.secondLevelCategory.findFirst({
+            where,
+            include: {
+                videos: { include: {
+                        music: true,
+                        tag: { include: { tag: true } },
+                        authorVideo: true,
+                        secondCategory: true,
+                        likes: true,
+                        Comment: { include: { writtenBy: true, userComments: { include: { user: true } } } }
+                    } }
+            }
+        });
+    }
     async createVideo(file, data) {
         const UploadFolder = `${app_root_path_1.path}/uploads/users/${data.userId}/video/${data.alias}`;
         setTimeout(() => { }, 100);

@@ -71,6 +71,14 @@ let VideoController = class VideoController {
         }
         return product;
     }
+    async getByCategoryAlias(alias) {
+        const aliasCategory = alias.slice(1, alias.length);
+        const videos = await this.videoService.videosByCategory({ where: { name: aliasCategory } });
+        if (!videos) {
+            throw new common_1.NotFoundException('VideoByIdNotFount');
+        }
+        return videos;
+    }
     async videos() {
         const product = await this.videoService.videos({});
         if (!product) {
@@ -130,6 +138,13 @@ __decorate([
     __metadata("design:paramtypes", [String]),
     __metadata("design:returntype", Promise)
 ], VideoController.prototype, "get", null);
+__decorate([
+    (0, common_1.Get)('/category/:alias'),
+    __param(0, (0, common_1.Param)('alias')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String]),
+    __metadata("design:returntype", Promise)
+], VideoController.prototype, "getByCategoryAlias", null);
 __decorate([
     (0, common_1.Get)(''),
     __metadata("design:type", Function),

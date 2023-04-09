@@ -37,39 +37,41 @@ export default function RootLayout({children}: RootLayoutProps) {
   return (
     <html lang="en" >
     <head />
-
-    <body
-      className={cn(
-        "max-w-screen-2xl  min-h-screen bg-white font-sans text-slate-900 antialiased ",
-        fontSans.variable
-      )}
-    >
-    <Providers>
-      <div className={"flex"}>
-        <div className={"MainLayout fixed  right-44 left-44  w-48 my-16  border-r "}>
-          <Categories />
-          <PopularTags tags={TagsObject} />
-        </div>
-
-        <div className={"w-full"}>
-          <header className={" MainLayout z-40 w-full  fixed "}>
-            <Header />
-          </header>
-          {/*<header className={"z-40 right-44 fixed left-44"}>*/}
-          {/*  <Header scrolled={scrolled} setIsLogin={() => {} } setIsLogout={() => {}} />*/}
-          {/*</header>*/}
+<body>
+<div
+  className={cn(
+    "max-w-screen-2xl mx-auto AutoMargin min-h-screen bg-white font-sans  box-border text-slate-900 antialiased ",
+    fontSans.variable
+  )}
+>
+  <Providers>
+    <div className={" flex flex-col MainLayout"}>
 
 
 
+      <header className={"  w-full z-40  fixed top-0"}>
+        <Header />
+      </header>
+      {/*<header className={"z-40 right-44 fixed left-44"}>*/}
+      {/*  <Header scrolled={scrolled} setIsLogin={() => {} } setIsLogout={() => {}} />*/}
+      {/*</header>*/}
 
-        </div>
+
+
+      <div className={"w-56 my-16 fixed  border-r "}>
+        <Categories />
+        <PopularTags tags={TagsObject} />
       </div>
-      <div className={" ml-60 left-60 my-20 relative MainMargin"}>
+      <div className={"   xl: max-w-screen-2xl pl-64 pt-20  MainMargin"}>
         {children}
       </div>
+    </div>
 
-    </Providers>
 
-    </body>
+  </Providers>
+
+</div>
+</body>
+
     </html>)
 }

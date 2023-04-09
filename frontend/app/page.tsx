@@ -28,12 +28,16 @@ export default function IndexPage() {
   const user = useCheckAuthQuery({ });
   console.log(data);
   return <>
-  <section className={" grid  "}>
-    <div className="flex max-w-[980px] flex-col items-start gap-2">
+  <section className={"grid  "}>
+    <div className="flex max-w-[980px] mx-auto flex-col gap-2">
       <h1 className="text-3xl font-extrabold leading-tight tracking-tighter md:text-5xl lg:text-6xl lg:leading-[1.1]">
         Категория
       </h1>
-
+      <div className={"ml-6"}>
+        {
+          (isLoading || user.isLoading ) ? <div>loading</div>  :  <LayoutVideo user={user.data}   videos={data} />
+        }
+      </div>
     </div>
 
     {/*<div className="flex flex-col space-y-4 sm:flex-row sm:space-y-0 sm:space-x-4 md:flex-row">*/}
@@ -49,9 +53,7 @@ export default function IndexPage() {
     {/*  </p>*/}
     {/*</div>*/}
     {/*{*/}
-    {
-      (isLoading || user.isLoading ) ? <div>loading</div>  :  <LayoutVideo user={user.data}   videos={data} />
-    }
+
     {/*}*/}
 
 

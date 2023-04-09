@@ -52,6 +52,35 @@ let UserService = class UserService {
             }
         });
     }
+    async getFolows(userId) {
+        return this.prisma.folower.findMany({ where: {
+                userId
+            },
+            include: { author: { include: {
+                        Like: {
+                            include: {
+                                videos: {
+                                    include: {
+                                        music: true,
+                                        tag: { include: { tag: true } },
+                                        authorVideo: true,
+                                        secondCategory: true,
+                                        Comment: { include: { writtenBy: true, userComments: { include: { user: true } } } }
+                                    }
+                                }
+                            }
+                        }, videos: {
+                            include: {
+                                music: true,
+                                tag: { include: { tag: true } },
+                                authorVideo: true,
+                                secondCategory: true,
+                                Comment: { include: { writtenBy: true, userComments: { include: { user: true } } } }
+                            }
+                        }, folowing: true, folowers: true, music: true
+                    }, } }
+        });
+    }
     async like(likeById, videoId) {
         const checkExist = await this.prisma.like.findMany({ where: {
                 likeById
@@ -143,17 +172,12 @@ let UserService = class UserService {
             throw Error('tag is Exist');
         return this.prisma.tag.create({ data: { name } });
     }
-    async unfollowChannel(userId, authorId) {
+    async unfollowChannel(id, userId, authorId) {
         const folow = await this.prisma.folower.delete({
             where: {
-                userId,
-                authorId
+                id
             }
         });
-        if (!folow) {
-            return;
-        }
-        ;
         const user = await this.prisma.userModel.findUnique({
             where: {
                 id: userId
@@ -181,6 +205,7 @@ let UserService = class UserService {
                 subscribers_count: author.subscribers_count - 1,
             }
         });
+        return folow;
     }
     async followChannel(userId, authorId) {
         const folow = await this.prisma.folower.create({
@@ -189,10 +214,6 @@ let UserService = class UserService {
                 authorId
             }
         });
-        if (!folow) {
-            return;
-        }
-        ;
         const user = await this.prisma.userModel.findUnique({
             where: {
                 id: userId
@@ -220,6 +241,7 @@ let UserService = class UserService {
                 subscribers_count: author.subscribers_count + 1,
             }
         });
+        return folow;
     }
     async deleteUser(where) {
         return this.prisma.userModel.delete({

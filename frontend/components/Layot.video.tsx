@@ -12,12 +12,13 @@ import {IUser} from "@/types/User.interface";
 interface LayoutProps {
   children: React.ReactNode
 }
-export  function LayoutVideo({videos, user} : { videos: IVideo[], user?: IUser;} ) {
+export  function LayoutVideo({videos} : { videos: IVideo[], user?: IUser;} ) {
   // await new Promise((resolve) => setTimeout(() => resolve(''), 1000));
   console.log(videos);
+  const user = useCheckAuthQuery({});
   return (
     <div className={"mx-auto"}>
-       { videos.map( (v  => <Video user={user} video={v}/>))}
+       { videos.map( (v  => <Video key={v.id} user={user.data} video={v}/>))}
     </div>
   )
 }
