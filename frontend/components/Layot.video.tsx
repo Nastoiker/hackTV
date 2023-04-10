@@ -1,24 +1,51 @@
 "use client";
-
-import { SiteHeader } from "@/components/site-header"
-import ReduxProvider from "@/stores/provider";
-import Providers from "@/provider/providerRedux";
-import {useGetVideosQuery} from "@/stores/slices/api";
 import {Video} from "@/components/video/video";
 import {IVideo} from "@/types/Video.interface";
 import {useCheckAuthQuery} from "@/stores/slices/regapi";
 import {IUser} from "@/types/User.interface";
+import {SortButton} from "@/components/Sorts/Sort.button";
+import {useMemo} from "react";
 
 interface LayoutProps {
   children: React.ReactNode
 }
+function FilterByDate(videos) {
+  const sort = [...videos];
+  const sortByTime = sort?.sort((a, b) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime());
+  return sortByTime
+}
+function FilterByLike(videos: IVideo[]) {
+  const sort = [...videos];
+  const sortByTime = sort?.sort((a, b) => a.likesCount - b.likesCount);
+  return sortByTime
+}
+function FilterBySubs(videos: IVideo[]) {
+  const sort = [...videos];
+  const sortByTime = sort?.sort((a, b) => a.authorVideo.subscribers_count - b.authorVideo.subscribers_count);
+  return sortByTime
+}
 export  function LayoutVideo({videos} : { videos: IVideo[], user?: IUser;} ) {
-  // await new Promise((resolve) => setTimeout(() => resolve(''), 1000));
+
   console.log(videos);
+  const filterByDate = useMemo(
+    () => FilterByDate(videos),
+    [videos]
+  );
+  const filterByLike = useMemo(
+    () => FilterByLike(videos),
+    [videos]
+  );
+  const filterBySubs = useMemo(
+    () => FilterBySubs(videos),
+    [videos]
+  );
   const user = useCheckAuthQuery({});
   return (
-    <div className={"mx-auto"}>
-       { videos.map( (v  => <Video key={v.id} user={user.data} video={v}/>))}
+    <div className={"mx-auto flex"}>
+      <div >
+        { videos.map( (v  => <Video key={v.id} user={user.data} video={v}/>))}
+      </div>
+      <SortButton className="fixed top-18 right-5 xl:right-44" sortByLike={() => {}} sortByDate={() =>{}}/>
     </div>
   )
 }

@@ -10,6 +10,12 @@ export declare class VideoController {
     get(id: string): Promise<import(".prisma/client").Video>;
     getByCategoryAlias(alias: string): Promise<import(".prisma/client").SecondLevelCategory & {
         videos: (import(".prisma/client").Video & {
+            Comment: (import(".prisma/client").Comment & {
+                writtenBy: import(".prisma/client").UserModel;
+                userComments: (import(".prisma/client").UserCommentOnComment & {
+                    user: import(".prisma/client").UserModel;
+                })[];
+            })[];
             music: import(".prisma/client").Music;
             tag: (import(".prisma/client").TagOnVideo & {
                 tag: import(".prisma/client").Tag;
@@ -17,12 +23,6 @@ export declare class VideoController {
             authorVideo: import(".prisma/client").UserModel;
             secondCategory: import(".prisma/client").SecondLevelCategory;
             likes: import(".prisma/client").Like[];
-            Comment: (import(".prisma/client").Comment & {
-                writtenBy: import(".prisma/client").UserModel;
-                userComments: (import(".prisma/client").UserCommentOnComment & {
-                    user: import(".prisma/client").UserModel;
-                })[];
-            })[];
         })[];
     }>;
     videos(): Promise<import(".prisma/client").Video[]>;

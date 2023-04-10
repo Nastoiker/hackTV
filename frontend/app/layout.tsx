@@ -58,11 +58,11 @@ export default function RootLayout({children}: RootLayoutProps) {
 
 
 
-      <div className={"w-56 my-16 fixed  border-r "}>
+      <div className={"px-2 w-56 bg-white my-16 fixed  z-50 border-r "}>
         <Categories />
         <PopularTags tags={TagsObject} />
       </div>
-      <div className={"   xl: max-w-screen-2xl pl-64 pt-20  MainMargin"}>
+      <div className={"md:pl-64 xl:max-w-screen-2xl  pt-20  MainMargin"}>
         {children}
       </div>
     </div>
