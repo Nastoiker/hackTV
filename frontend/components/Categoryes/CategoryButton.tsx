@@ -1,12 +1,15 @@
 "use client"
 import {motion, useReducedMotion} from 'framer-motion';
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import {SecondLevelCategory} from "@/stores/slices/category.slice";
 import Link from "next/link";
-import {useRouter} from "next/navigation";
+import {usePathname, useRouter} from "next/navigation";
+import { cn } from "@/lib/utils"
 export const CategoryButton = ({name, alias, secondLevelCategory}: { name: string, alias: string, secondLevelCategory: SecondLevelCategory[]}) => {
   const useSlowMotion = useReducedMotion();
   const router = useRouter()
+  const pathname = usePathname();
+
   const variantsChildren = {
     visible: {
       opacity: 1,
@@ -32,9 +35,9 @@ export const CategoryButton = ({name, alias, secondLevelCategory}: { name: strin
       }
     }
   return (
-    <div >
-      <div           onClick={() => setIsOpen((s) => !s)}
-                     className={"mr-2 w-36 block border-0 bg-blue-400 rounded-2xl px-5 py-2 "}
+    <div>
+      <div        onClick={() => setIsOpen((s) => !s)}
+                     className={" cursor-pointer mr-2 w-36 block border-0 bg-blue-400 rounded-2xl px-5 py-2 "}
       >
         {name}
       </div>
@@ -49,7 +52,7 @@ export const CategoryButton = ({name, alias, secondLevelCategory}: { name: strin
            <motion.div
                 key={s.alias}
                 variants={variantsChildren}
-                className={"block border-0 rounded-2xl px-7 py-2 overflow-hidden"}
+                className={cn("cursor-pointer block w-fit border-0 rounded-xl px-2 pr-10 py-auto mx-7  overflow-hidden ", pathname.split('/')[2] === s.alias && "bg-blue-200")}
                 onClick={() => router.push(`/category/${s.alias}`)}
               >
                <Link href={s.name}> {s.name}</Link>

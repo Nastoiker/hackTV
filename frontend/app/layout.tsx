@@ -30,7 +30,6 @@ const User: IUser = {
   avatar: UserIcon.src,
 }
 const TagsObject = [{name: 'js', alias: 'js'}, {name: 'js', alias: 'js'}];
-const categoriesOb = [{ name: 'Popular', alias: 'Popular'}, { name: 'Poasdasdasdasdpular', alias: 'Popular'}, { name: 'Popular', alias: 'Popular'}, { name: 'Popular', alias: 'Popular'}]
 export default function RootLayout({children}: RootLayoutProps) {
 
 
@@ -45,7 +44,7 @@ export default function RootLayout({children}: RootLayoutProps) {
   )}
 >
   <Providers>
-    <div className={" flex flex-col MainLayout"}>
+    <div className={"flex flex-col MainLayout"}>
 
 
 
@@ -60,7 +59,7 @@ export default function RootLayout({children}: RootLayoutProps) {
 
       <div className={"px-2 w-56 bg-white my-16 fixed  z-50 border-r "}>
         <Categories />
-        <PopularTags tags={TagsObject} />
+        <PopularTags  />
       </div>
       <div className={"md:pl-64 xl:max-w-screen-2xl  pt-20  MainMargin"}>
         {children}

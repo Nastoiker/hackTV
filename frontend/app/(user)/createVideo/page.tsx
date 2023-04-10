@@ -16,6 +16,7 @@ import {useRef, useState} from "react";
 import Image from "next/image";
 import {Textarea} from "@/components/ui/textarea";
 import {useCreateVideoMutation} from "@/stores/slices/user.api";
+import {UpdateAvatarProfile} from "@/components/uploadImage/UploadImage";
 export default function IndexPage() {
   const [CreateVideo, data] = useCreateVideoMutation();
   const videoRef = useRef();
@@ -76,17 +77,12 @@ export default function IndexPage() {
             }
           </div>
         </div>
-        <div className={"flex space-x-12"}>
+        <div className={"md:flex space-x-12"}>
       <div>
         <h1>Обложка</h1>
-        <div className={"p-9 outline-dashed outline-2 -outline-offset-2"} >
+        <UpdateAvatarProfile />
 
-          <div className={"bg-gray-200"}>
-            <svg className="m-auto" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"><path fill="none" d="M0 0h24v24H0z"/><path d="M4.828 21l-.02.02-.021-.02H2.992A.993.993 0 0 1 2 20.007V3.993A1 1 0 0 1 2.992 3h18.016c.548 0 .992.445.992.993v16.014a1 1 0 0 1-.992.993H4.828zM20 15V5H4v14L14 9l6 6zm0 2.828l-6-6L6.828 19H20v-1.172zM8 11a2 2 0 1 1 0-4 2 2 0 0 1 0 4z"/></svg>
-          </div>
-        </div>
       </div>
-
         <div className={""}>
           <Label htmlFor={"musicId"}>Музыка</Label>
           <Input { ...register('musicId', {required: true})} id={"musicId"}/>
@@ -121,7 +117,7 @@ export default function IndexPage() {
           <Label htmlFor={"tagId"}>Description</Label>
           <Textarea className={"resize-none"} { ...register('description', {required: true})} id={"tagId"}/>
         </div>
-        <Button type={"submit"}>Отправить</Button>
+        <Button type={"submit"}>Создать</Button>
 
       </div>
 

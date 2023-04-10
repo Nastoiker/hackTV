@@ -60,6 +60,7 @@ model FirstLevelCategory {
   id                  String                @id @default(uuid())
   name                String
   alias               String
+  icon String?
   secondLevelCategory SecondLevelCategory[] @relation("firstCategory")
 }
 

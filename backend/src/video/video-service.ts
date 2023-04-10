@@ -1,11 +1,10 @@
 import { Injectable } from '@nestjs/common';
 import {PrismaService} from "../prisma/prisma-service";
-import {Prisma, UserModel, Video} from "@prisma/client";
+import {Prisma, UserModel, Video, Tag} from "@prisma/client";
 import {createVideoDto} from "./dto/create-video.dto";
 import {unlink, writeFile} from "fs-extra";
 import {path} from "app-root-path";
 import {VideoReportDto} from "./dto/report-video.dto";
-import {Tag} from "./entities/video.entity";
 import { mkdirSync } from "fs";
 import {SecondLevelCategory} from "../category/entities/category.entity";
  interface tagsOnVideo {
@@ -37,19 +36,37 @@ export class VideoService {
     }): Promise<Video[]> {
         const { skip, take, cursor, where, orderBy } = params;
         return this.prisma.video.findMany({
+                skip,
+                take,
+                cursor,
+                where,
+                orderBy,
+                include: {
+                    music: true,
+                    tag: { include: {tag: true}},
+                    authorVideo: true,
+                    secondCategory: true,
+                    likes: true,
+                    Comment: { include: { writtenBy: true, userComments: { include: {user: true} }}}
+                }
+            },
+        );
+    }
+    async tags(params: {
+        skip?: number;
+        take?: number;
+        cursor?: Prisma.VideoWhereUniqueInput;
+        where?: Prisma.VideoWhereInput;
+        orderBy?: Prisma.VideoOrderByWithRelationInput;
+    }): Promise<Tag[]> {
+        const { skip, take, cursor, where, orderBy } = params;
+        return this.prisma.tag.findMany({
             skip,
             take,
             cursor,
             where,
             orderBy,
-            include: {
-                music: true,
-                tag: { include: {tag: true}},
-                authorVideo: true,
-                secondCategory: true,
-                likes: true,
-                Comment: { include: { writtenBy: true, userComments: { include: {user: true} }}}
-            }
+            include: { videos: true}
         },
             );
     }

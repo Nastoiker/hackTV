@@ -6,13 +6,15 @@ import {CommentForm} from "@/components/Comment/CommentSend";
 export default function CommentsModal({video, comments, user}: ICommentsProps) {
   return (
     <div className="mb-4  w-full">
-      <ScrollArea className="max-h-96 h-72 rounded-md border border-slate-100 dark:border-slate-700">
-        <div className="p-4">
-          {
-            comments.map(c => <CommentCard key={c.id} comment={c}/>)
-          }
-        </div>
-      </ScrollArea>
+      { comments.length > 0 &&
+        <ScrollArea className="max-h-96 h-72 rounded-md border border-slate-100 dark:border-slate-700">
+          <div className="p-4">
+            {
+              comments.map(c => <CommentCard key={c.id} comment={c}/>)
+            }
+          </div>
+        </ScrollArea>
+      }
       <CommentForm video={video} user={user} />
     </div>
   );

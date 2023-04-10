@@ -88,6 +88,15 @@ export class VideoController {
         }
         return product;
     }
+
+    @Get('tag/tags')
+    async getTags() {
+        const tags = await this.videoService.tags({});
+        if (!tags) {
+            throw new NotFoundException(VideoByIdNotFount);
+        }
+        return tags;
+    }
     @Get('/category/:alias')
     async getByCategoryAlias(@Param('alias') alias: string) {
         const aliasCategory = alias.slice(1, alias.length);

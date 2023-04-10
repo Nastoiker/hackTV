@@ -4,16 +4,15 @@ export const videoHostingApi = createApi({
   reducerPath: 'videoHostingApi',
   baseQuery: fetchBaseQuery({
     baseUrl: 'http://localhost:8000/Video/',
-    prepareHeaders: (headers) => {
-      const token = getToken();
-      if (token) {
-        headers.set('authorization', `Bearer ${token}`);
-      }
-      return headers;
-    },
   })
   ,
   endpoints: (builder) => ({
+    tags: builder.query({
+      query: () => ({
+        url: 'tag/tags/',
+        method: 'get',
+      }),
+    }),
     getVideos: builder.query({
       query: () => ({
         url: '/',
@@ -38,4 +37,4 @@ export const videoHostingApi = createApi({
 
 // Export hooks for usage in function components, which are
 // auto-generated based on the defined endpoints
-export const { useGetVideosQuery, useAddVideoMutation, useDeleteVideoMutation } = videoHostingApi
+export const { useGetVideosQuery, useAddVideoMutation, useDeleteVideoMutation, useTagsQuery } = videoHostingApi

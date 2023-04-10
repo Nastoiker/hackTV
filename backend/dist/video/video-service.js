@@ -56,6 +56,17 @@ let VideoService = class VideoService {
             }
         });
     }
+    async tags(params) {
+        const { skip, take, cursor, where, orderBy } = params;
+        return this.prisma.tag.findMany({
+            skip,
+            take,
+            cursor,
+            where,
+            orderBy,
+            include: { videos: true }
+        });
+    }
     async videosByCategory(params) {
         const { skip, take, cursor, where, orderBy } = params;
         return this.prisma.secondLevelCategory.findFirst({
