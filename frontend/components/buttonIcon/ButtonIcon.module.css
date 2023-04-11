@@ -1,0 +1,77 @@
+.LeftSide {
+  display: block;
+}
+.MenuButtin {
+  display: none;
+}
+.ghost {
+	color: black;
+	border: 1px solid lightgray;
+	background-color: none;
+}
+.leftSideMargin {
+  margin-top: 4rem;
+}
+.ghost:hover {
+	color: white;
+	background-color: purple;
+}
+
+.primary {
+	color: white;
+	background-color: blue;
+}
+.primary svg{
+	fill: white;
+}
+
+.button {
+	width: 40px;
+	height: 40px;
+
+	cursor: pointer;
+
+	border: none;
+	border-radius: 10px;
+	box-shadow: 0 4px 4px rgb(0 0 0 / 5%);
+}
+
+.arrow {
+	display: inline-block;
+
+	margin-left: 10px;
+}
+
+.down {
+	transition: all 0.2s;
+	transform: rotate(90deg);
+}
+
+.primary:hover {
+	background-color: var(--primary-hover);
+}
+.white {
+	background-color: var(--white);
+}
+.white svg{
+	fill: var(--primary);
+}
+.white:hover{
+	background-color: var(--primary);
+}
+.white:hover svg{
+	background-color: var(--white);
+}
+.primary svg,
+.ghost:hover {
+	fill: var(--white);
+}
+@media (max-width: 765px) {
+  .LeftSide {
+    display: none;
+
+  }
+  .MenuButtin {
+    display: block;
+  }
+}

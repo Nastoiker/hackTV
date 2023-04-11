@@ -15,6 +15,7 @@ import {LikeSimple} from "@/components/like/LikeSimple";
 import {useLikeVideoMutation} from "@/stores/slices/user.api";
 import {useCheckAuthQuery} from "@/stores/slices/regapi";
 import {IUser} from "@/types/User.interface";
+import ProgressBar from "@/components/video/progress.video";
 
 export const Video = ({ user, type, video, className, ...props}: VideoProps): JSX.Element => {
   const query = {videoId: video.id};
@@ -85,20 +86,22 @@ export const Video = ({ user, type, video, className, ...props}: VideoProps): JS
   return <div className={className}>
 
 
-    <div className={"flex justify-center"}>
+    <div className={"sm:flex justify-center"}>
       <div>
         <SubscribeChannel user={user} video={video} isSubscribe={isFolowing} setIsSubscribe={() => Folowing}/>
 
         <video width={350} height={350} className={"rounded-3xl"}  onClick={onVideoClick} loop ref={videoRef} src={videoPath.replace(' ' , '')}>
         </video>
-        <div className={"bg-black w-fit rounded-xl p-2 absolute -my-14 ml-64 text-amber-50"}>{Math.floor(currentTime)} : { videoRef.current && Math.floor(videoRef?.current?.duration)}</div>
+        {/*<div className={"bg-black w-fit rounded-xl p-2 absolute -my-14 ml-64 text-amber-50"}>{Math.floor(currentTime)} : { videoRef.current && Math.floor(videoRef?.current?.duration)}</div>*/}
         <div className={"bg-black text-amber-50 w-fit absolute -my-20  mx-4 opacity-70 p-2 rounded-xl"}>
           {video.Title}
           <p>
             {video.Description}
           </p>
         </div>
-        <div> <div className={'flex justify-between px-2'}>
+        <div>
+          <ProgressBar value={currentTime} max={videoRef?.current?.duration} />
+          <div className={'flex justify-between px-2'}>
 
           <div className={"flex items-center "}><div className={"flex items-center"}><Comments setIsOpen={() => setIsOpen(s => !s)} comments={video.Comment} /> <h1 className={"mx-2"}>{video.Comment.length}</h1></div>   </div>
 

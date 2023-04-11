@@ -13,6 +13,7 @@ import {PopularTags} from "@/components/Header/PopularTags";
 import Providers from "@/provider/providerRedux";
 import {useAppDispatch, useAppSelector} from "@/stores";
 import {getFirstCategory} from "@/stores/slices/category.slice";
+import {LeftSite} from "@/layout-component/sidebar";
 const fontSans = FontSans({
   subsets: ["latin"],
   variable: "--font-sans",
@@ -57,9 +58,9 @@ export default function RootLayout({children}: RootLayoutProps) {
 
 
 
-      <div className={"px-2 w-56 bg-white my-16 fixed  z-50 border-r "}>
-        <Categories />
-        <PopularTags  />
+      <div className={""}>
+        <LeftSite />
+
       </div>
       <div className={"md:pl-64 xl:max-w-screen-2xl  pt-20  MainMargin"}>
         {children}

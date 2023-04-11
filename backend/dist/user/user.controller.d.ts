@@ -13,7 +13,7 @@ export declare class UserController {
     private readonly commentService;
     constructor(userService: UserService, videoService: VideoService, commentService: CommentService);
     createComment(request: any, createCommentDto: CreateCommentDto): Promise<import(".prisma/client").Comment>;
-    getFollowing(req: any): Promise<BadRequestException | import(".prisma/client").Folower[]>;
+    getFollowing(req: any): Promise<import(".prisma/client").Folower[] | BadRequestException>;
     likeComment(likeCommentDto: LikeCommentDto): Promise<import(".prisma/client").Comment>;
     createTag(dto: {
         name: string;

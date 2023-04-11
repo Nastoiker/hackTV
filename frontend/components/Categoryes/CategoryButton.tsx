@@ -26,7 +26,7 @@ export const CategoryButton = ({name, alias, secondLevelCategory}: { name: strin
       visible: {
         marginBottom: 20,
         transition: useSlowMotion ? {} :  {
-          when: 'beforeChildren',
+          when: 'beforeСhildren',
           staggerChildren: 0.1,
         }
       },
