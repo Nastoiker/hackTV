@@ -5,6 +5,7 @@ import {useCheckAuthQuery} from "@/stores/slices/regapi";
 import {IUser} from "@/types/User.interface";
 import {SortButton} from "@/components/Sorts/Sort.button";
 import {useMemo} from "react";
+import {Htag} from "@/components/Htag/Htag";
 
 interface LayoutProps {
   children: React.ReactNode
@@ -43,7 +44,7 @@ export  function LayoutVideo({videos} : { videos: IVideo[], user?: IUser;} ) {
   return (
     <div className={"mx-auto flex"}>
       <div >
-        { videos.map( (v  => <Video key={v.id} user={user.data} video={v}/>))}
+        {  videos.length > 0 ? videos.map( (v  => <Video key={v.id} user={user.data} video={v}/>)) : <div className={"mx-auto"}><Htag type={'h1'}> Ничего не найдено</Htag></div>}
       </div>
       <SortButton className="fixed top-18 right-5 xl:right-44" sortByLike={() => {}} sortByDate={() =>{}}/>
     </div>

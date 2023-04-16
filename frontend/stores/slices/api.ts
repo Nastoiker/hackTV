@@ -19,19 +19,6 @@ export const videoHostingApi = createApi({
         method: 'get',
       }),
     }),
-    addVideo: builder.mutation({
-      query: (newVideo) => ({
-        url: '/videos',
-        method: 'POST',
-        body: { ...newVideo },
-      }),
-    }),
-    deleteVideo: builder.mutation({
-      query: (videoId) => ({
-        url: `/videos/${videoId}`,
-        method: 'DELETE',
-      }),
-    }),
   }),
 });
 

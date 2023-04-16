@@ -48,6 +48,13 @@ export const UserApi = createApi({
         body: {...commentVideo },
       }),
     }),
+    DeleteVideo: builder.mutation({
+      query: (commentVideo) => ({
+        url: '/deleteVideo',
+        method: 'DELETE',
+        body: {...commentVideo },
+      }),
+    }),
     CreateVideo: builder.mutation({
       query: (commentVideo) => ({
         url: '/createVideo',

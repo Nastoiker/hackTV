@@ -24,7 +24,7 @@ const fontSans = FontSans({
   variable: "--font-sans",
   display: "swap",
 })
-export default function AdminLayot({children}: AdminLayoutProps) {
+export default function LayotSearch({children}: AdminLayoutProps) {
 
   return (
     <div>
