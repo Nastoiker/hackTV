@@ -46,7 +46,7 @@ export default function IndexPage() {
             <LayoutVideo videos={data.videos} user={data}/>
           </TabsContent>
           <TabsContent value="likes">
-            <LayoutVideo user={data} videos={data.Like.map(l => l.videos)}/>
+            <LayoutVideo user={data} videos={data.Like?.map(l => l.videos)}/>
           </TabsContent>
         </Tabs>
       </div>  : <div><Button>Авторизоваться</Button></div>

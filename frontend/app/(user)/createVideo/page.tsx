@@ -85,7 +85,7 @@ export default function IndexPage() {
       </div>
         <div className={""}>
           <Label htmlFor={"musicId"}>Музыка</Label>
-          <Input { ...register('musicId', {required: true})} id={"musicId"}/>
+          <Input type={'file'} { ...register('musicId', {required: true})} id={"musicId"}/>
 
         </div>
       </div>
