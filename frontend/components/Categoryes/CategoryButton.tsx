@@ -37,7 +37,7 @@ export const CategoryButton = ({name, alias, secondLevelCategory}: { name: strin
   return (
     <div>
       <div        onClick={() => setIsOpen((s) => !s)}
-                     className={" cursor-pointer mr-2 w-36 block border-0 bg-blue-400 rounded-2xl px-5 py-2 "}
+                     className={" cursor-pointer text-white mr-2 w-36 block border-0 bg-blue-400 rounded-2xl px-5 py-2 "}
       >
         {name}
       </div>
@@ -61,6 +61,5 @@ export const CategoryButton = ({name, alias, secondLevelCategory}: { name: strin
       </motion.div>
 
     </div>
-  );s
-
+  );
 };

@@ -1,4 +1,4 @@
-import {ICommentProps, ICommentUser} from "./Comment.props";
+import {ICommentProps} from "./Comment.props";
 import {useState} from "react";
 import { motion } from 'framer-motion';
 import Image from "next/image";

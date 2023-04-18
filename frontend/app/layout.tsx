@@ -23,13 +23,7 @@ const fontSans = FontSans({
 interface RootLayoutProps {
   children: React.ReactNode
 }
-const User: IUser = {
-  id: '1',
-  authorUrl: 'string',
-  email: 'damur@gmail.com',
-  login: 'idiot',
-  avatar: UserIcon.src,
-}
+
 const TagsObject = [{name: 'js', alias: 'js'}, {name: 'js', alias: 'js'}];
 export default function RootLayout({children}: RootLayoutProps) {
 

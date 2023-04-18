@@ -1,3 +1,5 @@
+import {IVideo} from "@/types/Video.interface";
+
 export interface IUser {
   id: string
   authorUrl: string
@@ -12,7 +14,7 @@ export interface IUser {
   following_count: number
   LikeCount: number
   hisLikes: number
-  videos: Video[]
+  videos: IVideo[],
   folowing: any[]
   folowers: any[]
   Like: Like[]

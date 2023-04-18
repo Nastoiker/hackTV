@@ -4,21 +4,33 @@ import {useCheckAuthQuery} from "@/stores/slices/regapi";
 import {NotFound} from "next/dist/client/components/error";
 import Link from "next/link";
 import {Tabs, TabsContent, TabsList, TabsTrigger} from "@/components/ui/tabs";
+import {IUser} from "@/types/User.interface";
 
 
 interface PageProps {
   params: { id: string };
 }
-export async function getChannel(userId) {
-  const res = await fetch('http://localhost:8000/user/' + userId);
-  console.log(res);
-  return res.json()
+ async function getChannel(id: string): Promise<IUser | null> {
+  try{
+    const res = await fetch('http://localhost:8000/user/' + id);
+    if (!res?.ok) {
+      return null
+    }
+    return await res.json();;
+  }catch (error) {
+  return null
+}
+
+
 }
 
 export default async function FolowsUserPage({ params }: PageProps) {
-  const slug = params?.id;
-  const data = await getChannel(slug);
-  if(!data) return <div>{slug}</div>;
+  const id = params?.id;
+  const data = await getChannel(id);
+  if(!data) {
+    return <div></div>
+  }
+
   return (
     <div className={"w-full"}>
       <div className={"space-y-5"}>
