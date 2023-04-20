@@ -2,28 +2,42 @@ import { notFound } from "next/navigation"
 import {LayoutVideo} from "@/components/Layot.video";
 import {useCheckAuthQuery} from "@/stores/slices/regapi";
 import {NotFound} from "next/dist/client/components/error";
+import {IVideo} from "@/types/Video.interface";
 
+export interface VideoByCategory {
+  id: string
+  name: string
+  alias: string
+  firstLevelId: string
+  videos: IVideo[]
+}
 
 interface PageProps {
   params: { category: string };
 }
- async function getCategory(alias) {
-  const res = await fetch('http://localhost:8000/Video/category/:' + alias);
-  console.log(res);
-  const data: any[] = await res.json();
-  return data;
+ async function getCategory(alias): Promise<VideoByCategory | null> {
+  try {
+    const res = await fetch('http://localhost:8000/Video/category/:' + alias);
+    if (!res?.ok) {
+      return null
+    }
+    console.log(res);
+
+    return await res.json();;
+  } catch(e) {
+    return null;
+  }
+
 }
 
-export default async function PagePage({ params }: PageProps) {
+export default async function PageCategory({ params }: PageProps) {
   const slug = params?.category;
   if(!slug) {
     return <div></div>;
   }
   const videos = await getCategory(slug);
-  const category = await  Promise.all(videos);
   if(!videos) return <div>{slug}</div>;
-  // @ts-ignore
-  const result = category.videos;
+  const result = videos.videos;
   return (
     <article className="container max-w-3xl py-6 lg:py-10">
       <div className="space-y-4">

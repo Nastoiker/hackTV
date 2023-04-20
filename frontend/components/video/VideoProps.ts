@@ -4,6 +4,5 @@ import {IUser} from "@/types/User.interface";
 
 export interface  VideoProps extends DetailedHTMLProps<HTMLAttributes<HTMLDivElement>, HTMLDivElement> {
   video: IVideo;
-  type: string;
   user?: IUser;
 }

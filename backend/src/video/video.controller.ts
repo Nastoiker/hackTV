@@ -125,7 +125,7 @@ export class VideoController {
     @UseGuards(JwtAuthGuard)
     @Delete(':id')
     async delete(@Param('id', IdValidationpipe) id: string) {
-        const deletedProduct = await this.videoService.deleteVideo({id});
+        const deletedProduct = await this.videoService.deleteVideo(id);
         if (!deletedProduct) {
             throw new NotFoundException(VideoByIdNotFount);
         }

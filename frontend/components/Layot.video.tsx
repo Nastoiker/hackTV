@@ -4,8 +4,9 @@ import {IVideo} from "@/types/Video.interface";
 import {useCheckAuthQuery} from "@/stores/slices/regapi";
 import {IUser} from "@/types/User.interface";
 import {SortButton} from "@/components/Sorts/Sort.button";
-import {useMemo} from "react";
+import {useMemo, useState} from "react";
 import {Htag} from "@/components/Htag/Htag";
+import {useFollowsQuery} from "@/stores/slices/user.api";
 
 interface LayoutProps {
   children: React.ReactNode
@@ -25,8 +26,31 @@ function FilterBySubs(videos: IVideo[]) {
   const sortByTime = sort?.sort((a, b) => a.authorVideo.subscribers_count - b.authorVideo.subscribers_count);
   return sortByTime
 }
-export  function LayoutVideo({videos} : { videos: IVideo[], user?: IUser;} ) {
+export  function LayoutVideo({videos, user} : { videos: IVideo[], user?: IUser;} ) {
+  const  follow =  useFollowsQuery({});
+  const [activeVideo, setActiveVideo] = useState(null);
+  const [commentsVisible, setCommentsVisible] = useState({});
 
+  const handlePlay = (videoId) => {
+    setActiveVideo(videoId);
+  };
+
+  const handlePause = (videoId) => {
+    if (activeVideo === videoId) {
+      setActiveVideo(null);
+    }
+  };
+
+  const handleToggleComments = (videoId) => {
+    setCommentsVisible((prev) => ({
+      ...prev,
+      [videoId]: !prev[videoId],
+    }));
+  };
+
+  const isCommentsVisible = (videoId) => {
+    return Boolean(commentsVisible[videoId]);
+  };
   console.log(videos);
   const filterByDate = useMemo(
     () => FilterByDate(videos),
@@ -40,11 +64,11 @@ export  function LayoutVideo({videos} : { videos: IVideo[], user?: IUser;} ) {
     () => FilterBySubs(videos),
     [videos]
   );
-  const user = useCheckAuthQuery({});
+  // const user = useCheckAuthQuery({})
   return (
     <div className={"mx-auto flex"}>
       <div >
-        {  videos.length > 0 ? videos.map( (v  => <Video key={v.id} user={user.data} video={v}/>)) : <div className={"mx-auto"}><Htag type={'h1'}> Ничего не найдено</Htag></div>}
+        {  videos.length > 0 ? videos.map( (v  => <Video key={v.id} user={ user && user} video={v}/>)) : <div className={"mx-auto"}><Htag type={'h1'}> Ничего не найдено</Htag></div>}
       </div>
       <SortButton className="fixed top-18 right-5 xl:right-44" sortByLike={() => {}} sortByDate={() =>{}}/>
     </div>

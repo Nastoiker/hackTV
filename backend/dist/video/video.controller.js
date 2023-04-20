@@ -101,7 +101,7 @@ let VideoController = class VideoController {
         return product;
     }
     async delete(id) {
-        const deletedProduct = await this.videoService.deleteVideo({ id });
+        const deletedProduct = await this.videoService.deleteVideo(id);
         if (!deletedProduct) {
             throw new common_1.NotFoundException(video_constants_1.VideoByIdNotFount);
         }

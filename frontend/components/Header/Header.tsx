@@ -5,7 +5,7 @@ import Link from "next/link";
 import {IHeaderProps} from "@/components/Header/HeaderProps";
 import {redirect} from "next/navigation";
 import {ProfileIcon} from "@/components/user/Profile.icon";
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import {cn} from "@/lib/utils";
 import {AuthComponent} from "@/components/Auth/Auth";
 import {AuthApi, useAuthorizationQuery, useCheckAuthQuery} from "@/stores/slices/regapi";
@@ -27,7 +27,14 @@ export const Header = () => {
       setScrolled(false);
     }
   };
-  if(document)   document.addEventListener('scroll', handleScroll);
+  useEffect(() => {
+    //add eventlistener to window
+    document.addEventListener('scroll', handleScroll, { passive: true });
+    // remove event on unmount to prevent a memory leak with the cleanup
+    return () => {
+      document.removeEventListener("scroll", handleScroll);
+    }
+  }, []);
 
   return <div className={ cn("flex items-center h-16 border-b  max-w-screen-2xl ",  scrolled ? "bg-blue-50" : "bg-white")}>
     <div className={"min-w-68 lg:pr-36"}>

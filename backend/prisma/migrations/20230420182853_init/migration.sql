@@ -40,7 +40,8 @@ CREATE TABLE "Music" (
 CREATE TABLE "FirstLevelCategory" (
     "id" TEXT NOT NULL PRIMARY KEY,
     "name" TEXT NOT NULL,
-    "alias" TEXT NOT NULL
+    "alias" TEXT NOT NULL,
+    "icon" TEXT
 );
 
 -- CreateTable
@@ -49,7 +50,7 @@ CREATE TABLE "SecondLevelCategory" (
     "name" TEXT NOT NULL,
     "alias" TEXT NOT NULL,
     "firstLevelId" TEXT NOT NULL,
-    CONSTRAINT "SecondLevelCategory_firstLevelId_fkey" FOREIGN KEY ("firstLevelId") REFERENCES "FirstLevelCategory" ("id") ON DELETE RESTRICT ON UPDATE CASCADE
+    CONSTRAINT "SecondLevelCategory_firstLevelId_fkey" FOREIGN KEY ("firstLevelId") REFERENCES "FirstLevelCategory" ("id") ON DELETE CASCADE ON UPDATE CASCADE
 );
 
 -- CreateTable
@@ -77,9 +78,9 @@ CREATE TABLE "Video" (
     "comment_count" INTEGER NOT NULL DEFAULT 0,
     "likesCount" INTEGER NOT NULL DEFAULT 0,
     "userId" TEXT NOT NULL,
-    CONSTRAINT "Video_secondCategoryId_fkey" FOREIGN KEY ("secondCategoryId") REFERENCES "SecondLevelCategory" ("id") ON DELETE RESTRICT ON UPDATE NO ACTION,
-    CONSTRAINT "Video_musicId_fkey" FOREIGN KEY ("musicId") REFERENCES "Music" ("id") ON DELETE RESTRICT ON UPDATE CASCADE,
-    CONSTRAINT "Video_userId_fkey" FOREIGN KEY ("userId") REFERENCES "UserModel" ("id") ON DELETE RESTRICT ON UPDATE CASCADE
+    CONSTRAINT "Video_secondCategoryId_fkey" FOREIGN KEY ("secondCategoryId") REFERENCES "SecondLevelCategory" ("id") ON DELETE CASCADE ON UPDATE CASCADE,
+    CONSTRAINT "Video_musicId_fkey" FOREIGN KEY ("musicId") REFERENCES "Music" ("id") ON DELETE CASCADE ON UPDATE CASCADE,
+    CONSTRAINT "Video_userId_fkey" FOREIGN KEY ("userId") REFERENCES "UserModel" ("id") ON DELETE CASCADE ON UPDATE CASCADE
 );
 
 -- CreateTable
@@ -88,7 +89,7 @@ CREATE TABLE "TagOnVideo" (
     "tagId" TEXT NOT NULL,
 
     PRIMARY KEY ("tagId", "videoId"),
-    CONSTRAINT "TagOnVideo_videoId_fkey" FOREIGN KEY ("videoId") REFERENCES "Video" ("id") ON DELETE RESTRICT ON UPDATE CASCADE,
+    CONSTRAINT "TagOnVideo_videoId_fkey" FOREIGN KEY ("videoId") REFERENCES "Video" ("id") ON DELETE CASCADE ON UPDATE CASCADE,
     CONSTRAINT "TagOnVideo_tagId_fkey" FOREIGN KEY ("tagId") REFERENCES "Tag" ("id") ON DELETE RESTRICT ON UPDATE CASCADE
 );
 
@@ -101,8 +102,17 @@ CREATE TABLE "Comment" (
     "comment" TEXT NOT NULL,
     "writtenById" TEXT NOT NULL,
     "videoId" TEXT NOT NULL,
-    CONSTRAINT "Comment_videoId_fkey" FOREIGN KEY ("videoId") REFERENCES "Video" ("id") ON DELETE RESTRICT ON UPDATE CASCADE,
-    CONSTRAINT "Comment_writtenById_fkey" FOREIGN KEY ("writtenById") REFERENCES "UserModel" ("id") ON DELETE RESTRICT ON UPDATE CASCADE
+    CONSTRAINT "Comment_videoId_fkey" FOREIGN KEY ("videoId") REFERENCES "Video" ("id") ON DELETE CASCADE ON UPDATE CASCADE,
+    CONSTRAINT "Comment_writtenById_fkey" FOREIGN KEY ("writtenById") REFERENCES "UserModel" ("id") ON DELETE CASCADE ON UPDATE CASCADE
+);
+
+-- CreateTable
+CREATE TABLE "LikeComment" (
+    "id" TEXT NOT NULL PRIMARY KEY,
+    "commentId" TEXT NOT NULL,
+    "userId" TEXT NOT NULL,
+    CONSTRAINT "LikeComment_commentId_fkey" FOREIGN KEY ("commentId") REFERENCES "Comment" ("id") ON DELETE RESTRICT ON UPDATE CASCADE,
+    CONSTRAINT "LikeComment_userId_fkey" FOREIGN KEY ("userId") REFERENCES "UserModel" ("id") ON DELETE RESTRICT ON UPDATE CASCADE
 );
 
 -- CreateTable
@@ -113,7 +123,7 @@ CREATE TABLE "UserCommentOnComment" (
     "comment" TEXT NOT NULL,
     "parentId" TEXT NOT NULL,
     "userId" TEXT NOT NULL,
-    CONSTRAINT "UserCommentOnComment_parentId_fkey" FOREIGN KEY ("parentId") REFERENCES "Comment" ("id") ON DELETE RESTRICT ON UPDATE CASCADE,
+    CONSTRAINT "UserCommentOnComment_parentId_fkey" FOREIGN KEY ("parentId") REFERENCES "Comment" ("id") ON DELETE CASCADE ON UPDATE CASCADE,
     CONSTRAINT "UserCommentOnComment_userId_fkey" FOREIGN KEY ("userId") REFERENCES "UserModel" ("id") ON DELETE RESTRICT ON UPDATE CASCADE
 );
 
@@ -124,18 +134,21 @@ CREATE TABLE "Like" (
     "like" BOOLEAN NOT NULL,
     "likeById" TEXT NOT NULL,
     "videoId" TEXT NOT NULL,
-    CONSTRAINT "Like_likeById_fkey" FOREIGN KEY ("likeById") REFERENCES "UserModel" ("id") ON DELETE RESTRICT ON UPDATE CASCADE,
-    CONSTRAINT "Like_videoId_fkey" FOREIGN KEY ("videoId") REFERENCES "Video" ("id") ON DELETE RESTRICT ON UPDATE NO ACTION
+    CONSTRAINT "Like_likeById_fkey" FOREIGN KEY ("likeById") REFERENCES "UserModel" ("id") ON DELETE CASCADE ON UPDATE CASCADE,
+    CONSTRAINT "Like_videoId_fkey" FOREIGN KEY ("videoId") REFERENCES "Video" ("id") ON DELETE CASCADE ON UPDATE CASCADE
 );
 
 -- CreateTable
 CREATE TABLE "ReportOnVideo" (
     "videoId" TEXT NOT NULL,
     "reportId" TEXT NOT NULL,
+    "createdAt" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "userId" TEXT NOT NULL,
 
-    PRIMARY KEY ("videoId", "reportId"),
-    CONSTRAINT "ReportOnVideo_videoId_fkey" FOREIGN KEY ("videoId") REFERENCES "Video" ("id") ON DELETE RESTRICT ON UPDATE CASCADE,
-    CONSTRAINT "ReportOnVideo_reportId_fkey" FOREIGN KEY ("reportId") REFERENCES "ReportVideo" ("id") ON DELETE RESTRICT ON UPDATE CASCADE
+    PRIMARY KEY ("videoId", "reportId", "userId"),
+    CONSTRAINT "ReportOnVideo_videoId_fkey" FOREIGN KEY ("videoId") REFERENCES "Video" ("id") ON DELETE CASCADE ON UPDATE CASCADE,
+    CONSTRAINT "ReportOnVideo_reportId_fkey" FOREIGN KEY ("reportId") REFERENCES "ReportVideo" ("id") ON DELETE RESTRICT ON UPDATE CASCADE,
+    CONSTRAINT "ReportOnVideo_userId_fkey" FOREIGN KEY ("userId") REFERENCES "UserModel" ("id") ON DELETE RESTRICT ON UPDATE CASCADE
 );
 
 -- CreateTable
@@ -174,6 +187,12 @@ CREATE UNIQUE INDEX "Music_music_url_key" ON "Music"("music_url");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "SecondLevelCategory_name_key" ON "SecondLevelCategory"("name");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "Video_name_key" ON "Video"("name");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "Video_alias_key" ON "Video"("alias");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "Tag_name_key" ON "Tag"("name");

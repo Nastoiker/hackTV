@@ -15,8 +15,8 @@ export interface IUser {
   LikeCount: number
   hisLikes: number
   videos: IVideo[],
-  folowing: any[]
-  folowers: any[]
+  folowing?: any[]
+  folowers?: any[]
   Like: Like[]
   userComment: UserComment2[]
   music: any[]

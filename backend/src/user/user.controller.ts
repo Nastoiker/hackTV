@@ -129,10 +129,11 @@ export class UserController {
   remove(@Param('id') id: string) {
     return this.userService.deleteUser({id});
   }
-  @Delete(':id')
+  @Delete('/deleteVideo/:id')
   @UseGuards(JwtAuthGuard)
   DeleteVideo(@Param('id') id: string) {
-    return this.videoService.deleteVideo({id});
+    const res = id.slice(1, id.length);
+    return this.videoService.deleteVideo(res);
   }
   @UseGuards(JwtAuthGuard)
   @Post('createCommentOnUser')

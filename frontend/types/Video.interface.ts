@@ -79,6 +79,7 @@ export interface Comment {
   pictures: any
   comment: string
   writtenById: string
+  writtenBy: IUser
   videoId: string
   userComments: UserComment[]
 }

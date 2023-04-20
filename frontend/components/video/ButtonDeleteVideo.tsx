@@ -13,7 +13,7 @@ import {
 } from "@/components/ui/alert-dialog"
 import { Button } from "@/components/ui/button"
 
-export const ButtonDeleteVideo = () => {
+export const ButtonDeleteVideo = ({deleteVideo}: { deleteVideo: () => Promise<void>}) => {
   return (
     <AlertDialog>
       <AlertDialogTrigger asChild>
@@ -26,7 +26,7 @@ export const ButtonDeleteVideo = () => {
         </AlertDialogHeader>
         <AlertDialogFooter>
           <AlertDialogCancel>Отмена</AlertDialogCancel>
-          <AlertDialogAction className={"bg-red-500  p-0 border-red block"}><Button onClick={() => {}}>Удалить</Button></AlertDialogAction>
+          <AlertDialogAction className={"bg-red-500  border-red block"} onClick={deleteVideo}>Удалить</AlertDialogAction>
         </AlertDialogFooter>
       </AlertDialogContent>
     </AlertDialog>

@@ -9,22 +9,38 @@ import {Comments} from "@/components/Comment/Comments";
 import {Report} from "@/components/Report/Report";
 import View from "./View.svg";
 import {Repost} from "@/components/Repost/Repost";
-import {useGetVideosQuery, useAddVideoMutation, useDeleteVideoMutation} from "@/stores/slices/api";
+import {useGetVideosQuery} from "@/stores/slices/api";
 import CommentsModal from "@/components/Comment/commentScrollArea";
 import {LikeSimple} from "@/components/like/LikeSimple";
-import {useLikeVideoMutation} from "@/stores/slices/user.api";
+import {
+  useDeleteVideoMutation, useFollowChannelMutation,
+  useLikeVideoMutation, useUnfollowChannelMutation
+} from "@/stores/slices/user.api";
 import {useCheckAuthQuery} from "@/stores/slices/regapi";
 import {IUser} from "@/types/User.interface";
 import ProgressBar from "@/components/video/progress.video";
 
-export const Video = ({ user, type, video, className, ...props}: VideoProps): JSX.Element => {
+export const Video = ({ user, video, className, ...props}: VideoProps): JSX.Element => {
   const query = {videoId: video.id};
   const  [likeVideo, { isLoading, isError, data, error }] =  useLikeVideoMutation();
   const [countLike, setCount] = useState<number>(video.likesCount);
   const [liked, SetLike] = useState<boolean>(false);
+  const videoRef = useRef(null);
+  const [folowOnChannel] = useFollowChannelMutation();
+  const [unfollowChannel] = useUnfollowChannelMutation();
+  const [isFolowing, setIsFolowing] = useState<boolean>(false);
+  const [isPlaying, setIsPlaying] = useState<boolean>(false);
+  const [currentTime, setCurrentTime] = useState(0);
+  const [isOpen, setIsOpen] = useState<boolean>(false);
   useEffect(() => {
   console.log(user);
-    if(user) {
+
+    if(user ) {
+          const checkExist = user.folowing.find( f => f.authorId === video.authorVideo.id );
+          if(checkExist) {
+            setIsFolowing(true);
+          }
+          console.log(1);
     const checkLike = user.Like.find( v => v.videoId === video.id);
     checkLike && SetLike(true);
   }}, []);
@@ -42,11 +58,8 @@ export const Video = ({ user, type, video, className, ...props}: VideoProps): JS
     liked ? setCount(countLike - 1) : setCount(countLike + 1);
 
   };
-  const videoRef = useRef(null);
-  const [isFolowing, setIsFolowing] = useState<boolean>();
-  const [isPlaying, setIsPlaying] = useState<boolean>(false);
-  const [currentTime, setCurrentTime] = useState(0);
-  const [isOpen, setIsOpen] = useState<boolean>(false);
+
+
   useEffect(() => {
     const handleTimeUpdate = () => {
       setCurrentTime(videoRef.current?.currentTime);
@@ -70,25 +83,28 @@ export const Video = ({ user, type, video, className, ...props}: VideoProps): JS
       setIsPlaying(true);
     }
   };
-  const Folowing = async () => {
+  const Folowing = async (authorId: string) => {
+    if(!user) return;
+    user.folowers.find( f => f)
     if (isFolowing) {
+      const checkExist = user.folowing.find( f => f.authorId === video.authorVideo.id );
       setIsFolowing(false)
+      await unfollowChannel({id: checkExist.id, authorId});
       return new Promise((resolve) => {
         setTimeout(() => resolve(''), 1000)
       });
     }
     setIsFolowing(true)
+    await folowOnChannel({authorId})
     return new Promise((resolve) => {
       setTimeout(() => resolve(''), 1000)
     });
   }
   const videoPath = 'http://localhost:8000/video' + video.embed_link;
   return <div className={className}>
-
-
     <div className={"sm:flex justify-center"}>
       <div>
-        <SubscribeChannel user={user} video={video} isSubscribe={isFolowing} setIsSubscribe={() => Folowing}/>
+        <SubscribeChannel user={user} video={video}  isSubscribe={isFolowing} setIsSubscribe={() => Folowing(video.authorVideo.id)}/>
 
         <video width={350} height={350} className={"rounded-3xl"}  onClick={onVideoClick} loop ref={videoRef} src={videoPath.replace(' ' , '')}>
         </video>
@@ -100,10 +116,10 @@ export const Video = ({ user, type, video, className, ...props}: VideoProps): JS
           </p>
         </div>
         <div>
-          <ProgressBar value={currentTime} max={videoRef?.current?.duration} />
+          <ProgressBar value={currentTime} max={videoRef?.current?.duration.toString()} />
           <div className={'flex justify-between px-2'}>
 
-          <div className={"flex items-center "}><div className={"flex items-center"}><Comments setIsOpen={() => setIsOpen(s => !s)} comments={video.Comment} /> <h1 className={"mx-2"}>{video.Comment.length}</h1></div>   </div>
+          <div className={"flex items-center "}><div className={"flex items-center"}><Comments setIsOpen={() => setIsOpen(s => !s)} /> <h1 className={"mx-2"}>{video.Comment.length}</h1></div>   </div>
 
           <Repost />
         </div>

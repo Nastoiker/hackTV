@@ -23,13 +23,12 @@ export const Search = () => {
   };
   const handleChange = (e: any) => {
     const search = e.target.value;
-
   };
   return <div className={"mx-10 w-full"}>
     <form onSubmit={() => {}}>
       <img className={"absolute my-2 mx-4"} src={SearchIcon.src}  alt="searcImg"/>
 
-      <Input onChange={(e) =>  handleChange(e)} onKeyDown={handleKeyDown} placeholder=' поиск' className={"indent-16 bg-white "}/>
+      <Input onChange={(e) =>  handleChange(e)} onKeyDown={() => handleKeyDown} placeholder=' поиск' className={"indent-16 bg-white "}/>
     </form>
   </div>
 }

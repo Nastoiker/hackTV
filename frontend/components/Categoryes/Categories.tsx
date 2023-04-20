@@ -12,7 +12,7 @@ export const Categories = ({ className, ...props}: ICategoriesProps) => {
   }, [dispatch]);
   const category = useAppSelector(state => state.category.category);
   console.log(category);
-  return (<div className={"space-y-5 py-5 border-b border-r border-r-0"}>
+  return (<div className={"space-y-5 py-5 border-b  border-r-0"}>
     <h1>Категории</h1>
     {category.map( c => <CategoryButton key={c.alias} secondLevelCategory={c.secondLevelCategory} name={c.name} alias={c.alias}/>)}
   </div>)

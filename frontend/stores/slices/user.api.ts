@@ -49,10 +49,9 @@ export const UserApi = createApi({
       }),
     }),
     DeleteVideo: builder.mutation({
-      query: (commentVideo) => ({
-        url: '/deleteVideo',
+      query: (id) => ({
+        url: `/deleteVideo/:${id}`,
         method: 'DELETE',
-        body: {...commentVideo },
       }),
     }),
     CreateVideo: builder.mutation({
@@ -64,4 +63,4 @@ export const UserApi = createApi({
     }),
   }),
 });
-export const { useLikeVideoMutation, useCommentVideoMutation, useCreateVideoMutation, useFollowsQuery  } = UserApi;
+export const { useLikeVideoMutation, useCommentVideoMutation, useCreateVideoMutation, useFollowsQuery, useDeleteVideoMutation, useFollowChannelMutation, useUnfollowChannelMutation  } = UserApi;

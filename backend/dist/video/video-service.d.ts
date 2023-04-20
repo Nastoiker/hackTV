@@ -50,5 +50,5 @@ export declare class VideoService {
         where: Prisma.VideoWhereUniqueInput;
         data: Prisma.VideoUpdateInput;
     }): Promise<Video>;
-    deleteVideo(where: Prisma.VideoWhereUniqueInput): Promise<Video>;
+    deleteVideo(id: string): Promise<Video>;
 }

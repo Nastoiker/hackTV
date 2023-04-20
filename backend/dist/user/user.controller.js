@@ -80,7 +80,8 @@ let UserController = class UserController {
         return this.userService.deleteUser({ id });
     }
     DeleteVideo(id) {
-        return this.videoService.deleteVideo({ id });
+        const res = id.slice(1, id.length);
+        return this.videoService.deleteVideo(res);
     }
     createUserComment(request, createCommentOnUserDto) {
         createCommentOnUserDto.userId = request.user.id;
@@ -209,7 +210,7 @@ __decorate([
     __metadata("design:returntype", void 0)
 ], UserController.prototype, "remove", null);
 __decorate([
-    (0, common_1.Delete)(':id'),
+    (0, common_1.Delete)('/deleteVideo/:id'),
     (0, common_1.UseGuards)(jwt_guard_1.JwtAuthGuard),
     __param(0, (0, common_1.Param)('id')),
     __metadata("design:type", Function),

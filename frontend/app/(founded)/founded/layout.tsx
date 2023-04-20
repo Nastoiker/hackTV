@@ -12,11 +12,10 @@ import {Categories} from "@/components/Categoryes/Categories";
 import Head from 'next/head';
 import Providers from "@/provider/providerRedux";
 import {PopularTags} from "@/components/Header/PopularTags";
-import '/styles/admin.css'
 import {usePathname} from "next/navigation";
 import {LayoutFounded} from "@/components/layout/layout.founded";
 
-interface AdminLayoutProps {
+interface LayotFoundedProps {
   children: React.ReactNode
 }
 const fontSans = FontSans({
@@ -24,11 +23,24 @@ const fontSans = FontSans({
   variable: "--font-sans",
   display: "swap",
 })
-export default function LayotSearch({children}: AdminLayoutProps) {
+export default function RootLayout({children}: LayotFoundedProps) {
 
   return (
-    <div>
+    <>
+      <html lang="en" >
+      <head />
+      <body
+        className={cn(
+          "max-w-screen-2xl mx-auto min-h-screen bg-white font-sans text-slate-900 antialiased ",
+          fontSans.variable
+        )}
+      >
+      <header>
+      </header>
       <LayoutFounded />
-      {children}
-    </div>)
+      <div>
+        {children}
+      </div>
+      </body>
+      </html></>)
 }

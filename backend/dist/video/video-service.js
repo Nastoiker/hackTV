@@ -49,7 +49,7 @@ let VideoService = class VideoService {
             include: {
                 music: true,
                 tag: { include: { tag: true } },
-                authorVideo: true,
+                authorVideo: { include: { folowers: true } },
                 secondCategory: true,
                 likes: true,
                 Comment: { include: { writtenBy: true, userComments: { include: { user: true } } } }
@@ -125,12 +125,13 @@ let VideoService = class VideoService {
             where,
         });
     }
-    async deleteVideo(where) {
-        const video = await this.prisma.video.findFirst({ where, select: { userId: true, alias: true, embed_link: true }, });
+    async deleteVideo(id) {
+        const video = await this.prisma.video.findUnique({ where: { id } });
         const pathDelete = `uploads` + video.embed_link;
-        await (0, fs_extra_1.unlink)(app_root_path_1.path + '/' + pathDelete);
-        return this.prisma.video.delete({
-            where,
+        if (!video)
+            return null;
+        return await this.prisma.video.delete({
+            where: { id },
         });
     }
 };

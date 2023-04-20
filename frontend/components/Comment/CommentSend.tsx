@@ -28,7 +28,7 @@ export const CommentForm = ({video, user} : {  video: IVideo, user?: IUser}) => 
     <div className={"block bg-white rounded-xl p-3"}>
       { user ?
         <form action=""   className="space-y-2" onSubmit={handleSubmit(onSubmit)}>
-          <Textarea placeholder={'comment'} { ...register('comment', {required: true})} id={"comment"}/>
+          <Textarea className={"text-black"} placeholder={'comment'} { ...register('comment', {required: true})} id={"comment"}/>
 
           <div className={"flex"}><Button type={"submit"}>Оставить комментарий</Button></div>
         </form> : <Link href={'/registration'}>Войдите в аккаунт</Link>

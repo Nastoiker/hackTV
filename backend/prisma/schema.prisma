@@ -35,7 +35,7 @@ model UserModel {
   folowers Folower[] @relation("FolowChannel")
   reportsVideo ReportOnVideo[]
   Like         Like[]    @relation("LikedBy")
-  likeComment LikeComment[] @relation("userLikeComment")s
+  likeComment LikeComment[] @relation("userLikeComment")
 }
 model Folower {
  id        String    @id @default(uuid())
@@ -75,14 +75,14 @@ model SecondLevelCategory {
 }
 
 model Video {
-   name String
-   alias String
+   name String  @unique()
+   alias String  @unique()
   isActive         Boolean
   updated_at       DateTime            @updatedAt
   createdAt        DateTime            @default(now())
   id               String              @id @default(uuid())
   secondCategoryId String
-  secondCategory   SecondLevelCategory @relation("VideoOnSeconCategory", fields: [secondCategoryId], references: [id], onUpdate: NoAction)
+  secondCategory   SecondLevelCategory @relation("VideoOnSeconCategory", fields: [secondCategoryId], references: [id], onDelete: Cascade)
   tag              TagOnVideo[]
   Title            String
   duration         Int
@@ -90,13 +90,13 @@ model Video {
   embed_html       String
   share_url        String
   cover_image_url  String
-  Description String
+  Description      String
   Type             String
   width            Int
   height           Int
   Comment Comment[] @relation("CommentsVideo")
   musicId String
-  music Music    @relation("MusicVideo", fields: [musicId], references: [id])
+  music Music    @relation("MusicVideo", fields: [musicId], references: [id], onDelete: Cascade)
   share_count      Int                   @default(0)
   view_count       Int                 @default(0)
   comment_count    Int                 @default(0)
@@ -104,35 +104,19 @@ model Video {
   likes            Like[]              @relation("LikeVideos")
   userId           String
   authorVideo             UserModel           @relation("UserVideo", fields: [userId], references: [id], onDelete: Cascade)
-  ReportOnVideo    ReportOnVideo[]
+  ReportOnVideo    ReportOnVideo[]  @relation("ReportOnVideoVideo")
 }
 
-// model Brand {
-//   id                  String                  @id @default(uuid())
-//   name                String
-//   Product             Product[]               @relation("BrandDevices")
-//   secondLevelCategory BrandOnSecondCategory[]
-//   model               ModelDevice[]           @relation("BrandByModel")
-// }
 
 model TagOnVideo {
-  video   Video  @relation(fields: [videoId], references: [id])
+  video   Video  @relation(fields: [videoId], references: [id], onDelete: Cascade)
   videoId String
   tag     Tag    @relation(fields: [tagId], references: [id])
   tagId   String
   @@id([tagId, videoId])
 }
 
-// model ModelDevice {
-//   id               String              @id @default(uuid())
-//   name             String
-//   product          Product[]           @relation("ModelByProduct")
-//   secondCategoryId String
-//   brandId          String
-//   secondCategory   SecondLevelCategory @relation("ModelDevice", fields: [secondCategoryId], references: [id], onUpdate: NoAction)
-//   Comment          Comment[]           @relation("CommentProduct")
-//   brand            Brand               @relation("BrandByModel", fields: [brandId], references: [id])
-// }
+
 model Comment {
   id            String    @id @default(uuid())
   createdAt     DateTime  @default(now())
@@ -141,14 +125,15 @@ model Comment {
   comment       String
   writtenById   String
   videoId String
-  video Video @relation("CommentsVideo", fields: [videoId], references: [id])
+  video Video @relation("CommentsVideo", fields: [videoId], references: [id], onDelete: Cascade)
   writtenBy     UserModel @relation("CommentWritenBy", fields: [writtenById], references: [id], onDelete: Cascade)
+  likes LikeComment[] @relation("likesComment")
   userComments UserCommentOnComment[]
 }
 model LikeComment {
      id            String    @id @default(uuid())
       commentId String
-        comment Comment @relation(fields: [parentId], references: [id])
+        comment Comment @relation("likesComment", fields: [commentId], references: [id])
          userId String
            user UserModel @relation("userLikeComment", fields: [userId], references: [id])
 }
@@ -168,26 +153,25 @@ model Like {
   like      Boolean
   likeById  String
   videoId   String
-  likeBy    UserModel @relation("LikedBy", fields: [likeById], references: [id])
-  videos    Video     @relation("LikeVideos", fields: [videoId], references: [id], onUpdate: NoAction)
+  likeBy    UserModel @relation("LikedBy", fields: [likeById], references: [id], onDelete: Cascade)
+  videos    Video     @relation("LikeVideos", fields: [videoId], references: [id], onDelete: Cascade)
 }
 
 model ReportOnVideo {
-  video    Video       @relation(fields: [videoId], references: [id])
+  video    Video       @relation("ReportOnVideoVideo", fields: [videoId], references: [id], onDelete: Cascade)
   videoId  String
-  report   ReportVideo @relation(fields: [reportId], references: [id])
+  report   ReportVideo @relation("Reports", fields: [reportId], references: [id])
   reportId String
   createdAt DateTime  @default(now())
   userId String
   user   UserModel @relation(fields: [userId], references: [id])
   @@id([videoId, reportId, userId])
 }
-
 model ReportVideo {
   id      String          @id @default(uuid())
   code    String
   message String
-  video   ReportOnVideo[]
+  video   ReportOnVideo[] @relation("Reports")
 }
 
 model Tag {

@@ -2,7 +2,7 @@ import { ICommentsProps} from "./Comment.props";
 import {useState} from "react";
 import { motion } from 'framer-motion';
 import CommentsModal from "@/components/Comment/commentScrollArea";
-export const Comments = ({comments, setIsOpen}: ICommentsProps): JSX.Element => {
+export const Comments = ({setIsOpen}: {setIsOpen: () => void}): JSX.Element => {
 
   return <div>
     <button onClick={() => setIsOpen()} >

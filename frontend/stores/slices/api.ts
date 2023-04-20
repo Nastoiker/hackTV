@@ -24,4 +24,4 @@ export const videoHostingApi = createApi({
 
 // Export hooks for usage in function components, which are
 // auto-generated based on the defined endpoints
-export const { useGetVideosQuery, useAddVideoMutation, useDeleteVideoMutation, useTagsQuery } = videoHostingApi
+export const { useGetVideosQuery, useTagsQuery } = videoHostingApi
