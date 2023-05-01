@@ -64,6 +64,14 @@ let VideoController = class VideoController {
         dto.embed_link = UploadFolder + '/converted/' + video.originalname;
         return this.videoService.createVideo(video, dto);
     }
+    async getSearch(search) {
+        const searchValue = search.slice(1, search.length);
+        const product = await this.videoService.getSearch(searchValue);
+        if (!product) {
+            throw new common_1.NotFoundException(video_constants_1.VideoByIdNotFount);
+        }
+        return product;
+    }
     async get(id) {
         const product = await this.videoService.video({ id });
         if (!product) {
@@ -85,6 +93,15 @@ let VideoController = class VideoController {
             throw new common_1.NotFoundException('VideoByIdNotFount');
         }
         return videos;
+    }
+    async WatchVideo(request, { videoId }) {
+        var _a;
+        const user = (_a = request.user) === null || _a === void 0 ? void 0 : _a.id;
+        const product = await this.videoService.watchVideo(user, videoId);
+        if (!product) {
+            throw new common_1.NotFoundException(video_constants_1.VideoByIdNotFount);
+        }
+        return product;
     }
     async videos() {
         const product = await this.videoService.videos({});
@@ -139,6 +156,14 @@ __decorate([
     __metadata("design:returntype", Promise)
 ], VideoController.prototype, "create", null);
 __decorate([
+    (0, common_1.Get)('/search/:search'),
+    __param(0, (0, common_1.Param)('search', idValidation_pipe_1.IdValidationpipe)),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String]),
+    __metadata("design:returntype", Promise)
+], VideoController.prototype, "getSearch", null);
+__decorate([
+    (0, common_1.UseGuards)(jwt_guard_1.JwtAuthGuard),
     (0, common_1.Get)(':id'),
     __param(0, (0, common_1.Param)('id', idValidation_pipe_1.IdValidationpipe)),
     __metadata("design:type", Function),
@@ -158,6 +183,14 @@ __decorate([
     __metadata("design:paramtypes", [String]),
     __metadata("design:returntype", Promise)
 ], VideoController.prototype, "getByCategoryAlias", null);
+__decorate([
+    (0, common_1.Post)('videoWatch'),
+    __param(0, (0, common_1.Req)()),
+    __param(1, (0, common_1.Body)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object, Object]),
+    __metadata("design:returntype", Promise)
+], VideoController.prototype, "WatchVideo", null);
 __decorate([
     (0, common_1.Get)(''),
     __metadata("design:type", Function),

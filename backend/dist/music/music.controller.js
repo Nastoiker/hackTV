@@ -15,17 +15,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.MusicController = void 0;
 const common_1 = require("@nestjs/common");
 const music_service_1 = require("./music.service");
-const create_music_dto_1 = require("./dto/create-music.dto");
-const platform_express_1 = require("@nestjs/platform-express");
-const jwt_guard_1 = require("../auth/guards/jwt.guard");
 let MusicController = class MusicController {
     constructor(musicService) {
         this.musicService = musicService;
-    }
-    create(query, music, createMusicDto) {
-        console.log('user' + query.user);
-        createMusicDto.userId = query.user.id;
-        return this.musicService.create(music, createMusicDto);
     }
     findAll() {
         return this.musicService.findAll();
@@ -37,17 +29,6 @@ let MusicController = class MusicController {
         return this.musicService.remove(id);
     }
 };
-__decorate([
-    (0, common_1.UseGuards)(jwt_guard_1.JwtAuthGuard),
-    (0, common_1.Post)('create'),
-    (0, common_1.UseInterceptors)((0, platform_express_1.FileInterceptor)('music')),
-    __param(0, (0, common_1.Req)()),
-    __param(1, (0, common_1.UploadedFile)()),
-    __param(2, (0, common_1.Body)()),
-    __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Object, Object, create_music_dto_1.CreateMusicDto]),
-    __metadata("design:returntype", void 0)
-], MusicController.prototype, "create", null);
 __decorate([
     (0, common_1.Get)(),
     __metadata("design:type", Function),

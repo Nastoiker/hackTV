@@ -35,6 +35,48 @@ let VideoService = class VideoService {
             where: userWhereUniqueInput,
         });
     }
+    async getSimilarUsers(userId) {
+        const userViewed = await this.prisma.historyWatching.findMany({ where: { userId },
+            select: { videoId: true }
+        });
+        const users = await this.prisma.userModel.findMany({ where: { NOT: { id: userId } }, include: { watching: true }
+        });
+        const usersWithMatchingVideos = users.filter((user) => user.id !== userId).filter((user) => this.some(user.watching, (v) => userViewed.includes(v)));
+        return usersWithMatchingVideos;
+    }
+    some(arr, callback) {
+        for (let i = 0; i < arr.length; i++) {
+            if (callback(arr[i])) {
+                return true;
+            }
+        }
+        return false;
+    }
+    async watchVideo(userId, videoId) {
+        return await this.prisma.historyWatching.create({
+            data: {
+                userId,
+                videoId
+            }
+        });
+    }
+    async videosRecom(userId) {
+        const user = await this.prisma.historyWatching.findMany({ where: { userId },
+            select: { videoId: true }
+        });
+        const video = await this.prisma.video.findMany({ where: { id: { in: user.map(v => v.videoId) } } });
+        return this.prisma.video.findMany({
+            include: {
+                music: true,
+                tag: { include: { tag: true } },
+                authorVideo: { include: { folowers: true } },
+                secondCategory: true,
+                likes: true,
+                Comment: { include: { writtenBy: true, userComments: { include: { user: true } } } },
+                watchers: true,
+            }
+        });
+    }
     async reportVideo(report) {
         return this.prisma.reportOnVideo.create({ data: Object.assign({}, report) });
     }
@@ -52,7 +94,8 @@ let VideoService = class VideoService {
                 authorVideo: { include: { folowers: true } },
                 secondCategory: true,
                 likes: true,
-                Comment: { include: { writtenBy: true, userComments: { include: { user: true } } } }
+                Comment: { include: { writtenBy: true, userComments: { include: { user: true } } } },
+                watchers: true,
             }
         });
     }
@@ -78,7 +121,8 @@ let VideoService = class VideoService {
                         authorVideo: true,
                         secondCategory: true,
                         likes: true,
-                        Comment: { include: { writtenBy: true, userComments: { include: { user: true } } } }
+                        Comment: { include: { writtenBy: true, userComments: { include: { user: true } } } },
+                        watchers: true,
                     } }
             }
         });
@@ -117,6 +161,20 @@ let VideoService = class VideoService {
         console.log(videoDto);
         const { name, alias, embed_link, userId, share_count, Type, embed_html, duration, musicId, isActive, cover_image_url, Description, height, width, Title, share_url, secondCategoryId } = videoDto;
         return this.prisma.video.create({ data: { name, share_count, embed_html, duration, musicId, alias, embed_link, userId, isActive, Description, cover_image_url, height, Type, width, secondCategoryId, Title, share_url, tag: { create: [...setTags] } } });
+    }
+    async getSearch(value) {
+        return this.prisma.video.findMany({
+            where: { name: { startsWith: value } },
+            include: {
+                music: true,
+                tag: { include: { tag: true } },
+                authorVideo: { include: { folowers: true } },
+                secondCategory: true,
+                likes: true,
+                Comment: { include: { writtenBy: true, userComments: { include: { user: true } } } },
+                watchers: true,
+            }
+        });
     }
     async updateVideo(params) {
         const { where, data } = params;

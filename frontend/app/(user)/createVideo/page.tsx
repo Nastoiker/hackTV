@@ -55,7 +55,7 @@ export default function IndexPage() {
   return <div>
     <form action="" className={"space-y-7 space-x-5 xl:flex items-center justify-around my-20"} onSubmit={handleSubmit(onSubmit)}>
       <div className={"space-y-12  p-5"}>
-        <div className={" outline-dashed outline-2 p-9 -outline-offset-2 w-full"}>
+          <div className={" outline-dashed outline-2 p-9 -outline-offset-2 w-full"}>
           <h1>Видео</h1>
           <div className={"bg-gray-200 p-9 m-9"} onDrop={onDrop} onDragOver={handleDragOver}>
             {

@@ -14,6 +14,7 @@ const class_validator_1 = require("class-validator");
 class CreateMusicDto {
     constructor() {
         this.userId = '';
+        this.img = '';
         this.music_url = '';
     }
 }
@@ -32,6 +33,6 @@ __decorate([
 __decorate([
     (0, class_validator_1.IsString)(),
     __metadata("design:type", String)
-], CreateMusicDto.prototype, "music_url", void 0);
+], CreateMusicDto.prototype, "img", void 0);
 exports.CreateMusicDto = CreateMusicDto;
 //# sourceMappingURL=create-music.dto.js.map

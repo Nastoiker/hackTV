@@ -26,6 +26,7 @@ import {VideoReportDto} from "./dto/report-video.dto";
 import {FileInterceptor} from "@nestjs/platform-express";
 import {path} from "app-root-path";
 import {unlink, writeFile} from "fs-extra";
+import {AuthService} from "../auth/auth.service";
 
 
 
@@ -80,6 +81,17 @@ export class VideoController {
         // возвращаем URL конвертированного файла
         return this.videoService.createVideo(video, dto);
     }
+    @Get('/search/:search')
+    async getSearch(@Param('search', IdValidationpipe) search: string) {
+        const searchValue = search.slice(1, search.length);
+
+        const product = await this.videoService.getSearch(searchValue);
+        if (!product) {
+            throw new NotFoundException(VideoByIdNotFount);
+        }
+        return product;
+    }
+    @UseGuards(JwtAuthGuard)
     @Get(':id')
     async get(@Param('id', IdValidationpipe) id: string) {
         const product = await this.videoService.video({id});
@@ -106,6 +118,17 @@ export class VideoController {
         }
         return videos;
     }
+    @Post('videoWatch')
+    async WatchVideo(@Req() request,@Body() {videoId}: {videoId: string} ) {
+        const user = request.user?.id
+        const product = await this.videoService.watchVideo(user, videoId);
+        if (!product) {
+            throw new NotFoundException(VideoByIdNotFount);
+        }
+
+        return product;
+    }
+
     @Get('')
     async videos() {
         const product = await this.videoService.videos( {});

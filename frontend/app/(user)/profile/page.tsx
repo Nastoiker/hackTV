@@ -7,6 +7,8 @@ import {useGetVideosQuery} from "@/stores/slices/api";
 import {LayoutVideo} from "@/components/Layot.video";
 import Link from "next/link";
 import {redirect} from "next/navigation";
+import Profile from "@/components/user/Profile.svg";
+import {LayoutMusic} from "@/components/Layout.music";
 
 export default function IndexPage() {
   const {data}  = useCheckAuthQuery({});
@@ -16,8 +18,8 @@ export default function IndexPage() {
     {
       data ? <div className={"space-y-5"}>
         <div className={"sm:flex sm:justify-between"}>
-          <div className={" flex space-x-8 max-[638px]:justify-between max-[638px]: text-end"}>
-            <img className={"rounded-full w-40 h-40"} width={70}  height={70} alt={'userSubs'} src={'http://localhost:8000/user' + data.avatar}/>
+          <div className={" flex space-x-8 max-[638px]:justify-between max-[638px]: text-start"}>
+              <img className={"rounded-full w-40 h-40"} width={70}  height={70} alt={'userSubs'} src={(data.avatar?.length > 0 ? 'http://localhost:8000/user' + data.avatar : Profile.src )}/>
             <div className={"my-5"}>
               <h1>{data.login}</h1>
               <h1>{data.phone}</h1>
@@ -30,9 +32,12 @@ export default function IndexPage() {
           </div>
         </div>
         <div className={""}>
-          <Button onClick={() => redirect('/editProfile')}>
-            Изменить профиль
-          </Button>
+          <Link href={'/editProfile'}>
+            <Button >
+              Изменить профиль
+            </Button>
+          </Link>
+
           <Link className={"transition-all  p-3 rounded-md hover:bg-blue-100"} href={'createVideo'}>
            Создать видео
           </Link>
@@ -41,9 +46,13 @@ export default function IndexPage() {
           <TabsList>
             <TabsTrigger value="video" ><h1 className={"text-white"}>Ваши видео</h1></TabsTrigger>
             <TabsTrigger value="likes" className={"text-white"}><h1 className={"text-white"}>Ваши лайки</h1></TabsTrigger>
+            <TabsTrigger value="music" ><h1 className={"text-white"}>Ваша музыка</h1></TabsTrigger>
           </TabsList>
           <TabsContent  value="video">
             <LayoutVideo videos={data.videos} user={data}/>
+          </TabsContent>
+          <TabsContent  value="music">
+            <LayoutMusic musics={data.music} />
           </TabsContent>
           <TabsContent value="likes">
             <LayoutVideo user={data} videos={data.Like?.map(l => l.videos)}/>

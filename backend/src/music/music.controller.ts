@@ -18,14 +18,6 @@ import {JwtAuthGuard} from "../auth/guards/jwt.guard";
 @Controller('music')
 export class MusicController {
   constructor(private readonly musicService: MusicService) {}
-  @UseGuards(JwtAuthGuard)
-  @Post('create')
-  @UseInterceptors(FileInterceptor('music'))
-  create(@Req() query, @UploadedFile() music: Express.Multer.File, @Body() createMusicDto: CreateMusicDto) {
-    console.log('user' +  query.user);
-    createMusicDto.userId = query.user.id;
-    return this.musicService.create(music, createMusicDto);
-  }
 
   @Get()
   findAll() {

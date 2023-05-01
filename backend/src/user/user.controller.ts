@@ -8,28 +8,43 @@ import {
   Delete,
   UploadedFile,
   ParseFilePipeBuilder,
-  HttpStatus, UseInterceptors, UseGuards, Query, Req, BadRequestException
+  HttpStatus, UseInterceptors, UseGuards, Query, Req, BadRequestException, NotFoundException, UploadedFiles
 } from '@nestjs/common';
 import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
-import {FileInterceptor} from "@nestjs/platform-express";
+import {AnyFilesInterceptor, FileInterceptor, FilesInterceptor} from "@nestjs/platform-express";
 import {JwtAuthGuard} from "../auth/guards/jwt.guard";
 import {CreateCommentDto} from "./dto/createComment-dto";
 import {LikeCommentDto} from "./dto/likeComment-dto";
 import {VideoService} from "../video/video-service";
 import {CreateCommentOnUserDto} from "../comment/dto/create-comment.dto";
 import {CommentService} from "../comment/comment.service";
+import {IdValidationpipe} from "../pipes/idValidation.pipe";
+import {VideoByIdNotFount} from "../video/video.constants";
+import {MusicService} from "../music/music.service";
+import {CreateMusicDto} from "../music/dto/create-music.dto";
 
 @Controller('user')
 export class UserController {
-  constructor(private readonly userService: UserService, private readonly videoService: VideoService, private  readonly commentService: CommentService) {}
+  constructor(private readonly userService: UserService, private readonly videoService: VideoService, private  readonly commentService: CommentService, private readonly musicService: MusicService) {}
 
   // @Post('/createComment')
   // @UseGuards(JwtAuthGuard)
   // createComment(@Body() commentDto: CreateCommentDto) {
   //   return this.userService.createComment(commentDto);
   // }
+  @UseGuards(JwtAuthGuard)
+  @Post('createMusic')
+  @UseInterceptors(
+      AnyFilesInterceptor()
+  )
+  createMusic(@Req() query, @UploadedFiles() files: Array<Express.Multer.File>, @Body() createMusicDto: CreateMusicDto) {
+    console.log('user' +  query.user);
+    createMusicDto.userId = query.user.id;
+    return this.musicService.create(files[0], files[1],createMusicDto);
+  }
+
   @UseGuards(JwtAuthGuard)
   @Post('createComment')
   createComment(@Req() request, @Body() createCommentDto: CreateCommentDto) {
@@ -46,6 +61,18 @@ export class UserController {
   //   }
   //   return folows;
   // }
+  @UseGuards(JwtAuthGuard)
+  @Get('recomendation')
+  async videosRecom(@Req() request ) {
+    const user = request.user.id
+    const product = await this.videoService.videosRecom(user);
+    if (!product) {
+      throw new NotFoundException(VideoByIdNotFount);
+    }
+
+    return product;
+  }
+
   @Get('follows')
   @UseGuards(JwtAuthGuard)
   async getFollowing(@Req() req) {
@@ -62,7 +89,17 @@ export class UserController {
   likeComment(@Body() likeCommentDto: LikeCommentDto) {
       return this.userService.likeComment(likeCommentDto);
   }
+  @UseGuards(JwtAuthGuard)
+  @Post('videoWatch')
+  async WatchVideo(@Req() request, @Body() {videoId}: {videoId: string} ) {
+    const user = request.user?.id
+    const product = await this.videoService.watchVideo(user, videoId);
+    if (!product) {
+      throw new NotFoundException(VideoByIdNotFount);
+    }
 
+    return product;
+  }
   @Post('createTag')
   @UseGuards(JwtAuthGuard)
   createTag(@Body() dto: {name: string}) {
@@ -80,7 +117,7 @@ export class UserController {
   ) avatar: Express.Multer.File) {
     return this.userService.updateAvatar(query.user, avatar);
   }
-  @Post('updateProfile')
+  @Patch('updateProfile')
   @UseGuards(JwtAuthGuard)
   @UseInterceptors(FileInterceptor('file'))
   async updateProfile(@Req() query, @UploadedFile(
@@ -140,6 +177,15 @@ export class UserController {
   createUserComment(@Req() request, @Body() createCommentOnUserDto: CreateCommentOnUserDto) {
     createCommentOnUserDto.userId = request.user.id
     return this.commentService.createCommentOnUserDto(createCommentOnUserDto);
+  }
+  @Get('/search/:search')
+  async getSearch(@Param('search', IdValidationpipe) search: string) {
+    const searchValue = search.slice(1, search.length);
+    const product = await this.userService.getSearch(searchValue);
+    if (!product) {
+      throw new NotFoundException(VideoByIdNotFount);
+    }
+    return product;
   }
   @UseGuards(JwtAuthGuard)
   @Post('createComment')

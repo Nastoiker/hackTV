@@ -1,6 +1,6 @@
 import {Injectable} from '@nestjs/common';
 import {UpdateUserDto} from './dto/update-user.dto';
-import {Comment, Folower, Like, Prisma, UserModel} from '@prisma/client';
+import {Comment, Folower, Like, Prisma, UserModel, Video} from '@prisma/client';
 import {PrismaService} from "../prisma/prisma-service";
 import {unlink, writeFile} from "fs-extra";
 import {path} from "app-root-path";
@@ -17,6 +17,7 @@ export class UserService {
     return this.prisma.userModel.findUnique({
       where: userWhereUniqueInput,
     include: { Comment: true, folowers: true, folowing: true, videos: { include: { music: true,
+          watchers: true,
           tag: { include: {tag: true}},
           authorVideo: true,
           secondCategory: true,
@@ -28,6 +29,18 @@ export class UserService {
     return await this.prisma.comment.create({
       data: {...createVideoDto}
     });
+  }
+  async getSearch(value: string): Promise<UserModel[]> {
+    return this.prisma.userModel.findMany({
+          where: { login: {startsWith: value }},
+      include: { Comment: true, folowers: true, folowing: true, videos: { include: { music: true,
+            tag: { include: {tag: true}},
+            authorVideo: true,
+            secondCategory: true,
+            likes: { include: { videos: true}},
+            Comment: { include: { writtenBy: true, userComments: { include: {user: true} }}}}}, music: true  }
+        },
+    );
   }
   async likeComment(likeComment: LikeCommentDto): Promise<Comment> {
     const checkExist = await this.prisma.comment.findUnique({
@@ -57,6 +70,7 @@ export class UserService {
               include: {
                 videos: {
                   include: {
+                    watchers: true,
                     music: true,
                     tag: {include: {tag: true}},
                     authorVideo: true,
@@ -67,6 +81,7 @@ export class UserService {
               }
             }, videos: {
               include: {
+                watchers: true,
                 music: true,
                 tag: {include: {tag: true}},
                 authorVideo: true,

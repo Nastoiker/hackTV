@@ -22,6 +22,7 @@ let UserService = class UserService {
         return this.prisma.userModel.findUnique({
             where: userWhereUniqueInput,
             include: { Comment: true, folowers: true, folowing: true, videos: { include: { music: true,
+                        watchers: true,
                         tag: { include: { tag: true } },
                         authorVideo: true,
                         secondCategory: true,
@@ -32,6 +33,17 @@ let UserService = class UserService {
     async createComment(createVideoDto) {
         return await this.prisma.comment.create({
             data: Object.assign({}, createVideoDto)
+        });
+    }
+    async getSearch(value) {
+        return this.prisma.userModel.findMany({
+            where: { login: { startsWith: value } },
+            include: { Comment: true, folowers: true, folowing: true, videos: { include: { music: true,
+                        tag: { include: { tag: true } },
+                        authorVideo: true,
+                        secondCategory: true,
+                        likes: { include: { videos: true } },
+                        Comment: { include: { writtenBy: true, userComments: { include: { user: true } } } } } }, music: true }
         });
     }
     async likeComment(likeComment) {
@@ -61,6 +73,7 @@ let UserService = class UserService {
                             include: {
                                 videos: {
                                     include: {
+                                        watchers: true,
                                         music: true,
                                         tag: { include: { tag: true } },
                                         authorVideo: true,
@@ -71,6 +84,7 @@ let UserService = class UserService {
                             }
                         }, videos: {
                             include: {
+                                watchers: true,
                                 music: true,
                                 tag: { include: { tag: true } },
                                 authorVideo: true,

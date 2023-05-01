@@ -2,7 +2,7 @@ import {cn} from "@/lib/utils";
 import { Inter as FontSans } from "@next/font/google"
 import {ThemeProvider} from "next-themes";
 import {SiteHeader} from "@/components/site-header";
-import "@/styles/globals.css"
+  import "@/styles/globals.css"
 import {Search} from "@/components/search/search";
 import {Header} from "@/components/Header/Header";
 import {IVideo} from "@/types/Video.interface";

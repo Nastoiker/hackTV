@@ -8,9 +8,12 @@ import {unlink, writeFile} from "fs-extra";
 export class MusicService {
   constructor(private readonly prismaService: PrismaService) {
   }
-  async create( file: Express.Multer.File ,createMusicDto: CreateMusicDto) {
+  async create( file: Express.Multer.File, img: Express.Multer.File  ,createMusicDto: CreateMusicDto) {
     const uploadFolder = 'uploads/users/' + createMusicDto.userId;
+    const extensionImg = img.originalname.split('.');
+    createMusicDto.img = uploadFolder + '/music/' + createMusicDto.alias + '.' + extensionImg[extensionImg.length-1]
     const extension = file.originalname.split('.');
+    await writeFile(uploadFolder + '/music/' + createMusicDto.alias + '.' + extensionImg[extensionImg.length-1], img.buffer)
     createMusicDto.music_url = uploadFolder + '/music/' + createMusicDto.alias + '.' + extension[extension.length-1]
     await writeFile(uploadFolder + '/music/' + createMusicDto.alias + '.' + extension[extension.length-1], file.buffer)
     return this.prismaService.music.create({
@@ -20,7 +23,10 @@ export class MusicService {
 
   async findAll() {
     return this.prismaService.music.findMany({
-      where:{}
+      where:{},
+      include: {
+        videos: true,
+      },
     });
   }
 

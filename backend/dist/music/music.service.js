@@ -18,9 +18,12 @@ let MusicService = class MusicService {
     constructor(prismaService) {
         this.prismaService = prismaService;
     }
-    async create(file, createMusicDto) {
+    async create(file, img, createMusicDto) {
         const uploadFolder = 'uploads/users/' + createMusicDto.userId;
+        const extensionImg = img.originalname.split('.');
+        createMusicDto.img = uploadFolder + '/music/' + createMusicDto.alias + '.' + extensionImg[extensionImg.length - 1];
         const extension = file.originalname.split('.');
+        await (0, fs_extra_1.writeFile)(uploadFolder + '/music/' + createMusicDto.alias + '.' + extensionImg[extensionImg.length - 1], img.buffer);
         createMusicDto.music_url = uploadFolder + '/music/' + createMusicDto.alias + '.' + extension[extension.length - 1];
         await (0, fs_extra_1.writeFile)(uploadFolder + '/music/' + createMusicDto.alias + '.' + extension[extension.length - 1], file.buffer);
         return this.prismaService.music.create({
@@ -29,7 +32,10 @@ let MusicService = class MusicService {
     }
     async findAll() {
         return this.prismaService.music.findMany({
-            where: {}
+            where: {},
+            include: {
+                videos: true,
+            },
         });
     }
     findOne(id) {

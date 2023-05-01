@@ -30,8 +30,14 @@ export interface IVideo {
   secondCategory: SecondCategory
   likes: any[]
   Comment: Comment[]
+  watchers: IWatch[]
 }
-
+export interface IWatch {
+  id: string,
+  createdAt: string,
+  videoId: string,
+  userId: string
+}
 export interface Music {
   id: string
   name: string

@@ -85,7 +85,7 @@ export const VideoPreview = ({ video, user, className, ...props}: VideoProps): J
 
     <div className={"sm:flex justify-center"}>
       <div>
-        <SubscribeChannel user={user} video={video} deleteVideo={() => {}} isSubscribe={isFolowing} setIsSubscribe={() => Folowing}/>
+        <SubscribeChannel user={user} video={video} isSubscribe={isFolowing} setIsSubscribe={() => Folowing}/>
 
         <video width={350} height={350} className={"rounded-3xl"}  onClick={onVideoClick} loop ref={videoRef} src={videoPath.replace(' ' , '')}>
         </video>

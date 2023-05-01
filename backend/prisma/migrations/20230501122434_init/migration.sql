@@ -16,6 +16,16 @@ CREATE TABLE "UserModel" (
 );
 
 -- CreateTable
+CREATE TABLE "HistoryWatching" (
+    "id" TEXT NOT NULL PRIMARY KEY,
+    "createdAt" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "videoId" TEXT NOT NULL,
+    "userId" TEXT,
+    CONSTRAINT "HistoryWatching_videoId_fkey" FOREIGN KEY ("videoId") REFERENCES "Video" ("id") ON DELETE CASCADE ON UPDATE CASCADE,
+    CONSTRAINT "HistoryWatching_userId_fkey" FOREIGN KEY ("userId") REFERENCES "UserModel" ("id") ON DELETE SET NULL ON UPDATE NO ACTION
+);
+
+-- CreateTable
 CREATE TABLE "Folower" (
     "id" TEXT NOT NULL PRIMARY KEY,
     "createdAt" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -32,6 +42,7 @@ CREATE TABLE "Music" (
     "name" TEXT NOT NULL,
     "userId" TEXT NOT NULL,
     "alias" TEXT NOT NULL,
+    "img" TEXT NOT NULL,
     "music_url" TEXT NOT NULL,
     CONSTRAINT "Music_userId_fkey" FOREIGN KEY ("userId") REFERENCES "UserModel" ("id") ON DELETE RESTRICT ON UPDATE CASCADE
 );
@@ -168,6 +179,9 @@ CREATE TABLE "Tag" (
 CREATE UNIQUE INDEX "UserModel_email_key" ON "UserModel"("email");
 
 -- CreateIndex
+CREATE UNIQUE INDEX "HistoryWatching_userId_key" ON "HistoryWatching"("userId");
+
+-- CreateIndex
 CREATE UNIQUE INDEX "Folower_userId_key" ON "Folower"("userId");
 
 -- CreateIndex
@@ -175,9 +189,6 @@ CREATE UNIQUE INDEX "Folower_authorId_key" ON "Folower"("authorId");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "Music_name_key" ON "Music"("name");
-
--- CreateIndex
-CREATE UNIQUE INDEX "Music_userId_key" ON "Music"("userId");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "Music_alias_key" ON "Music"("alias");

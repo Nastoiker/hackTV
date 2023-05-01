@@ -23,15 +23,33 @@ const likeComment_dto_1 = require("./dto/likeComment-dto");
 const video_service_1 = require("../video/video-service");
 const create_comment_dto_1 = require("../comment/dto/create-comment.dto");
 const comment_service_1 = require("../comment/comment.service");
+const idValidation_pipe_1 = require("../pipes/idValidation.pipe");
+const video_constants_1 = require("../video/video.constants");
+const music_service_1 = require("../music/music.service");
+const create_music_dto_1 = require("../music/dto/create-music.dto");
 let UserController = class UserController {
-    constructor(userService, videoService, commentService) {
+    constructor(userService, videoService, commentService, musicService) {
         this.userService = userService;
         this.videoService = videoService;
         this.commentService = commentService;
+        this.musicService = musicService;
+    }
+    createMusic(query, files, createMusicDto) {
+        console.log('user' + query.user);
+        createMusicDto.userId = query.user.id;
+        return this.musicService.create(files[0], files[1], createMusicDto);
     }
     createComment(request, createCommentDto) {
         createCommentDto.writtenById = request.user.id;
         return this.commentService.createCommentDto(createCommentDto);
+    }
+    async videosRecom(request) {
+        const user = request.user.id;
+        const product = await this.videoService.videosRecom(user);
+        if (!product) {
+            throw new common_1.NotFoundException(video_constants_1.VideoByIdNotFount);
+        }
+        return product;
     }
     async getFollowing(req) {
         const userId = req.user.id;
@@ -43,6 +61,15 @@ let UserController = class UserController {
     }
     likeComment(likeCommentDto) {
         return this.userService.likeComment(likeCommentDto);
+    }
+    async WatchVideo(request, { videoId }) {
+        var _a;
+        const user = (_a = request.user) === null || _a === void 0 ? void 0 : _a.id;
+        const product = await this.videoService.watchVideo(user, videoId);
+        if (!product) {
+            throw new common_1.NotFoundException(video_constants_1.VideoByIdNotFount);
+        }
+        return product;
     }
     createTag(dto) {
         return this.userService.createTag(dto.name);
@@ -87,11 +114,30 @@ let UserController = class UserController {
         createCommentOnUserDto.userId = request.user.id;
         return this.commentService.createCommentOnUserDto(createCommentOnUserDto);
     }
+    async getSearch(search) {
+        const searchValue = search.slice(1, search.length);
+        const product = await this.userService.getSearch(searchValue);
+        if (!product) {
+            throw new common_1.NotFoundException(video_constants_1.VideoByIdNotFount);
+        }
+        return product;
+    }
     createVideo(request, createCommentDto) {
         createCommentDto.writtenById = request.user.id;
         return this.commentService.createCommentDto(createCommentDto);
     }
 };
+__decorate([
+    (0, common_1.UseGuards)(jwt_guard_1.JwtAuthGuard),
+    (0, common_1.Post)('createMusic'),
+    (0, common_1.UseInterceptors)((0, platform_express_1.AnyFilesInterceptor)()),
+    __param(0, (0, common_1.Req)()),
+    __param(1, (0, common_1.UploadedFiles)()),
+    __param(2, (0, common_1.Body)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object, Array, create_music_dto_1.CreateMusicDto]),
+    __metadata("design:returntype", void 0)
+], UserController.prototype, "createMusic", null);
 __decorate([
     (0, common_1.UseGuards)(jwt_guard_1.JwtAuthGuard),
     (0, common_1.Post)('createComment'),
@@ -101,6 +147,14 @@ __decorate([
     __metadata("design:paramtypes", [Object, createComment_dto_1.CreateCommentDto]),
     __metadata("design:returntype", void 0)
 ], UserController.prototype, "createComment", null);
+__decorate([
+    (0, common_1.UseGuards)(jwt_guard_1.JwtAuthGuard),
+    (0, common_1.Get)('recomendation'),
+    __param(0, (0, common_1.Req)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object]),
+    __metadata("design:returntype", Promise)
+], UserController.prototype, "videosRecom", null);
 __decorate([
     (0, common_1.Get)('follows'),
     (0, common_1.UseGuards)(jwt_guard_1.JwtAuthGuard),
@@ -117,6 +171,15 @@ __decorate([
     __metadata("design:paramtypes", [likeComment_dto_1.LikeCommentDto]),
     __metadata("design:returntype", void 0)
 ], UserController.prototype, "likeComment", null);
+__decorate([
+    (0, common_1.UseGuards)(jwt_guard_1.JwtAuthGuard),
+    (0, common_1.Post)('videoWatch'),
+    __param(0, (0, common_1.Req)()),
+    __param(1, (0, common_1.Body)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object, Object]),
+    __metadata("design:returntype", Promise)
+], UserController.prototype, "WatchVideo", null);
 __decorate([
     (0, common_1.Post)('createTag'),
     (0, common_1.UseGuards)(jwt_guard_1.JwtAuthGuard),
@@ -140,7 +203,7 @@ __decorate([
     __metadata("design:returntype", Promise)
 ], UserController.prototype, "updateAvatar", null);
 __decorate([
-    (0, common_1.Post)('updateProfile'),
+    (0, common_1.Patch)('updateProfile'),
     (0, common_1.UseGuards)(jwt_guard_1.JwtAuthGuard),
     (0, common_1.UseInterceptors)((0, platform_express_1.FileInterceptor)('file')),
     __param(0, (0, common_1.Req)()),
@@ -227,6 +290,13 @@ __decorate([
     __metadata("design:returntype", void 0)
 ], UserController.prototype, "createUserComment", null);
 __decorate([
+    (0, common_1.Get)('/search/:search'),
+    __param(0, (0, common_1.Param)('search', idValidation_pipe_1.IdValidationpipe)),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String]),
+    __metadata("design:returntype", Promise)
+], UserController.prototype, "getSearch", null);
+__decorate([
     (0, common_1.UseGuards)(jwt_guard_1.JwtAuthGuard),
     (0, common_1.Post)('createComment'),
     __param(0, (0, common_1.Req)()),
@@ -237,7 +307,7 @@ __decorate([
 ], UserController.prototype, "createVideo", null);
 UserController = __decorate([
     (0, common_1.Controller)('user'),
-    __metadata("design:paramtypes", [user_service_1.UserService, video_service_1.VideoService, comment_service_1.CommentService])
+    __metadata("design:paramtypes", [user_service_1.UserService, video_service_1.VideoService, comment_service_1.CommentService, music_service_1.MusicService])
 ], UserController);
 exports.UserController = UserController;
 //# sourceMappingURL=user.controller.js.map

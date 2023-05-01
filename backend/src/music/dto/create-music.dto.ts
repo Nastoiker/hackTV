@@ -11,5 +11,6 @@ export class CreateMusicDto {
     @IsString({ message: 'Алиас должен быть строкой' })
     alias: string;
     @IsString()
+    img: string = '';
     music_url: string = '';
 }

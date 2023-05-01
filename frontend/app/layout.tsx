@@ -43,7 +43,7 @@ export default function RootLayout({children}: RootLayoutProps) {
 
 
 
-      <header className={"  w-full z-40  fixed top-0"}>
+      <header className={"w-full z-40  fixed top-0"}>
         <Header />
       </header>
       {/*<header className={"z-40 right-44 fixed left-44"}>*/}

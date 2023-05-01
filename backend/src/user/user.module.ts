@@ -6,6 +6,7 @@ import {ServeStaticModule} from "@nestjs/serve-static";
 import {path} from "app-root-path";
 import {VideoService} from "../video/video-service";
 import {CommentService} from "../comment/comment.service";
+import {MusicService} from "../music/music.service";
 
 @Module({
   imports: [ServeStaticModule.forRoot({
@@ -13,6 +14,6 @@ import {CommentService} from "../comment/comment.service";
     serveRoot: '/user',
   }),],
   controllers: [UserController],
-  providers: [UserService, PrismaService, VideoService, CommentService],
+  providers: [UserService, PrismaService, VideoService, CommentService, MusicService],
 })
 export class UserModule {}

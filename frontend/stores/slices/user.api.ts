@@ -21,6 +21,13 @@ export const UserApi = createApi({
       }),
 
     }),
+    EditProfile: builder.mutation({
+      query: (profileEdit) => ({
+        url: '/updateProfile',
+        method: 'PATCH',
+        body: {...profileEdit },
+      }),
+    }),
     CommentVideo: builder.mutation({
       query: (commentVideo) => ({
         url: '/createComment',
@@ -54,6 +61,26 @@ export const UserApi = createApi({
         method: 'DELETE',
       }),
     }),
+    WatchVideo: builder.mutation({
+      query: (videoId) => ({
+        url: `/videoWatch`,
+        method: 'post',
+        body: videoId,
+      }),
+    }),
+    RecVideo: builder.query({
+      query: () => ({
+        url: `/recomendation`,
+        method: 'get',
+      }),
+    }),
+    CreateMusic: builder.mutation({
+      query: (createMusic) => ({
+        url: `/createMusic`,
+        method: 'post',
+        body: createMusic,
+      }),
+    }),
     CreateVideo: builder.mutation({
       query: (commentVideo) => ({
         url: '/createVideo',
@@ -63,4 +90,4 @@ export const UserApi = createApi({
     }),
   }),
 });
-export const { useLikeVideoMutation, useCommentVideoMutation, useCreateVideoMutation, useFollowsQuery, useDeleteVideoMutation, useFollowChannelMutation, useUnfollowChannelMutation  } = UserApi;
+export const { useLikeVideoMutation, useRecVideoQuery, useWatchVideoMutation ,useEditProfileMutation, useCommentVideoMutation, useCreateVideoMutation, useFollowsQuery, useCreateMusicMutation, useDeleteVideoMutation, useFollowChannelMutation, useUnfollowChannelMutation  } = UserApi;

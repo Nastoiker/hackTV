@@ -10,6 +10,7 @@ import {useCommentVideoMutation, useLikeVideoMutation} from "@/stores/slices/use
 import {IUser} from "@/types/User.interface";
 import Link from "next/link";
 import {IVideo} from "@/types/Video.interface";
+import {useEffect} from "react";
 interface ISendComment {
   videoId: string;
   comment: string;
@@ -17,7 +18,7 @@ interface ISendComment {
 export const CommentForm = ({video, user} : {  video: IVideo, user?: IUser}) => {
   const { register, control, handleSubmit, formState: {errors}, reset } = useForm<ISendComment>();
   const  [commentVideo, { isLoading, isError, data, error }] =  useCommentVideoMutation();
-
+  useEffect(() => {}, [data]);
   const onSubmit = async (formData: ISendComment) => {
     formData.videoId = video.id;
     const result = await commentVideo(formData);

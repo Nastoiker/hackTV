@@ -55,6 +55,7 @@ let AuthService = class AuthService {
                         videos: {
                             include: {
                                 music: true,
+                                watchers: true,
                                 tag: { include: { tag: true } },
                                 authorVideo: true,
                                 secondCategory: true,
@@ -65,12 +66,16 @@ let AuthService = class AuthService {
                 }, videos: {
                     include: {
                         music: true,
+                        watchers: true,
                         tag: { include: { tag: true } },
                         authorVideo: true,
                         secondCategory: true,
                         Comment: { include: { writtenBy: true, userComments: { include: { user: true } } } }
                     }
-                }, folowing: true, folowers: true, userComment: true, music: true
+                }, folowing: true, folowers: true, userComment: true, music: { include: {
+                        videos: true,
+                        user: true,
+                    } }, watching: true,
             },
         });
     }

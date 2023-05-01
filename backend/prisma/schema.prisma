@@ -36,6 +36,15 @@ model UserModel {
   reportsVideo ReportOnVideo[]
   Like         Like[]    @relation("LikedBy")
   likeComment LikeComment[] @relation("userLikeComment")
+  watching HistoryWatching[] @relation("watchUserHistory")
+}
+model HistoryWatching {
+    id String    @id @default(uuid())
+     createdAt        DateTime            @default(now())
+    videoId String
+    video Video @relation("watchHistoryVideo",  fields: [videoId], references: [id], onDelete: Cascade)
+    userId String?  @unique
+    user UserModel? @relation("watchUserHistory",  fields: [userId], references: [id], onUpdate: NoAction)
 }
 model Folower {
  id        String    @id @default(uuid())
@@ -51,9 +60,10 @@ model Music {
     id String  @id @default(uuid())
     name String @unique()
     user UserModel @relation("UserMusic", fields: [userId], references: [id])
-    userId String @unique()
+    userId String
     alias String @unique()
     videos       Video[]   @relation("MusicVideo")
+    img String
     music_url String @unique()
 }
 model FirstLevelCategory {
@@ -94,9 +104,10 @@ model Video {
   Type             String
   width            Int
   height           Int
+  watchers  HistoryWatching[] @relation("watchHistoryVideo")
   Comment Comment[] @relation("CommentsVideo")
-  musicId String
-  music Music    @relation("MusicVideo", fields: [musicId], references: [id], onDelete: Cascade)
+  musicId String?
+  music Music?    @relation("MusicVideo", fields: [musicId], references: [id], onDelete: Cascade)
   share_count      Int                   @default(0)
   view_count       Int                 @default(0)
   comment_count    Int                 @default(0)

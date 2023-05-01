@@ -10,6 +10,7 @@ export declare class AuthService {
     findUser(email: string): Promise<UserModel | null>;
     validateUser(email: string, password: string): Promise<Pick<UserModel, 'email'>>;
     authByJwt(id: string): Promise<UserModel & {
+        userComment: import(".prisma/client").UserCommentOnComment[];
         videos: (import(".prisma/client").Video & {
             Comment: (import(".prisma/client").Comment & {
                 writtenBy: UserModel;
@@ -18,13 +19,19 @@ export declare class AuthService {
                 })[];
             })[];
             music: import(".prisma/client").Music;
+            watchers: import(".prisma/client").HistoryWatching[];
             tag: (import(".prisma/client").TagOnVideo & {
                 tag: import(".prisma/client").Tag;
             })[];
             authorVideo: UserModel;
             secondCategory: import(".prisma/client").SecondLevelCategory;
         })[];
-        music: import(".prisma/client").Music[];
+        music: (import(".prisma/client").Music & {
+            videos: import(".prisma/client").Video[];
+            user: UserModel;
+        })[];
+        folowing: import(".prisma/client").Folower[];
+        folowers: import(".prisma/client").Folower[];
         Like: (import(".prisma/client").Like & {
             videos: import(".prisma/client").Video & {
                 Comment: (import(".prisma/client").Comment & {
@@ -34,6 +41,7 @@ export declare class AuthService {
                     })[];
                 })[];
                 music: import(".prisma/client").Music;
+                watchers: import(".prisma/client").HistoryWatching[];
                 tag: (import(".prisma/client").TagOnVideo & {
                     tag: import(".prisma/client").Tag;
                 })[];
@@ -41,9 +49,7 @@ export declare class AuthService {
                 secondCategory: import(".prisma/client").SecondLevelCategory;
             };
         })[];
-        folowers: import(".prisma/client").Folower[];
-        folowing: import(".prisma/client").Folower[];
-        userComment: import(".prisma/client").UserCommentOnComment[];
+        watching: import(".prisma/client").HistoryWatching[];
     }>;
     login(email: string): Promise<{
         accesToken: string;

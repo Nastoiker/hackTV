@@ -10,6 +10,7 @@ export declare class UserService {
     constructor(prisma: PrismaService);
     user(userWhereUniqueInput: Prisma.UserModelWhereUniqueInput): Promise<UserModel | null>;
     createComment(createVideoDto: CreateCommentDto): Promise<Comment>;
+    getSearch(value: string): Promise<UserModel[]>;
     likeComment(likeComment: LikeCommentDto): Promise<Comment>;
     getFolows(userId: string): Promise<Folower[] | null>;
     like(likeById: string, videoId: string): Promise<Like>;

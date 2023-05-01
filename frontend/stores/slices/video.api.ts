@@ -13,6 +13,13 @@ export const VideoUserApi = createApi({
     },
   }),
   endpoints: (builder) => ({
+    WatchVideounLogin: builder.mutation({
+      query: (videoId) => ({
+        url: `/videoWatch`,
+        method: 'post',
+        body: videoId,
+      }),
+    }),
     DeleteVideo: builder.mutation({
       query: (videoId) => ({
         url: `/deleteVideo/${videoId}`,
@@ -28,4 +35,4 @@ export const VideoUserApi = createApi({
     }),
   }),
 });
-export const {  useCreateVideoMutation, useDeleteVideoMutation  } = VideoUserApi;
+export const {  useCreateVideoMutation, useWatchVideounLoginMutation,useDeleteVideoMutation  } = VideoUserApi;

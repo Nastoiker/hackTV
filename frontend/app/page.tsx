@@ -6,20 +6,21 @@ import {useGetVideosQuery} from "@/stores/slices/api";
 
 import {useCheckAuthQuery} from "@/stores/slices/regapi";
 import {LayoutVideo} from "@/components/Layot.video";
+import {useRecVideoQuery} from "@/stores/slices/user.api";
 export default function IndexPage() {
   const { data, isLoading, error } = useGetVideosQuery({ limit: 10, offset: 0 });
-
+const video = useRecVideoQuery({limit: 10, offset: 0});
   const user = useCheckAuthQuery({ });
   console.log(data);
   return <>
   <section className={"grid  "}>
     <div className="flex max-w-[980px] mx-auto flex-col gap-2">
       <h1 className="text-3xl font-extrabold leading-tight tracking-tighter md:text-5xl lg:text-6xl lg:leading-[1.1]">
-        Категория
+        Рекомендации
       </h1>
       <div className={"ml-6"}>
         {
-          (isLoading || user.isLoading ) ? <div>loading</div>  :  <LayoutVideo user={user.data}   videos={data} />
+          (isLoading || user.isLoading ) ? <div>loading</div>  :  (user.data && video.data) ? <LayoutVideo user={user.data}   videos={video.data} /> : <LayoutVideo user={user.data}   videos={data} />
         }
       </div>
     </div>
