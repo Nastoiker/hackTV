@@ -18,6 +18,7 @@ import {Textarea} from "@/components/ui/textarea";
 import {useCreateMusicMutation, useCreateVideoMutation} from "@/stores/slices/user.api";
 import {UpdateAvatarProfile} from "@/components/uploadImage/UploadImage";
 import {ICreateMusic} from "@/types/CreateMusic.interface";
+import {useMusicGetMutation} from "@/stores/slices/music.slice";
 export default function IndexPage() {
   const [CreateMusic, data] = useCreateMusicMutation();
   const videoRef = useRef();
@@ -25,6 +26,7 @@ export default function IndexPage() {
 
   const [file, setFile] = useState<File>();;
   };
+const [music] = useMusicGetMutation();
   const onSubmit = async (formData: ICreateMusic) => {
 
         await CreateVideo(formData);
@@ -33,6 +35,8 @@ export default function IndexPage() {
     <form action="" className={"space-y-7 space-x-5 xl:flex items-center justify-around my-20"} onSubmit={handleSubmit(CreateMusic)}>
       <Label htmlFor={"name"}>Name</Label>
       <Input { ...register('name', {required: true})} id={"name"}/>
+
+
       <Label htmlFor={"alias"}>alias</Label>
       <Input { ...register('alias', {required: true})} id={"alias"}/>
       <Input { ...register('files', {required: true})} id={"file"}/>

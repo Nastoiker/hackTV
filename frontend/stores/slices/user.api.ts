@@ -21,6 +21,14 @@ export const UserApi = createApi({
       }),
 
     }),
+    LikeComment: builder.mutation({
+      query: (videoId) => ({
+        url: '/likeVideo',
+        method: 'POST',
+        body: {...videoId },
+      }),
+
+    }),
     EditProfile: builder.mutation({
       query: (profileEdit) => ({
         url: '/updateProfile',
@@ -29,6 +37,13 @@ export const UserApi = createApi({
       }),
     }),
     CommentVideo: builder.mutation({
+      query: (commentVideo) => ({
+        url: '/createComment',
+        method: 'POST',
+        body: {...commentVideo },
+      }),
+    }),
+    CommentUserComment: builder.mutation({
       query: (commentVideo) => ({
         url: '/createComment',
         method: 'POST',

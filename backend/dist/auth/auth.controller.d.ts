@@ -10,7 +10,6 @@ export declare class AuthController {
         accesToken: string;
     }>;
     authByJwt(query: any): Promise<import(".prisma/client").UserModel & {
-        userComment: import(".prisma/client").UserCommentOnComment[];
         videos: (import(".prisma/client").Video & {
             Comment: (import(".prisma/client").Comment & {
                 writtenBy: import(".prisma/client").UserModel;
@@ -19,19 +18,17 @@ export declare class AuthController {
                 })[];
             })[];
             music: import(".prisma/client").Music;
-            watchers: import(".prisma/client").HistoryWatching[];
             tag: (import(".prisma/client").TagOnVideo & {
                 tag: import(".prisma/client").Tag;
             })[];
             authorVideo: import(".prisma/client").UserModel;
             secondCategory: import(".prisma/client").SecondLevelCategory;
+            watchers: import(".prisma/client").HistoryWatching[];
         })[];
         music: (import(".prisma/client").Music & {
-            videos: import(".prisma/client").Video[];
             user: import(".prisma/client").UserModel;
+            videos: import(".prisma/client").Video[];
         })[];
-        folowing: import(".prisma/client").Folower[];
-        folowers: import(".prisma/client").Folower[];
         Like: (import(".prisma/client").Like & {
             videos: import(".prisma/client").Video & {
                 Comment: (import(".prisma/client").Comment & {
@@ -41,14 +38,17 @@ export declare class AuthController {
                     })[];
                 })[];
                 music: import(".prisma/client").Music;
-                watchers: import(".prisma/client").HistoryWatching[];
                 tag: (import(".prisma/client").TagOnVideo & {
                     tag: import(".prisma/client").Tag;
                 })[];
                 authorVideo: import(".prisma/client").UserModel;
                 secondCategory: import(".prisma/client").SecondLevelCategory;
+                watchers: import(".prisma/client").HistoryWatching[];
             };
         })[];
+        userComment: import(".prisma/client").UserCommentOnComment[];
+        folowing: import(".prisma/client").Folower[];
+        folowers: import(".prisma/client").Folower[];
         watching: import(".prisma/client").HistoryWatching[];
     }>;
 }

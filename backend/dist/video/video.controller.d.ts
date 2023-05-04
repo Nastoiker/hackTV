@@ -19,13 +19,13 @@ export declare class VideoController {
                 })[];
             })[];
             music: import(".prisma/client").Music;
-            watchers: import(".prisma/client").HistoryWatching[];
             tag: (import(".prisma/client").TagOnVideo & {
                 tag: import(".prisma/client").Tag;
             })[];
             authorVideo: import(".prisma/client").UserModel;
             secondCategory: import(".prisma/client").SecondLevelCategory;
             likes: import(".prisma/client").Like[];
+            watchers: import(".prisma/client").HistoryWatching[];
         })[];
     }>;
     WatchVideo(request: any, { videoId }: {

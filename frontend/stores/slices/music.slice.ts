@@ -13,12 +13,12 @@ export const MusicApi = createApi({
     },
   }),
   endpoints: (builder) => ({
-    MusicGet: builder.mutation({
+    MusicGet: builder.query({
       query: (commentVideo) => ({
-        url: '/music',
+        url: '/',
         method: 'get',
       }),
     }),
   }),
 });
-export const { useMusicGetMutation } = MusicApi;
+export const { useMusicGetQuery } = MusicApi;

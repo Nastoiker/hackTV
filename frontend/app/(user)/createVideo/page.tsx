@@ -17,14 +17,17 @@ import Image from "next/image";
 import {Textarea} from "@/components/ui/textarea";
 import {useCreateVideoMutation} from "@/stores/slices/user.api";
 import {UpdateAvatarProfile} from "@/components/uploadImage/UploadImage";
+import { useMusicGetQuery } from "@/stores/slices/music.slice";
+import {useAppSelector} from "@/stores";
 export default function IndexPage() {
   const [CreateVideo, data] = useCreateVideoMutation();
   const videoRef = useRef();
   const { register, control, handleSubmit, formState: {errors}, reset } = useForm<ICreateVideo>();
-
+  const secondCategory = useAppSelector(state => state.category.category).flat();
   const [file, setFile] = useState<File>();
   const [onDrag, setOnDrag] = useState<boolean>(false);
   const [selectedFile, setSelectedFile] = useState<any>();
+  const music = useMusicGetQuery({});
 
   const uploadedFile = (file: any) => {
     const reader = new FileReader();
@@ -47,13 +50,15 @@ export default function IndexPage() {
     setOnDrag(false);
   };
   const onSubmit = async (formData: ICreateVideo) => {
+    console.log(formData);
+    console.log(1);
     if(!file)        { console.log(1);
       return;}
     formData.files = file;
         await CreateVideo(formData);
   }
   return <div>
-    <form action="" className={"space-y-7 space-x-5 xl:flex items-center justify-around my-20"} onSubmit={handleSubmit(onSubmit)}>
+    <form className={"space-y-7 space-x-5 xl:flex items-center justify-around my-20"} onSubmit={handleSubmit(onSubmit)}>
       <div className={"space-y-12  p-5"}>
           <div className={" outline-dashed outline-2 p-9 -outline-offset-2 w-full"}>
           <h1>Видео</h1>
@@ -97,30 +102,42 @@ export default function IndexPage() {
           <Input { ...register('name', {required: true})} id={"name"}/>
           <Input { ...register('files', {required: true})} id={"file"}/>
           <Label htmlFor={"isActive"}>isActive</Label>
-          <Select>
+          <Select  { ...register('secondCategoryId')}>
             <SelectTrigger className="w-[180px]">
-              <SelectValue placeholder="Theme" />
+              <SelectValue placeholder="Категория" />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="light">Light</SelectItem>
-              <SelectItem value="dark">Dark</SelectItem>
-              <SelectItem value="system">System</SelectItem>
+              {
+                secondCategory.map( s =>  <SelectItem value={s.id}>{s.name}</SelectItem> )
+              }
             </SelectContent>
+          </Select>
+          <Label htmlFor={'musicId'}>Выберите музыку</Label>
+          <Select  { ...register('musicId')} name="select" >
+            <SelectTrigger className="w-[180px]">
+              <SelectValue placeholder="Музыка" />
+            </SelectTrigger>
+            <SelectContent>
+              {
+                music.data && music.data.map( m =><SelectItem key={m.id} value={m.id}>{m.name}</SelectItem>)
+              }
+            </SelectContent>
+
           </Select>
           <RadioGroup { ...register('isActive', {required: true})} id={"isActive"}/>
           <Label htmlFor={"TagId"}>Tags</Label>
           <Input { ...register('secondCategoryId', {required: true})} id={"TagId"}/>
           <Label htmlFor={"secondCategoryId"}>secondCategory</Label>
-          <Input { ...register('secondCategoryId', {required: true})} id={"secondCategoryId"}/>
+          <Input />
           <Label htmlFor={"tagId"}>Name</Label>
           <Input { ...register('tagId', {required: true})} id={"tagId"}/>
           <Label htmlFor={"tagId"}>Description</Label>
           <Textarea className={"resize-none"} { ...register('description', {required: true})} id={"tagId"}/>
         </div>
-        <Button type={"submit"}>Создать</Button>
 
       </div>
-
+      <Button type={"submit"}>Создать</Button>
+s
     </form>
   </div>
 }
