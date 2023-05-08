@@ -1,14 +1,20 @@
 "use client"
-import {useState} from "react";
-import {useCheckAuthQuery} from "@/stores/slices/regapi";
-import {redirect} from "next/navigation";
-import {useCreateCategoryMutation, useCreateSecondCategoryMutation} from "@/stores/slices/admin.api";
-import '/styles/admin.css'
-const PageAdmin =  () => {
-  const [createCategory, Category] = useCreateCategoryMutation({});
-  const [createSecond, Second] = useCreateSecondCategoryMutation({});
-  const videos = useCheckAuthQuery({});
-  const [value, onChange] = useState(new Date());
+
+import { useState } from "react"
+import { redirect } from "next/navigation"
+import {
+  useCreateCategoryMutation,
+  useCreateSecondCategoryMutation,
+} from "@/stores/slices/admin.api"
+import { useCheckAuthQuery } from "@/stores/slices/regapi"
+
+import "/styles/admin.css"
+
+const PageAdmin = () => {
+  const [createCategory, Category] = useCreateCategoryMutation({})
+  const [createSecond, Second] = useCreateSecondCategoryMutation({})
+  const videos = useCheckAuthQuery({})
+  const [value, onChange] = useState(new Date())
   //
   // if(isLoading) {
   //   return <div>loading</div>
@@ -16,8 +22,6 @@ const PageAdmin =  () => {
   // if(data.role !== 'admin') {
   //   return redirect('/');
   // }
-  return <div className={"mx-auto"}>
-  nigga
-  </div>;
+  return <div className={"mx-auto"}>nigga</div>
 }
-export default PageAdmin;
+export default PageAdmin

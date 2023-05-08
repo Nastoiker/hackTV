@@ -1,5 +1,6 @@
-import {ICategory} from "@/types/Category.interface";
-import {DetailedHTMLProps, HTMLAttributes} from "react";
+import { DetailedHTMLProps, HTMLAttributes } from "react"
 
-export interface ICategoriesProps extends DetailedHTMLProps<HTMLAttributes<HTMLDivElement>, HTMLDivElement> {
-}
+import { ICategory } from "@/types/Category.interface"
+
+export interface ICategoriesProps
+  extends DetailedHTMLProps<HTMLAttributes<HTMLDivElement>, HTMLDivElement> {}

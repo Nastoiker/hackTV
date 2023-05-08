@@ -1,5 +1,6 @@
 export interface ICreateMusic {
-  files: File;
- name: string;
- alias: string;
+  music: File
+  picture: File
+  name: string
+  alias: string
 }

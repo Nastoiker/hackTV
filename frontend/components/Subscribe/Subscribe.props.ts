@@ -1,4 +1,4 @@
 export interface SubscribeProps {
-  setIsFolow: () => {},
-  folow: boolean,
+  setIsFolow: () => {}
+  folow: boolean
 }

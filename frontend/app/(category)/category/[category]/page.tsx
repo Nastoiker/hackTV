@@ -1,8 +1,9 @@
+import { NotFound } from "next/dist/client/components/error"
 import { notFound } from "next/navigation"
-import {LayoutVideo} from "@/components/Layot.video";
-import {useCheckAuthQuery} from "@/stores/slices/regapi";
-import {NotFound} from "next/dist/client/components/error";
-import {IVideo} from "@/types/Video.interface";
+import { useCheckAuthQuery } from "@/stores/slices/regapi"
+
+import { IVideo } from "@/types/Video.interface"
+import { LayoutVideo } from "@/components/Layot.video"
 
 export interface VideoByCategory {
   id: string
@@ -13,31 +14,30 @@ export interface VideoByCategory {
 }
 
 interface PageProps {
-  params: { category: string };
+  params: { category: string }
 }
- async function getCategory(alias): Promise<VideoByCategory | null> {
+async function getCategory(alias): Promise<VideoByCategory | null> {
   try {
-    const res = await fetch('http://localhost:8000/Video/category/:' + alias);
+    const res = await fetch("http://localhost:8000/Video/category/:" + alias)
     if (!res?.ok) {
       return null
     }
-    console.log(res);
+    console.log(res)
 
-    return await res.json();;
-  } catch(e) {
-    return null;
+    return await res.json()
+  } catch (e) {
+    return null
   }
-
 }
 
 export default async function PageCategory({ params }: PageProps) {
-  const slug = params?.category;
-  if(!slug) {
-    return <div></div>;
+  const slug = params?.category
+  if (!slug) {
+    return <div></div>
   }
-  const videos = await getCategory(slug);
-  if(!videos) return <div>{slug}</div>;
-  const result = videos.videos;
+  const videos = await getCategory(slug)
+  if (!videos) return <div>{slug}</div>
+  const result = videos.videos
   return (
     <article className="container max-w-3xl py-6 lg:py-10">
       <div className="space-y-4">
@@ -47,7 +47,6 @@ export default async function PageCategory({ params }: PageProps) {
         <LayoutVideo videos={result} />
       </div>
       <hr className="my-4 border-slate-200" />
-
     </article>
   )
 }

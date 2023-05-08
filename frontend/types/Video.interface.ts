@@ -1,4 +1,4 @@
-import {IUser} from "@/types/User.interface";
+import { IUser } from "@/types/User.interface"
 
 export interface IVideo {
   name: string
@@ -33,9 +33,9 @@ export interface IVideo {
   watchers: IWatch[]
 }
 export interface IWatch {
-  id: string,
-  createdAt: string,
-  videoId: string,
+  id: string
+  createdAt: string
+  videoId: string
   userId: string
 }
 export interface Music {

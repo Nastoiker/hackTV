@@ -1,38 +1,42 @@
-import {createApi, fetchBaseQuery} from "@reduxjs/toolkit/dist/query/react";
+import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/dist/query/react"
 
 export const VideoUserApi = createApi({
-  reducerPath: 'videoApi',
+  reducerPath: "videoApi",
   baseQuery: fetchBaseQuery({
-    baseUrl: 'http://localhost:8000/video',
+    baseUrl: "http://localhost:8000/video",
     prepareHeaders: (headers) => {
-      const token = localStorage.getItem('token');
+      const token = localStorage.getItem("token")
       if (token) {
-        headers.set('Authorization', `Bearer ${token}`);
+        headers.set("Authorization", `Bearer ${token}`)
       }
-      return headers;
+      return headers
     },
   }),
   endpoints: (builder) => ({
     WatchVideounLogin: builder.mutation({
       query: (videoId) => ({
         url: `/videoWatch`,
-        method: 'post',
+        method: "post",
         body: videoId,
       }),
     }),
     DeleteVideo: builder.mutation({
       query: (videoId) => ({
         url: `/deleteVideo/${videoId}`,
-        method: 'DELETE',
+        method: "DELETE",
       }),
     }),
     CreateVideo: builder.mutation({
       query: (commentVideo) => ({
-        url: '/createVideo',
-        method: 'POST',
-        body: {...commentVideo },
+        url: "/createVideo",
+        method: "POST",
+        body: { ...commentVideo },
       }),
     }),
   }),
-});
-export const {  useCreateVideoMutation, useWatchVideounLoginMutation,useDeleteVideoMutation  } = VideoUserApi;
+})
+export const {
+  useCreateVideoMutation,
+  useWatchVideounLoginMutation,
+  useDeleteVideoMutation,
+} = VideoUserApi

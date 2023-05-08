@@ -1,6 +1,3 @@
-
 export const Tag = () => {
-   return <div>
-
-   </div>;
+  return <div></div>
 }

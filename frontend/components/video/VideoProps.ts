@@ -1,8 +1,10 @@
-import {IVideo} from "@/types/Video.interface";
-import {DetailedHTMLProps, HTMLAttributes} from "react";
-import {IUser} from "@/types/User.interface";
+import { DetailedHTMLProps, HTMLAttributes } from "react"
 
-export interface  VideoProps extends DetailedHTMLProps<HTMLAttributes<HTMLDivElement>, HTMLDivElement> {
-  video: IVideo;
-  user?: IUser;
+import { IUser } from "@/types/User.interface"
+import { IVideo } from "@/types/Video.interface"
+
+export interface VideoProps
+  extends DetailedHTMLProps<HTMLAttributes<HTMLDivElement>, HTMLDivElement> {
+  video: IVideo
+  user?: IUser
 }

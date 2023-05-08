@@ -1,7 +1,8 @@
-import {cn} from "@/lib/utils";
 import { Inter as FontSans } from "@next/font/google"
-import '/styles/admin.css'
-import Link from "next/link";
+
+import { cn } from "@/lib/utils"
+import "/styles/admin.css"
+import Link from "next/link"
 
 interface UserLayoutProps {
   children: React.ReactNode
@@ -11,8 +12,7 @@ const fontSans = FontSans({
   variable: "--font-sans",
   display: "swap",
 })
-export default function UserLayout({children}: UserLayoutProps) {
-
+export default function UserLayout({ children }: UserLayoutProps) {
   return (
     <div
       className={cn(
@@ -20,8 +20,8 @@ export default function UserLayout({children}: UserLayoutProps) {
         fontSans.variable
       )}
     >
-      <a href={'/'}>На главную</a>
+      <a href={"/"}>На главную</a>
       {children}
-
-    </div>)
+    </div>
+  )
 }

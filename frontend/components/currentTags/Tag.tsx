@@ -1,7 +1,5 @@
-import {useState} from "react";
+import { useState } from "react"
 
 export const Tag = (name: string) => {
-  return <div>
-    {name}
-  </div>;
+  return <div>{name}</div>
 }

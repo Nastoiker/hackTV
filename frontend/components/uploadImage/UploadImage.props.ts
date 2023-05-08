@@ -1,6 +1,6 @@
-import {DetailedHTMLProps, HTMLAttributes} from "react";
-import {IUser} from "@/types/User.interface";
+import { DetailedHTMLProps, HTMLAttributes } from "react"
 
-export interface  UploadImageProps extends DetailedHTMLProps<HTMLAttributes<HTMLDivElement>, HTMLDivElement> {
+import { IUser } from "@/types/User.interface"
 
-}
+export interface UploadImageProps
+  extends DetailedHTMLProps<HTMLAttributes<HTMLDivElement>, HTMLDivElement> {}

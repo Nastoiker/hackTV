@@ -1,3 +1,3 @@
 export interface ISearch {
-  searchBy: string;
+  searchBy: string
 }

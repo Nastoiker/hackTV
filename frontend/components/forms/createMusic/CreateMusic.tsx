@@ -1,10 +1,10 @@
 "use client"
 
-import { useRef, useState } from "react"
+import {useEffect, useRef, useState} from "react"
 import Image from "next/image"
 import { useAppSelector } from "@/stores"
 import { useMusicGetQuery } from "@/stores/slices/music.slice"
-import { useCreateVideoMutation } from "@/stores/slices/user.api"
+import {useCreateMusicMutation, useCreateVideoMutation} from "@/stores/slices/user.api"
 import { useForm } from "react-hook-form"
 
 import { ICreateVideo } from "@/types/CreateVideo.inerface"
@@ -21,9 +21,12 @@ import {
 } from "@/components/ui/select"
 import { Textarea } from "@/components/ui/textarea"
 import { UpdateAvatarProfile } from "@/components/uploadImage/UploadImage"
+import {Htag} from "@/components/Htag/Htag";
+import Profile from "@/components/user/Profile.svg";
+import {ICreateMusic} from "@/types/CreateMusic.interface";
 
-export const CreateVideo = () => {
-  const [CreateVideo, data] = useCreateVideoMutation()
+export const CreateMusicComponent = () => {
+  const [CreateMusic, data] = useCreateMusicMutation()
   const videoRef = useRef()
   const {
     register,
@@ -33,30 +36,18 @@ export const CreateVideo = () => {
     handleSubmit,
     formState: { errors },
     reset,
-  } = useForm<ICreateVideo>({
-    defaultValues: {
-      Type: "short",
-      share_url: "asd",
-      embed_html: "asd",
-      embed_link: "asd",
-    },
-  })
-  const secondCategory = useAppSelector(
-    (state) => state.category.category
-  ).flat()
-  const [file, setFile] = useState<File>()
-  const [onDrag, setOnDrag] = useState<boolean>(false)
-  const [selectedFile, setSelectedFile] = useState<any>()
-  const music = useMusicGetQuery({})
-
+  } = useForm<ICreateMusic>({});
   const uploadedFile = (file: any) => {
     const reader = new FileReader()
     reader.readAsDataURL(file)
     reader.onloadend = () => {
       setSelectedFile(reader.result)
     }
-    setValue("files", selectedFile)
+    setValue("picture", selectedFile)
+    setValue("music", selectedFile)
   }
+  const [isPlaying, setIsPlaying] = useState(false)
+  const [audio, setAudio] = useState<HTMLAudioElement | null>(null)
   const onDrop = (e: any) => {
     e.preventDefault()
     const file = e.dataTransfer.files[0]
@@ -70,28 +61,52 @@ export const CreateVideo = () => {
 
     setOnDrag(false)
   }
-  const onSubmit = async (formData: ICreateVideo) => {
-    console.log(getValues())
-    console.log(1)
-    const files = formData.files
-    //нужный кастыль
-    const data = new FormData()
-    data.set("files", formData.files[0])
-    data.set("name", formData.name.toString())
-    data.set("alias", formData.name.toString().replace(" ", "-"))
-    data.set("musicId", formData.musicId.toString())
-    data.set("tagId", formData.tagId.toString())
-    data.set("secondCategoryId", formData.secondCategoryId.toString())
-    data.set("Description", formData.Description.toString())
-    data.set("embed_link", formData.embed_link.toString())
-    data.set("embed_html", formData.embed_html.toString())
-    data.set("Title", formData.Title.toString())
-    data.set("Type", formData.Type.toString())
-    data.set("share_url", formData.share_url.toString())
+  useEffect(() => {
+    const audioEl = new Audio()
+    audioEl.addEventListener("ended", () => {
+      setIsPlaying(false)
+    })
+    setAudio(audioEl)
+    return () => audioEl.pause();
+  }, [])
+  const [volume, setVolume] = useState(1) // начальный уровень громкости
+  const handlePlayPause = () => {
+    if (!audio) return
+    if (isPlaying) {
+      audio.pause()
+    } else {
+      audio.play()
+    }
+    setIsPlaying(!isPlaying)
+  }
+  const handleVolumeChange = (event) => {
+    const value = parseFloat(event.target.value)
+    setVolume(value)
+    audio.volume = value
+  }
+  const secondCategory = useAppSelector(
+    (state) => state.category.category
+  ).flat();
+  const addMusic = (e) => {
+    setMusicFile();
+    setValue('music', e);
+    setValue('picture', e);
 
+  }
+  const addPicture = (e) => {
+    setAudio();
+    setValue('picture', e);
+  }
+  const [file, setFile] = useState<File>();
+  const [musicFile, setMusicFile] = useState<File>();
+  const [musicCreate, setMusicCreate] = useState<File>();
+  const [onDrag, setOnDrag] = useState<boolean>(false)
+  const [selectedFile, setSelectedFile] = useState<any>()
+  const onSubmit = async (formData: ICreateMusic) => {
+    //нужный кастыль
     // if(!file)        { console.log(1);
     //       return;}
-    await CreateVideo(data)
+    await CreateMusic(formData);
   }
   return (
     <div>
@@ -161,71 +176,13 @@ export const CreateVideo = () => {
               })}
               id={"name"}
             />
-            <Label htmlFor={"Title"}>Title</Label>
+            <Label htmlFor={"alias"}>Alias</Label>
             <Input
-              error={errors.Title}
-              {...register("Title", {
+              error={errors.name}
+              {...register("alias", {
                 required: { value: true, message: "Заполните login" },
               })}
-              id={"Title"}
-            />
-            <Input
-              error={errors.files}
-              type={"file"}
-              className={"block sm:hidden"}
-              {...register("files", {
-                required: { value: true, message: "Заполните login" },
-              })}
-              id={"file"}
-            />
-            <Label htmlFor={"secondCategoryId"}>secondCategory</Label>
-
-            <select
-              className={"block"}
-              id={"secondCategoryId"}
-              {...register("secondCategoryId", {
-                required: { value: true, message: "Заполните login" },
-              })}
-            >
-              {secondCategory.map((s) =>
-                s.secondLevelCategory.map((s2) => (
-                  <option value={s2.id}>{s2.name}</option>
-                ))
-              )}
-            </select>
-            <Label htmlFor={"musicId"}>Выберите музыку</Label>
-            <select
-              className={"block"}
-              id={"musicId"}
-              {...register("musicId", {
-                required: { value: true, message: "Заполните login" },
-              })}
-            >
-              {music.data &&
-                music.data.map((m) => (
-                  <option key={m.id} value={m.id}>
-                    {m.name}
-                  </option>
-                ))}
-            </select>
-
-            <Label htmlFor={"tagId"}>Добавьте теги</Label>
-            <Input
-              error={errors.tagId}
-              type={"string"}
-              {...register("tagId", {
-                required: { value: true, message: "Заполните теги" },
-              })}
-              id={"tagId"}
-            />
-            <Label htmlFor={"desc"}>Описание</Label>
-            <Textarea
-              className={"resize-none"}
-              error={errors.Description}
-              {...register("Description", {
-                required: { value: true, message: "Заполните описание" },
-              })}
-              id={"desc"}
+              id={"alias"}
             />
           </div>
         </div>

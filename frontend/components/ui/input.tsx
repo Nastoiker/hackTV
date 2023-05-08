@@ -1,13 +1,13 @@
 "use client"
 
 import * as React from "react"
+import { FieldError } from "react-hook-form"
 
 import { cn } from "@/lib/utils"
-import {FieldError} from "react-hook-form";
 
 export interface InputProps
   extends React.InputHTMLAttributes<HTMLInputElement> {
-    error?: FieldError;
+  error?: FieldError
 }
 
 const Input = React.forwardRef<HTMLInputElement, InputProps>(
@@ -21,12 +21,9 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
           )}
           ref={ref}
           {...props}
-
         />
         {error && <span className={"text-red-200 my-2"}>{error.message}</span>}
-
       </>
-
     )
   }
 )

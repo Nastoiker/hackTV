@@ -1,24 +1,24 @@
-import {createApi, fetchBaseQuery} from "@reduxjs/toolkit/dist/query/react";
+import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/dist/query/react"
 
 export const MusicApi = createApi({
-  reducerPath: 'MusicApi',
+  reducerPath: "MusicApi",
   baseQuery: fetchBaseQuery({
-    baseUrl: 'http://localhost:8000/music',
+    baseUrl: "http://localhost:8000/music",
     prepareHeaders: (headers) => {
-      const token = localStorage.getItem('token');
+      const token = localStorage.getItem("token")
       if (token) {
-        headers.set('Authorization', `Bearer ${token}`);
+        headers.set("Authorization", `Bearer ${token}`)
       }
-      return headers;
+      return headers
     },
   }),
   endpoints: (builder) => ({
     MusicGet: builder.query({
       query: (commentVideo) => ({
-        url: '/',
-        method: 'get',
+        url: "/",
+        method: "get",
       }),
     }),
   }),
-});
-export const { useMusicGetQuery } = MusicApi;
+})
+export const { useMusicGetQuery } = MusicApi

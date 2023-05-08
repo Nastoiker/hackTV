@@ -1,13 +1,15 @@
 "use client"
 
+import { useEffect } from "react"
+import { NotFound } from "next/dist/client/components/error"
 import { notFound } from "next/navigation"
-import {LayoutVideo} from "@/components/Layot.video";
-import {useCheckAuthQuery} from "@/stores/slices/regapi";
-import {NotFound} from "next/dist/client/components/error";
-import {IVideo} from "@/types/Video.interface";
-import {LayoutFounded} from "@/components/layout/layout.founded";
-import {useEffect} from "react";
-import {useAppDispatch} from "@/stores";
+import { useAppDispatch } from "@/stores"
+import { useCheckAuthQuery } from "@/stores/slices/regapi"
+
+import { IVideo } from "@/types/Video.interface"
+import { LayoutVideo } from "@/components/Layot.video"
+import { LayoutFounded } from "@/components/layout/layout.founded"
+
 export interface VideoByCategory {
   id: string
   name: string
@@ -17,17 +19,16 @@ export interface VideoByCategory {
 }
 
 interface PageProps {
-  params: { founded: string };
+  params: { founded: string }
 }
 
-export default  function PageFounded({ params }: PageProps) {
-  const found = params?.founded;
-  const dispatch = useAppDispatch();
+export default function PageFounded({ params }: PageProps) {
+  const found = params?.founded
+  const dispatch = useAppDispatch()
   useEffect(() => {
-    dispatch(setSearch(found));
+    dispatch(setSearch(found))
   }, [])
   return (
-
     <div className="  w-full">
       <LayoutFounded />
       <div className="space-y-4">

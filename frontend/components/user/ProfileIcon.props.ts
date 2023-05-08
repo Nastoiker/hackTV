@@ -1,5 +1,5 @@
-import {IUser} from "@/types/User.interface";
+import { IUser } from "@/types/User.interface"
 
-export interface ProfileIconProps  {
-  user: IUser;
+export interface ProfileIconProps {
+  user: IUser
 }

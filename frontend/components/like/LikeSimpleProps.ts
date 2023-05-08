@@ -1,7 +1,9 @@
-import {DetailedHTMLProps, HTMLAttributes} from "react";
-import {IVideo} from "@/types/Video.interface";
+import { DetailedHTMLProps, HTMLAttributes } from "react"
 
-export interface  LikeSimpleProps extends DetailedHTMLProps<HTMLAttributes<HTMLDivElement>, HTMLDivElement> {
-  isLike: boolean;
-  setLike: () => void;
+import { IVideo } from "@/types/Video.interface"
+
+export interface LikeSimpleProps
+  extends DetailedHTMLProps<HTMLAttributes<HTMLDivElement>, HTMLDivElement> {
+  isLike: boolean
+  setLike: () => void
 }

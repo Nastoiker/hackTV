@@ -1,6 +1,6 @@
-const some = '';
+const some = ""
 export const DOMEN = {
   user: {
-    editProfile: '/users/editProfile',
-  }
+    editProfile: "/users/editProfile",
+  },
 }
