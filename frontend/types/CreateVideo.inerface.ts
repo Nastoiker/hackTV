@@ -1,11 +1,17 @@
 export interface ICreateVideo {
   files: File;
   name: string;
-  alias: string;
+
   musicId: string;
-  isActive: string;
-  tagId: string[];
+  tagId: string;
   secondCategoryId: string
-  description: string;
-  cover_image_url: string;
+  Description: string;
+  embed_link: string;
+  embed_html: string;
+  Title: string;
+  Type: string;
+  share_url: string;
+  // cover_image_url: string;
+  // isActive: string;
+  alias: string;
 }

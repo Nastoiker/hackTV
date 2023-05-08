@@ -156,6 +156,7 @@ let VideoService = class VideoService {
         videoDto.width = 1080;
         videoDto.height = 1920;
         const extension = file.originalname.split('.');
+        console.log(`${UploadFolder}/${videoDto.name}.${extension[extension.length - 1]}`);
         await (0, fs_extra_1.writeFile)(`${UploadFolder}/${videoDto.name}.${extension[extension.length - 1]}`, file.buffer);
         videoDto.embed_link = `/users/${data.userId}/video/${data.alias}/${data.name}.${extension[extension.length - 1]}`;
         console.log(videoDto);

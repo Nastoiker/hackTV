@@ -9,6 +9,7 @@ import { CreateCommentOnUserDto } from "../comment/dto/create-comment.dto";
 import { CommentService } from "../comment/comment.service";
 import { MusicService } from "../music/music.service";
 import { CreateMusicDto } from "../music/dto/create-music.dto";
+import { createVideoDto } from "../video/dto/create-video.dto";
 export declare class UserController {
     private readonly userService;
     private readonly videoService;
@@ -18,7 +19,7 @@ export declare class UserController {
     createMusic(query: any, files: Array<Express.Multer.File>, createMusicDto: CreateMusicDto): Promise<import(".prisma/client").Music>;
     createComment(request: any, createCommentDto: CreateCommentDto): Promise<import(".prisma/client").Comment>;
     videosRecom(request: any): Promise<import(".prisma/client").Video[]>;
-    getFollowing(req: any): Promise<import(".prisma/client").Folower[] | BadRequestException>;
+    getFollowing(req: any): Promise<BadRequestException | import(".prisma/client").Folower[]>;
     likeComment(likeCommentDto: LikeCommentDto): Promise<import(".prisma/client").Comment>;
     WatchVideo(request: any, { videoId }: {
         videoId: string;
@@ -45,5 +46,5 @@ export declare class UserController {
     DeleteVideo(id: string): Promise<import(".prisma/client").Video>;
     createUserComment(request: any, createCommentOnUserDto: CreateCommentOnUserDto): Promise<import(".prisma/client").UserCommentOnComment>;
     getSearch(search: string): Promise<import(".prisma/client").UserModel[]>;
-    createVideo(request: any, createCommentDto: CreateCommentDto): Promise<import(".prisma/client").Comment>;
+    createVideo(request: any, video: Express.Multer.File, dto: createVideoDto): Promise<import(".prisma/client").Video>;
 }

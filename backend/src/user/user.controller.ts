@@ -24,6 +24,11 @@ import {IdValidationpipe} from "../pipes/idValidation.pipe";
 import {VideoByIdNotFount} from "../video/video.constants";
 import {MusicService} from "../music/music.service";
 import {CreateMusicDto} from "../music/dto/create-music.dto";
+import {createVideoDto} from "../video/dto/create-video.dto";
+import {path} from "app-root-path";
+import {writeFile} from "fs-extra";
+import * as ffmpeg from "fluent-ffmpeg";
+import multer from "multer";
 
 @Controller('user')
 export class UserController {
@@ -188,9 +193,55 @@ export class UserController {
     return product;
   }
   @UseGuards(JwtAuthGuard)
-  @Post('createComment')
-  createVideo(@Req() request, @Body() createCommentDto: CreateCommentDto) {
-    createCommentDto.writtenById = request.user.id
-    return this.commentService.createCommentDto(createCommentDto);
+  @Post('createVideo')
+  @UseInterceptors(FileInterceptor('files'))
+  async createVideo(@Req() request, @UploadedFile(
+      new ParseFilePipeBuilder()
+          .addFileTypeValidator({
+            fileType: 'mp4',
+          })
+          .build({
+            errorHttpStatusCode: HttpStatus.UNPROCESSABLE_ENTITY
+          }),
+  ) video: Express.Multer.File, @Body() dto: createVideoDto) {
+    if (!video) {
+      throw new BadRequestException('Please upload a video file.');
+    }
+    if (video.mimetype !== 'video/mp4') {
+      throw new BadRequestException('Only MP4 videos are allowed.');
+    }
+    console.log(dto);
+    dto.userId = request.user.id;
+    const inputPath = video.path;
+    const outputPath = `${inputPath}.mp4`;
+    const UploadFolder = `${path}/uploads/videos`;
+    await writeFile(`${UploadFolder}/${video.originalname}`, video.buffer);
+    const videopath = `${UploadFolder}/${video.originalname}`
+    console.log(videopath);
+    console.log('start convert');
+    await new Promise((resolve, reject) => {
+      ffmpeg(videopath)
+          .output(UploadFolder + '/converted/' + video.originalname)
+          .audioCodec('copy')
+          .audioChannels(2)
+          .size('1080x1920')
+          .aspect('9:16')
+          .autopad(true, 'black')
+          .videoCodec('libx264')
+          .on('end', () => {
+            console.log('file has been converted successfully');
+            resolve('');
+          })
+          .on('error', (err) => {
+            console.log(`an error happened: ${err.message}`);
+            reject(`an error happened: ${err.message}`);
+          })
+          .run();
+    })
+    console.log('end convert');
+
+    dto.embed_link = UploadFolder + '/converted/' + video.originalname;
+    // возвращаем URL конвертированного файла
+    return this.videoService.createVideo(video, dto);
   }
 }

@@ -26,6 +26,6 @@ export const store = configureStore({
       [AuthApi.reducerPath]: AuthApi.reducer,
       [UserApi.reducerPath]: UserApi.reducer,
     },
-  middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(videoHostingApi.middleware, AuthApi.middleware, UserApi.middleware, VideoUserApi.middleware, MusicApi.middleware, sagaMiddleWate)
+  middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(videoHostingApi.middleware, AuthApi.middleware, UserApi.middleware, VideoUserApi.middleware, MusicApi.middleware,  sagaMiddleWate)
 })
 sagaMiddleWate.run(rootSaga);

@@ -27,6 +27,10 @@ const idValidation_pipe_1 = require("../pipes/idValidation.pipe");
 const video_constants_1 = require("../video/video.constants");
 const music_service_1 = require("../music/music.service");
 const create_music_dto_1 = require("../music/dto/create-music.dto");
+const create_video_dto_1 = require("../video/dto/create-video.dto");
+const app_root_path_1 = require("app-root-path");
+const fs_extra_1 = require("fs-extra");
+const ffmpeg = require("fluent-ffmpeg");
 let UserController = class UserController {
     constructor(userService, videoService, commentService, musicService) {
         this.userService = userService;
@@ -122,9 +126,44 @@ let UserController = class UserController {
         }
         return product;
     }
-    createVideo(request, createCommentDto) {
-        createCommentDto.writtenById = request.user.id;
-        return this.commentService.createCommentDto(createCommentDto);
+    async createVideo(request, video, dto) {
+        if (!video) {
+            throw new common_1.BadRequestException('Please upload a video file.');
+        }
+        if (video.mimetype !== 'video/mp4') {
+            throw new common_1.BadRequestException('Only MP4 videos are allowed.');
+        }
+        console.log(dto);
+        dto.userId = request.user.id;
+        const inputPath = video.path;
+        const outputPath = `${inputPath}.mp4`;
+        const UploadFolder = `${app_root_path_1.path}/uploads/videos`;
+        await (0, fs_extra_1.writeFile)(`${UploadFolder}/${video.originalname}`, video.buffer);
+        const videopath = `${UploadFolder}/${video.originalname}`;
+        console.log(videopath);
+        console.log('start convert');
+        await new Promise((resolve, reject) => {
+            ffmpeg(videopath)
+                .output(UploadFolder + '/converted/' + video.originalname)
+                .audioCodec('copy')
+                .audioChannels(2)
+                .size('1080x1920')
+                .aspect('9:16')
+                .autopad(true, 'black')
+                .videoCodec('libx264')
+                .on('end', () => {
+                console.log('file has been converted successfully');
+                resolve('');
+            })
+                .on('error', (err) => {
+                console.log(`an error happened: ${err.message}`);
+                reject(`an error happened: ${err.message}`);
+            })
+                .run();
+        });
+        console.log('end convert');
+        dto.embed_link = UploadFolder + '/converted/' + video.originalname;
+        return this.videoService.createVideo(video, dto);
     }
 };
 __decorate([
@@ -298,12 +337,20 @@ __decorate([
 ], UserController.prototype, "getSearch", null);
 __decorate([
     (0, common_1.UseGuards)(jwt_guard_1.JwtAuthGuard),
-    (0, common_1.Post)('createComment'),
+    (0, common_1.Post)('createVideo'),
+    (0, common_1.UseInterceptors)((0, platform_express_1.FileInterceptor)('files')),
     __param(0, (0, common_1.Req)()),
-    __param(1, (0, common_1.Body)()),
+    __param(1, (0, common_1.UploadedFile)(new common_1.ParseFilePipeBuilder()
+        .addFileTypeValidator({
+        fileType: 'mp4',
+    })
+        .build({
+        errorHttpStatusCode: common_1.HttpStatus.UNPROCESSABLE_ENTITY
+    }))),
+    __param(2, (0, common_1.Body)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Object, createComment_dto_1.CreateCommentDto]),
-    __metadata("design:returntype", void 0)
+    __metadata("design:paramtypes", [Object, Object, create_video_dto_1.createVideoDto]),
+    __metadata("design:returntype", Promise)
 ], UserController.prototype, "createVideo", null);
 UserController = __decorate([
     (0, common_1.Controller)('user'),

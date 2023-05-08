@@ -151,17 +151,18 @@ export const Video = ({ user, video, className, ...props}: VideoProps): JSX.Elem
   }
   const videoPath = 'http://localhost:8000/video' + video.embed_link;
   return <div className={className}>
-    <div className={"sm:flex justify-center"}>
+    <div className={"flex justify-center"}>
       <div>
         <SubscribeChannel user={user} video={video}  isSubscribe={isFolowing} setIsSubscribe={() => Folowing(video.authorVideo.id)}/>
 
-        <video  width={350} height={350} className={"rounded-3xl"}  onClick={onVideoClick} loop ref={videoRef} src={videoPath.replace(' ' , '')}>
+        <video  width={350} height={350} className={"rounded-3xl "}  onClick={onVideoClick} loop ref={videoRef} src={videoPath.replace(' ' , '')}>
         </video>
         {/*<div className={"bg-black w-fit rounded-xl p-2 absolute -my-14 ml-64 text-amber-50"}>{Math.floor(currentTime)} : { videoRef.current && Math.floor(videoRef?.current?.duration)}</div>*/}
         <div className={"bg-black text-amber-50 w-fit absolute -my-20  mx-4 opacity-70 p-2 rounded-xl"}>
           {video.Title}
           <p>
-            {video.Description}
+            {video.Description + video.tag.map( t =>t.tag.name)}
+
           </p>
         </div>
         <div>
@@ -176,7 +177,7 @@ export const Video = ({ user, video, className, ...props}: VideoProps): JSX.Elem
         </div>
         </div>
 
-      <div className={" my-12 px-4  grid place-content-start gap-y-6 justify-items-center  px-auto"}>
+      <div className={" -ml-16 sm:-ml-0 my-28 px-4 [&>*]:bg-gray-100  [&>*]:rounded-full  grid place-content-start gap-y-6 justify-items-center  p-5"}>
         <div className={"text-center"}>
           {
             isWatching ?
@@ -195,7 +196,6 @@ export const Video = ({ user, video, className, ...props}: VideoProps): JSX.Elem
         </div>
 
         <Report videoId={video.id} userId={'1'}/>
-        <div className={"bg-gray-100 border-4 border-gray-400 my-24 rounded-3xl p-5"}>{video.tag.map( t => <p key={t.tag.id}>{t.tag.name}</p>)}</div>
       </div>
     </div>
     <div className={"w-full"}>{
