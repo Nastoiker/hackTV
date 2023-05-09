@@ -5,7 +5,7 @@ import Image from "next/image"
 import { useAppSelector } from "@/stores"
 import { useMusicGetQuery } from "@/stores/slices/music.slice"
 import { useCreateVideoMutation } from "@/stores/slices/user.api"
-import { useForm } from "react-hook-form"
+import {SubmitHandler, useForm} from "react-hook-form"
 
 import { ICreateVideo } from "@/types/CreateVideo.inerface"
 import { Button } from "@/components/ui/button"
@@ -70,7 +70,7 @@ export const CreateVideo = () => {
 
     setOnDrag(false)
   }
-  const onSubmit = async (formData: ICreateVideo) => {
+  const onSubmit: SubmitHandler<ICreateVideo> = async (formData: ICreateVideo) => {
     console.log(getValues())
     console.log(1)
     const files = formData.files

@@ -27,7 +27,12 @@ import {ICreateMusic} from "@/types/CreateMusic.interface";
 
 export const CreateMusicComponent = () => {
   const [CreateMusic, data] = useCreateMusicMutation()
-  const videoRef = useRef()
+  const videoRef = useRef();
+  const [file, setFilePicture] = useState<File>();
+  const [musicFile, setMusicFile] = useState<File>();
+  const [musicCreate, setMusicCreate] = useState<File>();
+  const [onDrag, setOnDrag] = useState<boolean>(false)
+  const [selectedFile, setSelectedFile] = useState<any>()
   const {
     register,
     control,
@@ -37,23 +42,34 @@ export const CreateMusicComponent = () => {
     formState: { errors },
     reset,
   } = useForm<ICreateMusic>({});
-  const uploadedFile = (file: any) => {
+
+  const uploadedFileMusic = (file: any) => {
     const reader = new FileReader()
     reader.readAsDataURL(file)
     reader.onloadend = () => {
       setSelectedFile(reader.result)
     }
-    setValue("picture", selectedFile)
+    setMusicFile(file);
+    const audioEl = new Audio(URL.createObjectURL(file));
+    setAudio(audioEl);
     setValue("music", selectedFile)
+  }
+  const onDropPicture = (file: any) => {
+    // if (file.type !== "music/mp3") return
+    setValue("picture", file)
+    setOnDrag(true)
   }
   const [isPlaying, setIsPlaying] = useState(false)
   const [audio, setAudio] = useState<HTMLAudioElement | null>(null)
-  const onDrop = (e: any) => {
+  const onDropMusic = (e: any) => {
     e.preventDefault()
     const file = e.dataTransfer.files[0]
-    if (file.type !== "video/mp4") return
-    setFile(file)
-    uploadedFile(file)
+    console.log(file.type);
+
+
+    if (file.type !== "audio/mpeg") return;
+
+    uploadedFileMusic(file)
     setOnDrag(true)
   }
   const handleDragOver = (e: any) => {
@@ -71,7 +87,7 @@ export const CreateMusicComponent = () => {
   }, [])
   const [volume, setVolume] = useState(1) // начальный уровень громкости
   const handlePlayPause = () => {
-    if (!audio) return
+    if (!audio){ console.log('niot'); return;}
     if (isPlaying) {
       audio.pause()
     } else {
@@ -87,21 +103,8 @@ export const CreateMusicComponent = () => {
   const secondCategory = useAppSelector(
     (state) => state.category.category
   ).flat();
-  const addMusic = (e) => {
-    setMusicFile();
-    setValue('music', e);
-    setValue('picture', e);
 
-  }
-  const addPicture = (e) => {
-    setAudio();
-    setValue('picture', e);
-  }
-  const [file, setFile] = useState<File>();
-  const [musicFile, setMusicFile] = useState<File>();
-  const [musicCreate, setMusicCreate] = useState<File>();
-  const [onDrag, setOnDrag] = useState<boolean>(false)
-  const [selectedFile, setSelectedFile] = useState<any>()
+
   const onSubmit = async (formData: ICreateMusic) => {
     //нужный кастыль
     // if(!file)        { console.log(1);
@@ -120,29 +123,22 @@ export const CreateMusicComponent = () => {
           <div
             className={" outline-dashed outline-2 p-9 -outline-offset-2 w-full"}
           >
-            <h1>Видео</h1>
+            <h1>музыка</h1>
             <div
               className={"bg-gray-200 p-9 m-9"}
-              onDrop={onDrop}
+              onDrop={onDropMusic}
               onDragOver={handleDragOver}
             >
-              {onDrag ? (
+              { onDrag ? (
                 <div className={"bg-blue-200 m-9"}>
-                  <img src={selectedFile} alt="Preview" />
-                  <video
-                    width={350}
-                    height={350}
-                    className={"rounded-3xl"}
-                    loop
-                    src={selectedFile}
-                  ></video>
+                  <Button type={'button'} onClick={handlePlayPause}>{isPlaying ? "Pause" : "Play"}</Button>
                 </div>
               ) : (
                 <div className={"m-auto"}>
                   <svg
-                    width="148"
+                    width="50"
                     className={"m-auto"}
-                    height="173"
+                    height="50"
                     viewBox="0 0 148 173"
                     fill="none"
                     xmlns="http://www.w3.org/2000/svg"
@@ -161,7 +157,7 @@ export const CreateMusicComponent = () => {
           <div className={"md:flex space-x-12"}>
             <div>
               <h1>Обложка</h1>
-              <UpdateAvatarProfile />
+              <UpdateAvatarProfile onSelectFile={(e) => onDropPicture(e)}/>
             </div>
           </div>
         </div>
@@ -184,11 +180,13 @@ export const CreateMusicComponent = () => {
               })}
               id={"alias"}
             />
+            <Button onClick={(_) => console.log(getValues())} type={"submit"}>
+              Создать
+            </Button>
           </div>
+
         </div>
-        <Button onClick={(_) => console.log(getValues())} type={"submit"}>
-          Создать
-        </Button>
+
       </form>
     </div>
   )
