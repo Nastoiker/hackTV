@@ -29,6 +29,8 @@ export const Video = ({
   user,
   video,
   className,
+  onClickVideoProps,
+                        activeVideo,
   ...props
 }: VideoProps): JSX.Element => {
   const query = { videoId: video.id }
@@ -58,7 +60,7 @@ export const Video = ({
     audioEl.addEventListener("ended", () => {
       setIsPlayingAudio(false)
     })
-    setAudio(audioEl)
+    setAudio(audioEl);
     return () => audioEl.pause()
   }, [])
 
@@ -76,6 +78,10 @@ export const Video = ({
       console.log(1)
       audio.currentTime = 0 // reset the current time to zero
       audio.play()
+    }
+    if(activeVideo!==video.id) {
+      audio?.pause();
+      videoRef?.current?.pause()
     }
     console.log(videoRef?.current?.duration)
   }, [currentTime])
@@ -127,10 +133,12 @@ export const Video = ({
     }
   }, [])
   const onVideoClick = () => {
-    if (isPlaying) {
-      audio.pause()
-    } else {
+    if (!isPlaying) {
+      onClickVideoProps();
       audio.play()
+    } else {
+      audio.pause();
+
     }
     setIsPlayingAudio(!isPlaying)
     if (isPlaying) {
@@ -182,6 +190,7 @@ export const Video = ({
             width={350}
             height={350}
             className={"rounded-3xl "}
+
             onClick={onVideoClick}
             loop
             ref={videoRef}

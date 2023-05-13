@@ -24,9 +24,15 @@ const PageAuth = () => {
       <h1>Авторизация</h1>
       <form action="" className="my-5" onSubmit={handleSubmit(onSubmit)}>
         <Label htmlFor={"email"}>Emal</Label>
-        <Input {...register("email", { required: true })} id={"email"} />
+        <Input error={errors.email}  {...register("email", {
+          required: { value: true, message: "Заполните email" },
+          pattern: {
+            value: /\S+@\S+\.\S+/,
+            message: "Введите  email",
+          },
+        })} id={"email"} />
         <Label htmlFor={"password"}>Password</Label>
-        <Input {...register("password", { required: true })} id={"email"} />
+        <Input error={errors.password} type={"password"} {...register("password",  { value: true, message: "Заполните password" })} id={"email"} />
         <Button type={"submit"}>Авторизация</Button>
       </form>
       <button className={"mx-auto block"}>Забыл пароль</button>

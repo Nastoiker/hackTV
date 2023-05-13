@@ -32,7 +32,10 @@ const PageRegistration = () => {
         onSubmit={handleSubmit(onSubmit)}
       >
         <Label htmlFor={"email"}>Emal</Label>
-        <Input {...register("email", { required: true })} id={"email"} />
+        <Input error={errors.email} {...register("email", { required: true, pattern: {
+            value: /\S+@\S+\.\S+/,
+            message: "Введите  email",
+          }, })} id={"email"} />
         <Label htmlFor={"login"}>Login</Label>
         <Input {...register("login", { required: true })} id={"login"} />
         <Label htmlFor={"number"}>Номер телефона</Label>
@@ -55,9 +58,9 @@ const PageRegistration = () => {
         </select>
         <Input {...register("gender", { required: true })} id={"gender"} />
         <Label htmlFor={"password"}>Пароль</Label>
-        <Input {...register("password", { required: true })} id={"password"} />
+        <Input type={"password"} {...register("password", { required: true })} id={"password"} />
         <Label htmlFor={"passwordVerif"}>Подтверждение пароля</Label>
-        <Input id={"passwordVerif"} />
+        <Input type={"password"} id={"passwordVerif"} />
         <div className={"text-center"}>
           {" "}
           <Button type={"submit"} className={"w-full text-center"}>

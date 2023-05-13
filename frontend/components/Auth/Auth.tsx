@@ -48,9 +48,12 @@ export const AuthComponent = () => {
         </DialogHeader>
         <form action="" className="my-5" onSubmit={handleSubmit(onSubmit)}>
           <Label htmlFor={"email"}>Emal</Label>
-          <Input {...register("email", { required: true })} id={"email"} />
+          <Input {...register("email", { required: true, pattern: {
+              value: /\S+@\S+\.\S+/,
+              message: "Введите  email",
+            } }, )} id={"email"} />
           <Label htmlFor={"password"}>Password</Label>
-          <Input {...register("password", { required: true })} id={"email"} />
+          <Input type={"password"} {...register("password", { required: true })} id={"email"} />
           <Button type={"submit"}>Авторизация</Button>
         </form>
       </DialogContent>

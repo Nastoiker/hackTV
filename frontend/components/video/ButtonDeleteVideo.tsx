@@ -29,6 +29,7 @@ export const ButtonDeleteVideo = ({
         <AlertDialogHeader>
           <AlertDialogTitle>Вы абсолютно уверены?</AlertDialogTitle>
         </AlertDialogHeader>
+
         <AlertDialogFooter>
           <AlertDialogCancel>Отмена</AlertDialogCancel>
           <AlertDialogAction

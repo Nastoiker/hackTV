@@ -7,4 +7,6 @@ export interface VideoProps
   extends DetailedHTMLProps<HTMLAttributes<HTMLDivElement>, HTMLDivElement> {
   video: IVideo
   user?: IUser
+  activeVideo: string
+  onClickVideoProps: () => void
 }

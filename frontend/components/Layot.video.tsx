@@ -40,7 +40,7 @@ export function LayoutVideo({
   user?: IUser
 }) {
   const follow = useFollowsQuery({})
-  const [activeVideo, setActiveVideo] = useState(null)
+  const [activeVideoValue, setActiveVideo] = useState(null)
   const [commentsVisible, setCommentsVisible] = useState({})
 
   const handlePlay = (videoId) => {
@@ -72,7 +72,7 @@ export function LayoutVideo({
     <div className={"mx-auto flex"}>
       <div>
         {videos.length > 0 ? (
-          videos.map((v) => <Video key={v.id} user={user && user} video={v} />)
+          videos.map((v) => <Video activeVideo={activeVideoValue} onClickVideoProps={() => setActiveVideo(v.id)} key={v.id} user={user && user} video={v} />)
         ) : (
           <div className={"mx-auto"}>
             <Htag type={"h1"}> Ничего не найдено</Htag>
