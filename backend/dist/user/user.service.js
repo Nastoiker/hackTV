@@ -149,6 +149,13 @@ let UserService = class UserService {
         await (0, fs_extra_1.writeFile)(filePath, file.buffer);
         return this.prisma.userModel.update({ where: { id: user.id }, data: { avatar: '/uploads/users/' + user.id + '/avatar/' + user.id + '.' + extension[extension.length - 1] } });
     }
+    async foundUser(login) {
+        return this.prisma.userModel.findMany({
+            where: {
+                login: { startsWith: login },
+            }
+        });
+    }
     async users(params) {
         const { skip, take, cursor, where, orderBy } = params;
         return this.prisma.userModel.findMany({

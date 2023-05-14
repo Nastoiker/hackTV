@@ -28,6 +28,7 @@ export declare class VideoService {
         where?: Prisma.VideoWhereInput;
         orderBy?: Prisma.VideoOrderByWithRelationInput;
     }): Promise<Tag[]>;
+    GetSearchTags(name: any): Promise<Tag[]>;
     videosByCategory(params: {
         skip?: number;
         take?: number;

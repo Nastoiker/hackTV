@@ -19,7 +19,7 @@ export declare class UserController {
     createMusic(query: any, files: Array<Express.Multer.File>, createMusicDto: CreateMusicDto): Promise<import(".prisma/client").Music>;
     createComment(request: any, createCommentDto: CreateCommentDto): Promise<import(".prisma/client").Comment>;
     videosRecom(request: any): Promise<import(".prisma/client").Video[]>;
-    getFollowing(req: any): Promise<import(".prisma/client").Folower[] | BadRequestException>;
+    getFollowing(req: any): Promise<BadRequestException | import(".prisma/client").Folower[]>;
     likeComment(likeCommentDto: LikeCommentDto): Promise<import(".prisma/client").Comment>;
     WatchVideo(request: any, { videoId }: {
         videoId: string;

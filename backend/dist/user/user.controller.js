@@ -41,6 +41,7 @@ let UserController = class UserController {
     createMusic(query, files, createMusicDto) {
         console.log('user' + query.user);
         createMusicDto.userId = query.user.id;
+        console.log(files);
         return this.musicService.create(files[0], files[1], createMusicDto);
     }
     createComment(request, createCommentDto) {

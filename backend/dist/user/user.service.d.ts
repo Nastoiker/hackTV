@@ -15,6 +15,7 @@ export declare class UserService {
     getFolows(userId: string): Promise<Folower[] | null>;
     like(likeById: string, videoId: string): Promise<Like>;
     updateAvatar(user: UserModel, file: Express.Multer.File): Promise<UserModel>;
+    foundUser(login: string): Promise<UserModel[]>;
     users(params: {
         skip?: number;
         take?: number;

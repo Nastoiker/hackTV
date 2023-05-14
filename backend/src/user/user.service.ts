@@ -144,6 +144,13 @@ export class UserService {
     await writeFile(filePath, file.buffer);
     return this.prisma.userModel.update({ where: { id: user.id  }, data: { avatar: '/uploads/users/'   + user.id +'/avatar/' + user.id + '.' +extension[extension.length-1]}});
   }
+  async foundUser(login: string): Promise<UserModel[]> {
+    return this.prisma.userModel.findMany({
+      where: {
+        login: {startsWith:login},
+      }
+    });
+  }
     async users(params: {
     skip?: number;
     take?: number;

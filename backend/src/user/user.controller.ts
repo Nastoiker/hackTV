@@ -47,6 +47,7 @@ export class UserController {
   createMusic(@Req() query, @UploadedFiles() files: Array<Express.Multer.File>, @Body() createMusicDto: CreateMusicDto) {
     console.log('user' +  query.user);
     createMusicDto.userId = query.user.id;
+    console.log(files);
     return this.musicService.create(files[0], files[1],createMusicDto);
   }
 

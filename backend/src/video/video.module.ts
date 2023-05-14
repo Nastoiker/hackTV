@@ -6,6 +6,7 @@ import {VideoController} from "./video.controller";
 import {VideoService} from "./video-service";
 import {ServeStaticModule} from "@nestjs/serve-static";
 import {path} from "app-root-path";
+import {MusicService} from "../music/music.service";
 
 @Module({
     imports: [ServeStaticModule.forRoot({
@@ -13,7 +14,7 @@ import {path} from "app-root-path";
         serveRoot: '/video',
     }),],
     controllers: [VideoController],
-    providers: [VideoService, PrismaService],})
+    providers: [VideoService, PrismaService, UserService, MusicService, ],})
 export class VideoModule {
 
 }

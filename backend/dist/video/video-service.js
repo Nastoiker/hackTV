@@ -110,6 +110,15 @@ let VideoService = class VideoService {
             include: { videos: true }
         });
     }
+    async GetSearchTags(name) {
+        return this.prisma.tag.findMany({
+            where: {
+                name: {
+                    startsWith: name,
+                }
+            }
+        });
+    }
     async videosByCategory(params) {
         const { skip, take, cursor, where, orderBy } = params;
         return this.prisma.secondLevelCategory.findFirst({
@@ -165,7 +174,16 @@ let VideoService = class VideoService {
     }
     async getSearch(value) {
         return this.prisma.video.findMany({
-            where: { name: { startsWith: value } },
+            where: {
+                OR: [
+                    {
+                        name: {
+                            startsWith: value,
+                        },
+                    },
+                    { alias: { startsWith: value } },
+                ],
+            },
             include: {
                 music: true,
                 tag: { include: { tag: true } },

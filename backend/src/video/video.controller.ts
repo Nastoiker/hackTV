@@ -27,12 +27,13 @@ import {FileInterceptor} from "@nestjs/platform-express";
 import {path} from "app-root-path";
 import {unlink, writeFile} from "fs-extra";
 import {AuthService} from "../auth/auth.service";
+import {UserService} from "../user/user.service";
 
 
 
 @Controller('Video')
 export class VideoController {
-    constructor(private readonly videoService: VideoService) {}
+    constructor(private readonly videoService: VideoService, private readonly userService: UserService) {}
     // @UseGuards(JwtAuthGuard)
     @UseGuards(JwtAuthGuard)
     @Post('create')
@@ -108,6 +109,16 @@ export class VideoController {
             throw new NotFoundException(VideoByIdNotFount);
         }
         return tags;
+    }
+    @Get('/found/:search')
+
+    async FoundValue(@Param('search') search: string) {
+        const searchValue = search.slice(1, search.length);
+        const videos = await this.videoService.getSearch(searchValue);
+        const channels = await this.userService.foundUser(search);
+        const tags = await this.videoService.GetSearchTags(search);
+        const res = [searchValue, videos, tags];
+        return res;
     }
     @Get('/category/:alias')
     async getByCategoryAlias(@Param('alias') alias: string) {

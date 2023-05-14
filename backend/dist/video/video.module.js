@@ -8,11 +8,13 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.VideoModule = void 0;
 const common_1 = require("@nestjs/common");
+const user_service_1 = require("../user/user.service");
 const prisma_service_1 = require("../prisma/prisma-service");
 const video_controller_1 = require("./video.controller");
 const video_service_1 = require("./video-service");
 const serve_static_1 = require("@nestjs/serve-static");
 const app_root_path_1 = require("app-root-path");
+const music_service_1 = require("../music/music.service");
 let VideoModule = class VideoModule {
 };
 VideoModule = __decorate([
@@ -22,7 +24,7 @@ VideoModule = __decorate([
                 serveRoot: '/video',
             }),],
         controllers: [video_controller_1.VideoController],
-        providers: [video_service_1.VideoService, prisma_service_1.PrismaService],
+        providers: [video_service_1.VideoService, prisma_service_1.PrismaService, user_service_1.UserService, music_service_1.MusicService,],
     })
 ], VideoModule);
 exports.VideoModule = VideoModule;

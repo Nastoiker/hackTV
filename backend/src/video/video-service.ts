@@ -117,6 +117,15 @@ export class VideoService {
         },
             );
     }
+    async GetSearchTags(name): Promise<Tag[]> {
+        return this.prisma.tag.findMany({
+            where: {
+                name: {
+                    startsWith: name,
+                }
+            }
+        })
+    }
     async videosByCategory(params: {
         skip?: number;
         take?: number;
@@ -180,7 +189,17 @@ export class VideoService {
     }
     async getSearch(value: string): Promise<Video[]> {
         return this.prisma.video.findMany({
-                where: { name: {startsWith:value }},
+
+                where: {
+                    OR: [
+                        {
+                            name: {
+                                startsWith: value,
+                            },
+                        },
+                        {alias: {startsWith: value}},
+                    ],
+                },
             include: {
                 music: true,
                 tag: { include: {tag: true}},

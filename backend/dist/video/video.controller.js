@@ -25,9 +25,11 @@ const report_video_dto_1 = require("./dto/report-video.dto");
 const platform_express_1 = require("@nestjs/platform-express");
 const app_root_path_1 = require("app-root-path");
 const fs_extra_1 = require("fs-extra");
+const user_service_1 = require("../user/user.service");
 let VideoController = class VideoController {
-    constructor(videoService) {
+    constructor(videoService, userService) {
         this.videoService = videoService;
+        this.userService = userService;
     }
     async create(request, video, dto) {
         if (!video) {
@@ -85,6 +87,14 @@ let VideoController = class VideoController {
             throw new common_1.NotFoundException(video_constants_1.VideoByIdNotFount);
         }
         return tags;
+    }
+    async FoundValue(search) {
+        const searchValue = search.slice(1, search.length);
+        const videos = await this.videoService.getSearch(searchValue);
+        const channels = await this.userService.foundUser(search);
+        const tags = await this.videoService.GetSearchTags(search);
+        const res = [searchValue, videos, tags];
+        return res;
     }
     async getByCategoryAlias(alias) {
         const aliasCategory = alias.slice(1, alias.length);
@@ -177,6 +187,13 @@ __decorate([
     __metadata("design:returntype", Promise)
 ], VideoController.prototype, "getTags", null);
 __decorate([
+    (0, common_1.Get)('/found/:search'),
+    __param(0, (0, common_1.Param)('search')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String]),
+    __metadata("design:returntype", Promise)
+], VideoController.prototype, "FoundValue", null);
+__decorate([
     (0, common_1.Get)('/category/:alias'),
     __param(0, (0, common_1.Param)('alias')),
     __metadata("design:type", Function),
@@ -231,7 +248,7 @@ __decorate([
 ], VideoController.prototype, "reportOnVideo", null);
 VideoController = __decorate([
     (0, common_1.Controller)('Video'),
-    __metadata("design:paramtypes", [video_service_1.VideoService])
+    __metadata("design:paramtypes", [video_service_1.VideoService, user_service_1.UserService])
 ], VideoController);
 exports.VideoController = VideoController;
 //# sourceMappingURL=video.controller.js.map

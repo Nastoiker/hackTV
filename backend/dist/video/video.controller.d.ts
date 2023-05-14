@@ -3,13 +3,16 @@ import { VideoModel } from "./video.model";
 import { createVideoDto } from "./dto/create-video.dto";
 import { VideoService } from "./video-service";
 import { VideoReportDto } from "./dto/report-video.dto";
+import { UserService } from "../user/user.service";
 export declare class VideoController {
     private readonly videoService;
-    constructor(videoService: VideoService);
+    private readonly userService;
+    constructor(videoService: VideoService, userService: UserService);
     create(request: any, video: Express.Multer.File, dto: createVideoDto): Promise<import(".prisma/client").Video>;
     getSearch(search: string): Promise<import(".prisma/client").Video[]>;
     get(id: string): Promise<import(".prisma/client").Video>;
     getTags(): Promise<import(".prisma/client").Tag[]>;
+    FoundValue(search: string): Promise<(string | import(".prisma/client").Tag[])[]>;
     getByCategoryAlias(alias: string): Promise<import(".prisma/client").SecondLevelCategory & {
         videos: (import(".prisma/client").Video & {
             Comment: (import(".prisma/client").Comment & {
