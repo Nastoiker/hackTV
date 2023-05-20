@@ -9,7 +9,7 @@ export const ProfileIcon = ({ user }: ProfileIconProps) => {
   return (
     <>
       {user.avatar && user.avatar?.length > 0 ? (
-        <div className={"w-14 w-full"}>
+        <div className={"w-14"}>
           <Link className={"min-w-10"} href={"/profile"}>
             <img
               alt={"avatar"}

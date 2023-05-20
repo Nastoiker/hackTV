@@ -173,7 +173,7 @@ export const VideoPreview = ({
       </div>
       <div className={"w-full"}>
         {isOpen && (
-          <CommentsModal video={video} user={user} comments={video.Comment} />
+          <CommentsModal video={video} user={user}/>
         )}
       </div>
     </div>

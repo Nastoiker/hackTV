@@ -35,5 +35,5 @@ export default function MainFound({ params }: PageProps) {
     //       <hr className="my-4 border-slate-200" />
     // asdasdasd
     //     </div>
-  )
+  );
 }

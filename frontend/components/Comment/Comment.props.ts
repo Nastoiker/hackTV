@@ -6,7 +6,6 @@ import { Comment, IVideo } from "@/types/Video.interface"
 export interface ICommentsProps
   extends DetailedHTMLProps<HTMLAttributes<HTMLDivElement>, HTMLDivElement> {
   setIsOpen?: () => void
-  comments: Comment[]
   user?: IUser
   video: IVideo
 }

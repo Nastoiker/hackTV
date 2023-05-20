@@ -10,7 +10,7 @@ import { Button } from "@/components/ui/button"
 import Profile from "@/components/user/Profile.svg"
 import ProgressBar from "@/components/video/progress.video"
 
-export const Music = ({ music }: { music: IMusic }) => {
+export const Music = ({ music, setActiveMusic, activeMusic}: { music: IMusic, setActiveMusic: () => void, activeMusic: string }) => {
   const [isPlaying, setIsPlaying] = useState(false)
   const [audio, setAudio] = useState<HTMLAudioElement | null>(null)
 
@@ -23,12 +23,20 @@ export const Music = ({ music }: { music: IMusic }) => {
     return () => audioEl.pause()
   }, [])
   const [volume, setVolume] = useState(1) // начальный уровень громкости
+  useEffect(()=> {
+    if(activeMusic!==music.id) {
+      audio?.pause();
+      setIsPlaying(false);
+    }
+  }, [audio?.currentTime]);
   const handlePlayPause = () => {
     if (!audio) return
+
     if (isPlaying) {
       audio.pause()
     } else {
-      audio.play()
+      audio.play();
+      setActiveMusic();
     }
     setIsPlaying(!isPlaying)
   }
@@ -38,8 +46,8 @@ export const Music = ({ music }: { music: IMusic }) => {
     audio.volume = value
   }
   return (
-    <div className="flex justify-between items-center">
-      <div className={"flex space-x-5 "}>
+    <div className="sm:flex justify-between items-center">
+      <div className={"sm:flex sm:space-x-5 "}>
         <div>
           <Image
             alt="oblosjka"

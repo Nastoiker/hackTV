@@ -6,35 +6,35 @@ import { redirect, usePathname } from "next/navigation"
 import { cn } from "@/lib/utils"
 import { Htag } from "@/components/Htag/Htag"
 
-export const LayoutFounded = () => {
+export const LayoutFounded = ({ active, setActiveFounded}: { active: string, setActiveFounded: (value: string) => void}) => {
   const pathname = usePathname()
   const some = pathname.split("/")[2]
   console.log(some)
   return (
     <div className={"flex justify-around"}>
       <div
-        onClick={() => {}}
+        onClick={() => {setActiveFounded('video')}}
         className={cn(
           " py-5 pointer transition-all hover:border-b-4 border-black ",
-          pathname.split("/")[2] === "video" && " border-b"
+          active === "video" && " border-b"
         )}
       >
         <Htag type={"h1"}>Видео</Htag>
       </div>
       <div
-        onClick={() => {}}
+        onClick={() => {setActiveFounded('channels')}}
         className={cn(
           " py-5 pointer transition-all hover:border-b-4 border-black",
-          pathname.split("/")[2] === "channel" && "border-b-4 border-black"
+          active === "channels" && "border-b-4 border-black"
         )}
       >
         <Htag type={"h1"}>Каналы</Htag>
       </div>
       <div
-        onClick={() => {}}
+        onClick={() => {setActiveFounded('tags')}}
         className={cn(
           " py-5  pointer transition-all hover:border-b-4 border-black ",
-          pathname.split("/")[2] === "Tags" && "bg-blue-200 border-b"
+          active === "tags" && "border-b"
         )}
       >
         <Htag type={"h1"}>Теги</Htag>

@@ -134,7 +134,7 @@ export default function IndexPage() {
               </Label>
               <Input
                 placeholder={data.oldPassword}
-                {...register("oldPassword", { required: true })}
+                {...register("oldpassword", { required: true })}
                 id={"name"}
               />
               <Label className={"font-bold"} htmlFor={"'phone'"}>

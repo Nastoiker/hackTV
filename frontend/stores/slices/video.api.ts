@@ -20,23 +20,15 @@ export const VideoUserApi = createApi({
         body: videoId,
       }),
     }),
-    DeleteVideo: builder.mutation({
+    getCommentsByVideo: builder.query({
       query: (videoId) => ({
-        url: `/deleteVideo/${videoId}`,
-        method: "DELETE",
-      }),
-    }),
-    CreateVideo: builder.mutation({
-      query: (commentVideo) => ({
-        url: "/createVideo",
-        method: "POST",
-        body: { ...commentVideo },
+        url: `/comments/:${videoId}`,
+        method: "GET",
       }),
     }),
   }),
 })
 export const {
-  useCreateVideoMutation,
   useWatchVideounLoginMutation,
-  useDeleteVideoMutation,
+  useGetCommentsByVideoQuery,
 } = VideoUserApi

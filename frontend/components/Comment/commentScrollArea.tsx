@@ -2,24 +2,25 @@ import { CommentCard } from "@/components/Comment/Comment.card"
 import { ICommentsProps } from "@/components/Comment/Comment.props"
 import { CommentForm } from "@/components/Comment/CommentSend"
 import { ScrollArea } from "@/components/ui/scroll-area"
+import { useGetCommentsByVideoQuery} from "@/stores/slices/video.api";
 
 export default function CommentsModal({
   video,
-  comments,
   user,
 }: ICommentsProps) {
+  const { data, isLoading, refetch } = useGetCommentsByVideoQuery(video.id);
   return (
     <div className="mb-4  w-full">
-      {comments.length > 0 && (
+      {(data && data.length > 0) && (
         <ScrollArea className="max-h-96 h-72 rounded-md border border-slate-100 dark:border-slate-700">
           <div className="p-4">
-            {comments.map((c) => (
+            {data && data.map((c) => (
               <CommentCard key={c.id} comment={c} />
             ))}
           </div>
         </ScrollArea>
       )}
-      <CommentForm video={video} user={user} />
+      <CommentForm sendComment={() => {refetch()}} video={video} user={user} />
     </div>
   )
 }

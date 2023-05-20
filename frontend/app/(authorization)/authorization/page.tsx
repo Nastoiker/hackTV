@@ -18,12 +18,14 @@ const PageAuth = () => {
     formState: { errors },
     reset,
   } = useForm<ILogin>()
-  const onSubmit = async (formData: ILogin) => {}
+  const onSubmit = async (formData: ILogin) => {
+
+  }
   return (
     <div className={"m-auto w-fit p-5 space-y-5 bg-gray-200 rounded-2xl"}>
       <h1>Авторизация</h1>
       <form action="" className="my-5" onSubmit={handleSubmit(onSubmit)}>
-        <Label htmlFor={"email"}>Emal</Label>
+        <Label htmlFor={"email"}>Email</Label>
         <Input error={errors.email}  {...register("email", {
           required: { value: true, message: "Заполните email" },
           pattern: {
@@ -32,7 +34,7 @@ const PageAuth = () => {
           },
         })} id={"email"} />
         <Label htmlFor={"password"}>Password</Label>
-        <Input error={errors.password} type={"password"} {...register("password",  { value: true, message: "Заполните password" })} id={"email"} />
+        <Input error={errors.password} type={"password"} {...register("password", { required: { value: true, message: "Заполните password" }})} id={"email"} />
         <Button type={"submit"}>Авторизация</Button>
       </form>
       <button className={"mx-auto block"}>Забыл пароль</button>

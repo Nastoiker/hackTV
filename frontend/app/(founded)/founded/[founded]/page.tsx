@@ -1,14 +1,16 @@
 "use client"
 
-import { useEffect } from "react"
+import {useEffect, useState} from "react"
 import { NotFound } from "next/dist/client/components/error"
-import { notFound } from "next/navigation"
-import { useAppDispatch } from "@/stores"
-import { useCheckAuthQuery } from "@/stores/slices/regapi"
+import {notFound, useSearchParams} from "next/navigation"
+import {useAppDispatch, useAppSelector} from "@/stores"
 
 import { IVideo } from "@/types/Video.interface"
 import { LayoutVideo } from "@/components/Layot.video"
 import { LayoutFounded } from "@/components/layout/layout.founded"
+import {searchContent} from "@/stores/slices/search.slice";
+import {LayoutMusic} from "@/components/Layout.music";
+import {LayoutChannels} from "@/components/Layout.channel";
 
 export interface VideoByCategory {
   id: string
@@ -23,18 +25,38 @@ interface PageProps {
 }
 
 export default function PageFounded({ params }: PageProps) {
-  const found = params?.founded
+  const found = params?.founded;
+  const [search, setSearch] = useState();
+  const searchParams = useSearchParams();
+
+  const searchvValue = searchParams.get('byValue');
+  const searchState = useAppSelector(state=> state.search.search);
+  const [activeFound, setActiveFound] = useState<string>('video');
   const dispatch = useAppDispatch()
   useEffect(() => {
-    dispatch(setSearch(found))
-  }, [])
+    dispatch(searchContent(searchState));
+  }, [searchState])
+  const video = useAppSelector(state => state.search.found);
+  console.log(video);
+  if(!video) {
+    return <div>Ничего не найдено</div>;
+  }
   return (
     <div className="  w-full">
-      <LayoutFounded />
+      <LayoutFounded active={activeFound} setActiveFounded={(s) => setActiveFound(s)} />
       <div className="space-y-4">
         <h1 className="inline-block text-4xl font-extrabold tracking-tight text-slate-900 lg:text-5xl">
-          {found}
+          {searchState}
         </h1>
+        {
+          activeFound==='video' && <LayoutVideo videos={video.videos} />
+        }
+        {
+          activeFound==='channels' && <LayoutChannels channels={video.channels} />
+        }
+        {/*{*/}
+        {/*  activeFound==='music' && <LayoutMusic musics={video.music}  />*/}
+        {/*}*/}
       </div>
     </div>
   )

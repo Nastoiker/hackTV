@@ -5,23 +5,15 @@ import Image from "next/image"
 import { useAppSelector } from "@/stores"
 import { useMusicGetQuery } from "@/stores/slices/music.slice"
 import { useCreateVideoMutation } from "@/stores/slices/user.api"
-import {SubmitHandler, useForm} from "react-hook-form"
+import {Controller, SubmitHandler, useForm} from "react-hook-form"
 
 import { ICreateVideo } from "@/types/CreateVideo.inerface"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
-import { RadioGroup } from "@/components/ui/radio-group"
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select"
 import { Textarea } from "@/components/ui/textarea"
 import { UpdateAvatarProfile } from "@/components/uploadImage/UploadImage"
-
+import {SelectContent, SelectItem, Select, SelectTrigger, SelectValue} from "@/components/ui/select";
 export const CreateVideo = () => {
   const [CreateVideo, data] = useCreateVideoMutation()
   const videoRef = useRef()
@@ -48,6 +40,13 @@ export const CreateVideo = () => {
   const [onDrag, setOnDrag] = useState<boolean>(false)
   const [selectedFile, setSelectedFile] = useState<any>()
   const music = useMusicGetQuery({})
+  if(music.isLoading) {
+    return <div>loading</div>;
+  }
+  const options = music.data.map((music) => ({
+    value: music.id,
+    label: music.name
+  }));
 
   const uploadedFile = (file: any) => {
     const reader = new FileReader()
@@ -93,6 +92,11 @@ export const CreateVideo = () => {
     //       return;}
     await CreateVideo(data)
   }
+  const colourOptions = [
+    { value: 'red', label: 'Red' },
+    { value: 'green', label: 'Green' },
+    { value: 'blue', label: 'Blue' },
+  ];
   return (
     <div>
       <form
@@ -146,7 +150,7 @@ export const CreateVideo = () => {
           <div className={"md:flex space-x-12"}>
             <div>
               <h1>Обложка</h1>
-              <UpdateAvatarProfile />
+              <UpdateAvatarProfile onSelectFile={() => {}} />
             </div>
           </div>
         </div>
@@ -194,21 +198,23 @@ export const CreateVideo = () => {
               )}
             </select>
             <Label htmlFor={"musicId"}>Выберите музыку</Label>
-            <select
-              className={"block"}
-              id={"musicId"}
-              {...register("musicId", {
-                required: { value: true, message: "Заполните login" },
-              })}
-            >
-              {music.data &&
-                music.data.map((m) => (
-                  <option key={m.id} value={m.id}>
-                    {m.name}
-                  </option>
-                ))}
-            </select>
+            <Controller
+              name={"musicId"}
+              control={control}
+              render={({ field: { onChange, value,ref } }) => {
 
+                return (
+                  <Select  onValueChange={onChange}>
+                    <SelectTrigger className="w-[180px]">
+                      <SelectValue placeholder="Музыка" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {options.map(o=> <SelectItem key={o.value} value={o.value}>{o.label}</SelectItem>)}
+
+                    </SelectContent>
+                  </Select>
+                )}}
+            />
             <Label htmlFor={"tagId"}>Добавьте теги</Label>
             <Input
               error={errors.tagId}

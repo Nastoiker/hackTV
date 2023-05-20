@@ -7,7 +7,7 @@ export const DOMEN = {
     getByName: api_url + "/product/info:",
     deleteProduct: api_url + "/product/delete",
     update: api_url + "/product/update",
-    search: api_url + "/video/search/:",
+    search: api_url + "/video/found/:",
     getByCategory: api_url + "/product/byCategory",
     getCategory: api_url + "/product/getCategory",
     getById: api_url + "/product/getProductById:",

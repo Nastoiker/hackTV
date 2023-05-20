@@ -4,6 +4,7 @@ import { useCheckAuthQuery } from "@/stores/slices/regapi"
 
 import { IVideo } from "@/types/Video.interface"
 import { LayoutVideo } from "@/components/Layot.video"
+import {LayoutVideoCategory} from "@/components/Layout.category";
 
 export interface VideoByCategory {
   id: string
@@ -37,14 +38,15 @@ export default async function PageCategory({ params }: PageProps) {
   }
   const videos = await getCategory(slug)
   if (!videos) return <div>{slug}</div>
-  const result = videos.videos
+
+  const result = videos.videos;
   return (
     <article className="container max-w-3xl py-6 lg:py-10">
       <div className="space-y-4">
         <h1 className="inline-block text-4xl font-extrabold tracking-tight text-slate-900 lg:text-5xl">
           {slug}
         </h1>
-        <LayoutVideo videos={result} />
+          <LayoutVideoCategory videos={result} />
       </div>
       <hr className="my-4 border-slate-200" />
     </article>

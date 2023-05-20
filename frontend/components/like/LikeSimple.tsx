@@ -19,7 +19,7 @@ export const LikeSimple = ({
   }
 
   return (
-    <div className={"border-0 outline-0"} onClick={handleClick}>
+    <div className={"border-0 z-50 relative outline-0"} onClick={handleClick}>
       {isLike ? (
         <motion.svg
           className={"border-0 outline-0"}

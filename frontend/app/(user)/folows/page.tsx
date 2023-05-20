@@ -3,11 +3,11 @@
 import { useFollowsQuery } from "@/stores/slices/user.api"
 
 import { Channel } from "@/components/channel/channel"
+import {useAuthorizationQuery} from "@/stores/slices/regapi";
 
 export default function Follows() {
   const { data, isLoading } = useFollowsQuery({})
-  let user = ""
-
+  const  user = useAuthorizationQuery({});
   return (
     <div>
       {isLoading ? (
@@ -15,7 +15,7 @@ export default function Follows() {
       ) : (
         <div className={"flex flex-col"}>
           {data.map((f) => (
-            <Channel key={f.id} user={f} />
+            <Channel key={f.id} author={f} userFollows={user.data} />
           ))}
         </div>
       )}

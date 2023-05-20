@@ -43,15 +43,7 @@ export function LayoutVideo({
   const [activeVideoValue, setActiveVideo] = useState(null)
   const [commentsVisible, setCommentsVisible] = useState({})
 
-  const handlePlay = (videoId) => {
-    setActiveVideo(videoId)
-  }
 
-  const handlePause = (videoId) => {
-    if (activeVideo === videoId) {
-      setActiveVideo(null)
-    }
-  }
 
   const handleToggleComments = (videoId) => {
     setCommentsVisible((prev) => ({

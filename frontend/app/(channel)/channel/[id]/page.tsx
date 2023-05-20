@@ -6,6 +6,7 @@ import { useCheckAuthQuery } from "@/stores/slices/regapi"
 import { IUser } from "@/types/User.interface"
 import { LayoutVideo } from "@/components/Layot.video"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
+import Profile from "@/components/user/Profile.svg";
 
 interface PageProps {
   params: { id: string }
@@ -40,7 +41,11 @@ export default async function PagePage({ params }: PageProps) {
               width={70}
               height={70}
               alt={"userSubs"}
-              src={"http://localhost:8000/user" + data.avatar}
+               src={
+              data.avatar?.length > 0
+                ? "http://localhost:8000/user" + data.avatar
+                : Profile.src
+            }
             />
             <div className={"my-5"}>
               <h1>{data.login}</h1>

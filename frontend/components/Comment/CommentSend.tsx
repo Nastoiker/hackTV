@@ -20,13 +20,16 @@ import { Textarea } from "@/components/ui/textarea"
 interface ISendComment {
   videoId: string
   comment: string
+  sendComment,
 }
 export const CommentForm = ({
   video,
   user,
+                              sendComment,
 }: {
   video: IVideo
   user?: IUser
+  sendComment: () => void,
 }) => {
   const {
     register,
@@ -42,6 +45,7 @@ export const CommentForm = ({
     formData.videoId = video.id
     const result = await commentVideo(formData)
     console.log("commentres" + result + data)
+    sendComment();
   }
   return (
     <div className="space-y-3 mt-2 rounded-3xl bg-blue-50 p-5">

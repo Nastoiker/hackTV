@@ -1,12 +1,13 @@
 "use client"
 
 import { useState } from "react"
-import { redirect } from "next/navigation"
-import { useForm } from "react-hook-form"
+import { useRouter } from 'next/navigation';import { useForm } from "react-hook-form"
 
 import { ISearch } from "@/types/Search.interface"
 import { Input } from "@/components/ui/input"
 import SearchIcon from "./SearchIcon.svg"
+import {useAppDispatch} from "@/stores";
+import {setSearch} from "@/stores/slices/search.slice";
 
 export const Search = () => {
   console.log(SearchIcon)
@@ -19,12 +20,15 @@ export const Search = () => {
   const goToSearch = () => {
     // return redirectTo('/Search/' + searchAlias);
   }
-
+  const dispatch = useAppDispatch();
+  const router = useRouter();
   const handleKeyDown = (e: KeyboardEvent) => {
     if (e.key === "Enter") {
-      redirect("/founded/" + searchValue)
       console.log(searchValue)
     }
+  }
+  const onSubmit = () => {
+
   }
   const handleChange = (e: any) => {
     const search = e.target.value
@@ -34,8 +38,7 @@ export const Search = () => {
   return (
     <div className={"mx-10 w-full"}>
       <form
-        onSubmit={() => redirect("founded/" + searchValue)}
-        action={"founded/" + searchValue}
+         onSubmit={(e) => { e.preventDefault(); dispatch(setSearch(searchValue)); router.push("/founded/" + searchValue);}}
       >
         <img
           className={"absolute my-2 mx-4"}

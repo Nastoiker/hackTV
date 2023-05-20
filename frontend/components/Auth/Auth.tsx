@@ -29,7 +29,7 @@ export const AuthComponent = () => {
     formState: { errors },
     reset,
   } = useForm<ILogin>()
-  const { data, isLoading, error } = useAuthorizationQuery(login)
+  const{ data, isLoading, error } = useAuthorizationQuery(login);
 
   const onSubmit = async (formData: ILogin) => {
     setLogin(formData)
@@ -46,7 +46,7 @@ export const AuthComponent = () => {
             Make changes to your profile here. Click save when youre done.
           </DialogDescription>
         </DialogHeader>
-        <form action="" className="my-5" onSubmit={handleSubmit(onSubmit)}>
+        <form  className="my-5" onSubmit={handleSubmit(onSubmit)}>
           <Label htmlFor={"email"}>Emal</Label>
           <Input {...register("email", { required: true, pattern: {
               value: /\S+@\S+\.\S+/,

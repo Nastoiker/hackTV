@@ -82,6 +82,8 @@ export const Video = ({
     if(activeVideo!==video.id) {
       audio?.pause();
       videoRef?.current?.pause()
+      setIsPlaying(false);
+      setIsPlayingAudio(false);
     }
     console.log(videoRef?.current?.duration)
   }, [currentTime])
@@ -132,26 +134,24 @@ export const Video = ({
       }
     }
   }, [])
-  const onVideoClick = () => {
-    if (!isPlaying) {
-      onClickVideoProps();
-      audio.play()
-    } else {
-      audio.pause();
+  const onVideoClick = async () => {
 
-    }
-    setIsPlayingAudio(!isPlaying)
     if (isPlaying) {
-      videoRef?.current?.pause()
+       audio.pause();
+      videoRef?.current?.pause();
+      setIsPlayingAudio(false);
       setIsPlaying(false)
     } else {
+      onClickVideoProps();
+      setIsPlaying(true)
+      setIsPlayingAudio(true)
+      await audio.play();
       if (!isWatching) {
         console.log(1)
         handleEndVideo()
       }
       setIsWatching(true)
       videoRef?.current?.play()
-      setIsPlaying(true)
     }
   }
   const handleWatch = () => {}
@@ -269,7 +269,7 @@ export const Video = ({
       </div>
       <div className={"w-full"}>
         {isOpen && (
-          <CommentsModal video={video} user={user} comments={video.Comment} />
+          <CommentsModal video={video} user={user}  />
         )}
       </div>
     </div>

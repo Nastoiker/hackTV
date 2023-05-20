@@ -52,21 +52,19 @@ export const CreateMusicComponent = () => {
     setMusicFile(file);
     const audioEl = new Audio(URL.createObjectURL(file));
     setAudio(audioEl);
-    setValue("music", selectedFile)
   }
   const onDropPicture = (file: any) => {
     // if (file.type !== "music/mp3") return
-    setValue("picture", file)
-    setOnDrag(true)
+    setValue("picture", file);
+    setOnDrag(true);
   }
   const [isPlaying, setIsPlaying] = useState(false)
   const [audio, setAudio] = useState<HTMLAudioElement | null>(null)
   const onDropMusic = (e: any) => {
-    e.preventDefault()
+    e.preventDefault();
+    setValue("music", e.dataTransfer.files[0]);
     const file = e.dataTransfer.files[0]
     console.log(file.type);
-
-
     if (file.type !== "audio/mpeg") return;
 
     uploadedFileMusic(file)
@@ -95,21 +93,19 @@ export const CreateMusicComponent = () => {
     }
     setIsPlaying(!isPlaying)
   }
-  const handleVolumeChange = (event) => {
-    const value = parseFloat(event.target.value)
-    setVolume(value)
-    audio.volume = value
-  }
-  const secondCategory = useAppSelector(
-    (state) => state.category.category
-  ).flat();
+
 
 
   const onSubmit = async (formData: ICreateMusic) => {
     //нужный кастыль
     // if(!file)        { console.log(1);
     //       return;}
-    await CreateMusic(formData);
+    const data = new FormData();
+    data.set("music", formData.music);
+    data.set("picture", formData.picture);
+    data.set("name", formData.name.toString())
+    data.set("alias", formData.alias.toString().replace(" ", "-"))
+    await CreateMusic(data);
   }
   return (
     <div>
@@ -129,7 +125,7 @@ export const CreateMusicComponent = () => {
               onDrop={onDropMusic}
               onDragOver={handleDragOver}
             >
-              { onDrag ? (
+              { musicFile ? (
                 <div className={"bg-blue-200 m-9"}>
                   <Button type={'button'} onClick={handlePlayPause}>{isPlaying ? "Pause" : "Play"}</Button>
                 </div>
@@ -165,6 +161,7 @@ export const CreateMusicComponent = () => {
         <div className={"space-y-6"}>
           <div className={"rounded-3xl bg-gray-200 space-y-5 p-5"}>
             <Label htmlFor={"name"}>Name</Label>
+
             <Input
               error={errors.name}
               {...register("name", {

@@ -1,20 +1,23 @@
 "use client"
 
 import {useEffect, useMemo, useState} from "react"
-import { useCheckAuthQuery } from "@/stores/slices/regapi"
-import { useFollowsQuery } from "@/stores/slices/user.api"
+import {useAuthorizationQuery, useCheckAuthQuery} from "@/stores/slices/regapi"
+import {useFollowsQuery} from "@/stores/slices/user.api"
 
-import { IMusic } from "@/types/Music.interface"
-import { IUser } from "@/types/User.interface"
-import { IVideo } from "@/types/Video.interface"
-import { Htag } from "@/components/Htag/Htag"
-import { Music } from "@/components/Music/Music"
-import { SortButton } from "@/components/Sorts/Sort.button"
-import { Video } from "@/components/video/video"
+import {IMusic} from "@/types/Music.interface"
+import {IUser} from "@/types/User.interface"
+import {IVideo} from "@/types/Video.interface"
+import {Htag} from "@/components/Htag/Htag"
+import {Music} from "@/components/Music/Music"
+import {SortButton} from "@/components/Sorts/Sort.button"
+import {Video} from "@/components/video/video"
+import {Channel} from "@/components/channel/channel";
+import {ChannelUser} from "@/components/channel/ChannelUser";
 
 interface LayoutProps {
   children: React.ReactNode
 }
+
 function FilterByDate(videos) {
   const sort = [...videos]
   const sortByTime = sort?.sort(
@@ -22,11 +25,13 @@ function FilterByDate(videos) {
   )
   return sortByTime
 }
+
 function FilterByLike(videos: IVideo[]) {
   const sort = [...videos]
   const sortByTime = sort?.sort((a, b) => a.likesCount - b.likesCount)
   return sortByTime
 }
+
 function FilterBySubs(videos: IVideo[]) {
   const sort = [...videos]
   const sortByTime = sort?.sort(
@@ -34,20 +39,18 @@ function FilterBySubs(videos: IVideo[]) {
   )
   return sortByTime
 }
-export function LayoutMusic({
-  musics,
-  user,
-}: {
-  musics: IMusic[]
-  user?: IUser
-}) {
-  const [activeMusicValue, setActiveMusicValue] = useState<string>(null);
 
+export function LayoutChannels({
+                                 channels,
+                               }: {
+  channels: any[]
+}) {
+  const  user = useAuthorizationQuery({});
   return (
     <div className={"mx-auto flex"}>
       <div className={"w-full mr-20"}>
-        {musics.length > 0 ? (
-          musics.map((m) => <Music activeMusic={activeMusicValue} setActiveMusic={() => setActiveMusicValue(m.id)} music={m} />)
+        {channels.length > 0 ? (
+          channels.map((m) => <ChannelUser channel={m} userFollows={user.data}/>)
         ) : (
           <div className={"mx-auto"}>
             <Htag type={"h1"}> Ничего не найдено</Htag>
@@ -56,8 +59,10 @@ export function LayoutMusic({
       </div>
       <SortButton
         className="fixed top-25 right-5 xl:right-44"
-        sortByLike={() => {}}
-        sortByDate={() => {}}
+        sortByLike={() => {
+        }}
+        sortByDate={() => {
+        }}
       />
     </div>
   )
