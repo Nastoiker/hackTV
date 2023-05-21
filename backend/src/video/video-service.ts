@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import {PrismaService} from "../prisma/prisma-service";
-import {Prisma, UserModel, Video, Tag, HistoryWatching} from "@prisma/client";
+import {Prisma, UserModel, Video, Comment, Tag, HistoryWatching} from "@prisma/client";
 import {createVideoDto} from "./dto/create-video.dto";
 import {unlink, writeFile} from "fs-extra";
 import {path} from "app-root-path";
@@ -62,7 +62,7 @@ export class VideoService {
                     authorVideo: { include: { folowers: true }},
                     secondCategory: true,
                     likes: true,
-                    Comment: { include: { writtenBy: true, userComments: { include: {user: true} }}},
+                    Comment: true,
                     watchers: true,
                 }
             },
@@ -93,7 +93,7 @@ export class VideoService {
                     authorVideo: { include: { folowers: true }},
                     secondCategory: true,
                     likes: true,
-                    Comment: { include: { writtenBy: true, userComments: { include: {user: true} }}},
+                    Comment: true,
                     watchers: true,
                 }
             },
@@ -143,7 +143,6 @@ export class VideoService {
                             authorVideo: true,
                             secondCategory: true,
                             likes: true,
-                            Comment: { include: { writtenBy: true, userComments: { include: {user: true} }}},
                             watchers: true,
                         }}
                 }
@@ -206,7 +205,7 @@ export class VideoService {
                 authorVideo: { include: { folowers: true }},
                 secondCategory: true,
                 likes: true,
-                Comment: { include: { writtenBy: true, userComments: { include: {user: true} }}},
+                Comment: true,
                 watchers: true,
             }
             },
@@ -223,6 +222,14 @@ export class VideoService {
         });
     }
 
+    async commentsVideo(videoId: string): Promise<Comment[] | null> {
+        return this.prisma.comment.findMany({
+            where: {
+                videoId,
+            },
+            include: { writtenBy: true, userComments: { include: {user: true} }}
+        });
+    }
     async deleteVideo(id: string) {
         const video = await this.prisma.video.findUnique({ where: {id}});
         const pathDelete = `uploads` + video.embed_link;

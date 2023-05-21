@@ -1,6 +1,6 @@
 /// <reference types="multer" />
 import { PrismaService } from "../prisma/prisma-service";
-import { Prisma, UserModel, Video, Tag, HistoryWatching } from "@prisma/client";
+import { Prisma, UserModel, Video, Comment, Tag, HistoryWatching } from "@prisma/client";
 import { createVideoDto } from "./dto/create-video.dto";
 import { VideoReportDto } from "./dto/report-video.dto";
 export declare class VideoService {
@@ -37,12 +37,6 @@ export declare class VideoService {
         orderBy?: Prisma.SecondLevelCategoryOrderByWithRelationInput;
     }): Promise<import(".prisma/client").SecondLevelCategory & {
         videos: (Video & {
-            Comment: (import(".prisma/client").Comment & {
-                writtenBy: UserModel;
-                userComments: (import(".prisma/client").UserCommentOnComment & {
-                    user: UserModel;
-                })[];
-            })[];
             music: import(".prisma/client").Music;
             tag: (import(".prisma/client").TagOnVideo & {
                 tag: Tag;
@@ -59,5 +53,6 @@ export declare class VideoService {
         where: Prisma.VideoWhereUniqueInput;
         data: Prisma.VideoUpdateInput;
     }): Promise<Video>;
+    commentsVideo(videoId: string): Promise<Comment[] | null>;
     deleteVideo(id: string): Promise<Video>;
 }

@@ -175,8 +175,8 @@ export class UserController {
   @Delete('/deleteVideo/:id')
   @UseGuards(JwtAuthGuard)
   DeleteVideo(@Param('id') id: string) {
-    const res = id.slice(1, id.length);
-    return this.videoService.deleteVideo(res);
+    const videoId = id.slice(1, id.length);
+    return this.videoService.deleteVideo(videoId);
   }
   @UseGuards(JwtAuthGuard)
   @Post('createCommentOnUser')

@@ -16,13 +16,14 @@ export class UserService {
   ): Promise<UserModel | null> {
     return this.prisma.userModel.findUnique({
       where: userWhereUniqueInput,
-    include: { Comment: true, folowers: true, folowing: true, videos: { include: { music: true,
+    include: { Comment: true, folowers: true, folowing: true, Like: true,
+      videos: { include: { music: true,
           watchers: true,
           tag: { include: {tag: true}},
-          authorVideo: true,
+          authorVideo: { include: { folowers: true }},
           secondCategory: true,
           likes: { include: { videos: true}},
-          Comment: { include: { writtenBy: true, userComments: { include: {user: true} }}}}}, music: true  }
+          Comment: true}}, music: true  }
     });
   }
   async createComment(createVideoDto: CreateCommentDto): Promise<Comment> {

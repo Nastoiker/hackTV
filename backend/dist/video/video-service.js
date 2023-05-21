@@ -72,7 +72,7 @@ let VideoService = class VideoService {
                 authorVideo: { include: { folowers: true } },
                 secondCategory: true,
                 likes: true,
-                Comment: { include: { writtenBy: true, userComments: { include: { user: true } } } },
+                Comment: true,
                 watchers: true,
             }
         });
@@ -94,7 +94,7 @@ let VideoService = class VideoService {
                 authorVideo: { include: { folowers: true } },
                 secondCategory: true,
                 likes: true,
-                Comment: { include: { writtenBy: true, userComments: { include: { user: true } } } },
+                Comment: true,
                 watchers: true,
             }
         });
@@ -130,7 +130,6 @@ let VideoService = class VideoService {
                         authorVideo: true,
                         secondCategory: true,
                         likes: true,
-                        Comment: { include: { writtenBy: true, userComments: { include: { user: true } } } },
                         watchers: true,
                     } }
             }
@@ -190,7 +189,7 @@ let VideoService = class VideoService {
                 authorVideo: { include: { folowers: true } },
                 secondCategory: true,
                 likes: true,
-                Comment: { include: { writtenBy: true, userComments: { include: { user: true } } } },
+                Comment: true,
                 watchers: true,
             }
         });
@@ -200,6 +199,14 @@ let VideoService = class VideoService {
         return this.prisma.video.update({
             data,
             where,
+        });
+    }
+    async commentsVideo(videoId) {
+        return this.prisma.comment.findMany({
+            where: {
+                videoId,
+            },
+            include: { writtenBy: true, userComments: { include: { user: true } } }
         });
     }
     async deleteVideo(id) {

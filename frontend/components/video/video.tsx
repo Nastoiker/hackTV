@@ -119,7 +119,6 @@ export const Video = ({
     }
     liked ? setCount(countLike - 1) : setCount(countLike + 1)
   }
-
   useEffect(() => {
     const handleTimeUpdate = () => {
       setCurrentTime(videoRef.current?.currentTime)

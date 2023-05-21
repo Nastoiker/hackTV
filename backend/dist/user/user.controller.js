@@ -112,8 +112,8 @@ let UserController = class UserController {
         return this.userService.deleteUser({ id });
     }
     DeleteVideo(id) {
-        const res = id.slice(1, id.length);
-        return this.videoService.deleteVideo(res);
+        const videoId = id.slice(1, id.length);
+        return this.videoService.deleteVideo(videoId);
     }
     createUserComment(request, createCommentOnUserDto) {
         createCommentOnUserDto.userId = request.user.id;

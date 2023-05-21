@@ -38,7 +38,7 @@ export const CommentForm = ({
     formState: { errors },
     reset,
   } = useForm<ISendComment>()
-  const [commentVideo, { isLoading, isError, data, error }] =
+  const [commentVideo, { isLoading, isError, data, error, }] =
     useCommentVideoMutation()
   useEffect(() => {}, [data])
   const onSubmit = async (formData: ISendComment) => {
@@ -46,6 +46,7 @@ export const CommentForm = ({
     const result = await commentVideo(formData)
     console.log("commentres" + result + data)
     sendComment();
+    reset();
   }
   return (
     <div className="space-y-3 mt-2 rounded-3xl bg-blue-50 p-5">

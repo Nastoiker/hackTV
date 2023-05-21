@@ -83,10 +83,9 @@ export class VideoController {
         return this.videoService.createVideo(video, dto);
     }
     @Get('/search/:search')
-    async getSearch(@Param('search', IdValidationpipe) search: string) {
-        const searchValue = search.slice(1, search.length);
+    async getSearch(@Param(':search', IdValidationpipe) search: string) {
 
-        const product = await this.videoService.getSearch(searchValue);
+        const product = await this.videoService.getSearch(search);
         if (!product) {
             throw new NotFoundException(VideoByIdNotFount);
         }
@@ -111,19 +110,18 @@ export class VideoController {
         return tags;
     }
     @Get('/found/:search')
-
     async FoundValue(@Param('search') search: string) {
         const searchValue = search.slice(1, search.length);
         const videos = await this.videoService.getSearch(searchValue);
-        const channels = await this.userService.foundUser(search);
-        const tags = await this.videoService.GetSearchTags(search);
-        const res = [searchValue, videos, tags];
+        const channels = await this.userService.foundUser(searchValue);
+        const tags = await this.videoService.GetSearchTags(searchValue);
+        const res = {channels: channels, videos: videos, tags: tags};
         return res;
     }
     @Get('/category/:alias')
     async getByCategoryAlias(@Param('alias') alias: string) {
-        const aliasCategory = alias.slice(1, alias.length);
-        const videos = await this.videoService.videosByCategory({ where: { name: aliasCategory}});
+        const aliasValue = alias.slice(1, alias.length);
+        const videos = await this.videoService.videosByCategory({ where: { name: aliasValue}});
         if (!videos) {
             throw new NotFoundException('VideoByIdNotFount');
         }
@@ -181,6 +179,15 @@ export class VideoController {
             throw new NotFoundException(VideoIdNotFoundForUpd);
         }
         return reportVideo;
+    }
+    @Get('/comments/:videoId')
+    async getCommentsVideo(@Param('videoId', IdValidationpipe) id: string) {
+        const videoId = id.slice(1, id.length);
+        const product = await this.videoService.commentsVideo(videoId);
+        if (!product) {
+            throw new NotFoundException(VideoByIdNotFount);
+        }
+        return product;
     }
     // @UsePipes(new ValidationPipe())
     // @HttpCode(200)

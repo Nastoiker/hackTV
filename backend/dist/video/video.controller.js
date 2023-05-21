@@ -67,8 +67,7 @@ let VideoController = class VideoController {
         return this.videoService.createVideo(video, dto);
     }
     async getSearch(search) {
-        const searchValue = search.slice(1, search.length);
-        const product = await this.videoService.getSearch(searchValue);
+        const product = await this.videoService.getSearch(search);
         if (!product) {
             throw new common_1.NotFoundException(video_constants_1.VideoByIdNotFount);
         }
@@ -91,14 +90,14 @@ let VideoController = class VideoController {
     async FoundValue(search) {
         const searchValue = search.slice(1, search.length);
         const videos = await this.videoService.getSearch(searchValue);
-        const channels = await this.userService.foundUser(search);
-        const tags = await this.videoService.GetSearchTags(search);
-        const res = [searchValue, videos, tags];
+        const channels = await this.userService.foundUser(searchValue);
+        const tags = await this.videoService.GetSearchTags(searchValue);
+        const res = { channels: channels, videos: videos, tags: tags };
         return res;
     }
     async getByCategoryAlias(alias) {
-        const aliasCategory = alias.slice(1, alias.length);
-        const videos = await this.videoService.videosByCategory({ where: { name: aliasCategory } });
+        const aliasValue = alias.slice(1, alias.length);
+        const videos = await this.videoService.videosByCategory({ where: { name: aliasValue } });
         if (!videos) {
             throw new common_1.NotFoundException('VideoByIdNotFount');
         }
@@ -147,6 +146,14 @@ let VideoController = class VideoController {
         }
         return reportVideo;
     }
+    async getCommentsVideo(id) {
+        const videoId = id.slice(1, id.length);
+        const product = await this.videoService.commentsVideo(videoId);
+        if (!product) {
+            throw new common_1.NotFoundException(video_constants_1.VideoByIdNotFount);
+        }
+        return product;
+    }
 };
 __decorate([
     (0, common_1.UseGuards)(jwt_guard_1.JwtAuthGuard),
@@ -167,7 +174,7 @@ __decorate([
 ], VideoController.prototype, "create", null);
 __decorate([
     (0, common_1.Get)('/search/:search'),
-    __param(0, (0, common_1.Param)('search', idValidation_pipe_1.IdValidationpipe)),
+    __param(0, (0, common_1.Param)(':search', idValidation_pipe_1.IdValidationpipe)),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [String]),
     __metadata("design:returntype", Promise)
@@ -246,6 +253,13 @@ __decorate([
     __metadata("design:paramtypes", [report_video_dto_1.VideoReportDto]),
     __metadata("design:returntype", Promise)
 ], VideoController.prototype, "reportOnVideo", null);
+__decorate([
+    (0, common_1.Get)('/comments/:videoId'),
+    __param(0, (0, common_1.Param)('videoId', idValidation_pipe_1.IdValidationpipe)),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String]),
+    __metadata("design:returntype", Promise)
+], VideoController.prototype, "getCommentsVideo", null);
 VideoController = __decorate([
     (0, common_1.Controller)('Video'),
     __metadata("design:paramtypes", [video_service_1.VideoService, user_service_1.UserService])

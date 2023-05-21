@@ -1,6 +1,6 @@
 "use client"
 
-import { useMemo, useState } from "react"
+import {useCallback, useMemo, useState} from "react"
 import { useCheckAuthQuery } from "@/stores/slices/regapi"
 import { useFollowsQuery } from "@/stores/slices/user.api"
 
@@ -13,25 +13,8 @@ import { Video } from "@/components/video/video"
 interface LayoutProps {
   children: React.ReactNode
 }
-function FilterByDate(videos) {
-  const sort = [...videos]
-  const sortByTime = sort?.sort(
-    (a, b) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime()
-  )
-  return sortByTime
-}
-function FilterByLike(videos: IVideo[]) {
-  const sort = [...videos]
-  const sortByTime = sort?.sort((a, b) => a.likesCount - b.likesCount)
-  return sortByTime
-}
-function FilterBySubs(videos: IVideo[]) {
-  const sort = [...videos]
-  const sortByTime = sort?.sort(
-    (a, b) => a.authorVideo.subscribers_count - b.authorVideo.subscribers_count
-  )
-  return sortByTime
-}
+
+
 export function LayoutVideo({
   videos,
   user,
@@ -39,11 +22,30 @@ export function LayoutVideo({
   videos: IVideo[]
   user?: IUser
 }) {
-  const follow = useFollowsQuery({})
+  const follow = useFollowsQuery({});
   const [activeVideoValue, setActiveVideo] = useState(null)
   const [commentsVisible, setCommentsVisible] = useState({})
 
+  const FilterByDate = useCallback(function (videos) {
+    const sort = [...videos]
+    const sortByTime = sort?.sort(
+      (a, b) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime()
+    )
+    return sortByTime
+  },[]);
 
+  const filerLike = useCallback(function (videos: IVideo[]) {
+    const sort = [...videos]
+    const sortByTime = sort?.sort((a, b) => a.likesCount - b.likesCount)
+    return sortByTime
+  }, []);
+  const FilterBySubs= useCallback(function (videos: IVideo[]) {
+    const sort = [...videos]
+    const sortByTime = sort?.sort(
+      (a, b) => a.authorVideo.subscribers_count - b.authorVideo.subscribers_count
+    )
+    return sortByTime
+  }, [])
 
   const handleToggleComments = (videoId) => {
     setCommentsVisible((prev) => ({
@@ -57,7 +59,7 @@ export function LayoutVideo({
   }
   console.log(videos)
   const filterByDate = useMemo(() => FilterByDate(videos), [videos])
-  const filterByLike = useMemo(() => FilterByLike(videos), [videos])
+  const filterByLike = useMemo(() => filerLike(videos), [videos])
   const filterBySubs = useMemo(() => FilterBySubs(videos), [videos])
   // const user = useCheckAuthQuery({})
   return (

@@ -20,7 +20,7 @@ export default function CommentsModal({
           </div>
         </ScrollArea>
       )}
-      <CommentForm sendComment={() => {refetch()}} video={video} user={user} />
+      <CommentForm sendComment={async () => {await refetch()}} video={video} user={user} />
     </div>
   )
 }
