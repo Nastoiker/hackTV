@@ -4,6 +4,7 @@ import { IUser } from "@/types/User.interface"
 import { IVideo } from "@/types/Video.interface"
 import { DOMEN } from "../../domen.api"
 import {ITag} from "@/types/Tag.interface";
+import { IMusic } from "@/types/Music.interface";
 
 interface IState {
   search: string
@@ -13,6 +14,7 @@ interface IState {
     videos: IVideo[]
     channels: IUser[]
     tags: ITag[],
+    music: IMusic[],
   }
 
 }

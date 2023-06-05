@@ -13,7 +13,8 @@ import {
   SelectItem,
   SelectTrigger,
 } from "@/components/ui/select"
-
+import { Htag } from "@/components/Htag/Htag"
+import Link from 'next/link';
 const PageRegistration = () => {
   const {
     register,
@@ -24,13 +25,17 @@ const PageRegistration = () => {
   } = useForm<IRegister>()
   const onSubmit = async (formData: IRegister) => {}
   return (
-    <div>
-      <h1 className={"text-center"}>Регистрация</h1>
+    <div className="mx-auto max-w-[500px]">
       <form
         action=""
         className={"space-y-5 border p-10 my-5 rounded-2xl"}
         onSubmit={handleSubmit(onSubmit)}
       >
+        <Htag type='h1' className='text-center' >Регистрация</Htag>
+        <p className="text-center">
+          Есть аккаунт? 
+          <Link className="border border-b-2" href='/authorization'>Авторизируйтесь</Link>
+        </p>
         <Label htmlFor={"email"}>Emal</Label>
         <Input error={errors.email} {...register("email", { required: true, pattern: {
             value: /\S+@\S+\.\S+/,

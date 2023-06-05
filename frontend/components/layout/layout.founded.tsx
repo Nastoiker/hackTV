@@ -39,6 +39,15 @@ export const LayoutFounded = ({ active, setActiveFounded}: { active: string, set
       >
         <Htag type={"h1"}>Теги</Htag>
       </div>
+       <div
+        onClick={() => {setActiveFounded('musics')}}
+        className={cn(
+          " py-5  pointer transition-all hover:border-b-4 border-black ",
+          active === "musics" && "border-b"
+        )}
+      >
+        <Htag type={"h1"}>Музыка</Htag>
+      </div>
     </div>
   )
 }
