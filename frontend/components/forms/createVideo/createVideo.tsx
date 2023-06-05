@@ -14,6 +14,8 @@ import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
 import { UpdateAvatarProfile } from "@/components/uploadImage/UploadImage"
 import {SelectContent, SelectItem, Select, SelectTrigger, SelectValue} from "@/components/ui/select";
+import {CreateTags} from "@/components/forms/createVideo/createTags";
+import axios from "axios";
 export const CreateVideo = () => {
   const [CreateVideo, data] = useCreateVideoMutation()
   const videoRef = useRef()
@@ -39,6 +41,11 @@ export const CreateVideo = () => {
   const [file, setFile] = useState<File>()
   const [onDrag, setOnDrag] = useState<boolean>(false)
   const [selectedFile, setSelectedFile] = useState<any>()
+  const [tags, setTag] = useState<{tag: string, id: number}[]>([]);
+  const handleDelete = (id) => {
+    const updatedItems = tags.filter((item) => item.id !== id);
+    setTag(updatedItems);
+  };
   const music = useMusicGetQuery({})
   if(music.isLoading) {
     return <div>loading</div>;
@@ -47,39 +54,48 @@ export const CreateVideo = () => {
     value: music.id,
     label: music.name
   }));
-
+  const handleFormKeyDown = (event) => {
+    if (event.keyCode === 13) {
+      event.preventDefault();
+      return false;
+    }
+  };
   const uploadedFile = (file: any) => {
     const reader = new FileReader()
     reader.readAsDataURL(file)
     reader.onloadend = () => {
       setSelectedFile(reader.result)
     }
-    setValue("files", selectedFile)
+    console.log(file);
   }
   const onDrop = (e: any) => {
-    e.preventDefault()
-    const file = e.dataTransfer.files[0]
+    e.preventDefault();
+    const file = e.dataTransfer.files[0];
     if (file.type !== "video/mp4") return
-    setFile(file)
-    uploadedFile(file)
-    setOnDrag(true)
+    setFile(file);
+    uploadedFile(file);
+    setOnDrag(true);
+    setValue("files", file);
   }
   const handleDragOver = (e: any) => {
     e.preventDefault()
-
     setOnDrag(false)
   }
   const onSubmit: SubmitHandler<ICreateVideo> = async (formData: ICreateVideo) => {
-    console.log(getValues())
-    console.log(1)
-    const files = formData.files
-    //нужный кастыль
+    console.log(getValues());
+    console.log(tags.map( t =>  `#${t.tag}`).join(', '));
+    // const filDde = formData.files[0];
+    // delete formData.files;
+    // formData.files = filDde;
+    formData.alias = new Date().getTime().toString();
+    formData.tagId= tags.map( t =>`#${t.tag}`).join(', ');
     const data = new FormData()
-    data.set("files", formData.files[0])
+    const file = new Blob([formData.files], { type: 'video/mp4' });
+    data.set("files", formData.files)
     data.set("name", formData.name.toString())
     data.set("alias", formData.name.toString().replace(" ", "-"))
     data.set("musicId", formData.musicId.toString())
-    data.set("tagId", formData.tagId.toString())
+    data.set("tagId", tags.map( t =>`#${t.tag}`).join(', ').toString())
     data.set("secondCategoryId", formData.secondCategoryId.toString())
     data.set("Description", formData.Description.toString())
     data.set("embed_link", formData.embed_link.toString())
@@ -87,10 +103,24 @@ export const CreateVideo = () => {
     data.set("Title", formData.Title.toString())
     data.set("Type", formData.Type.toString())
     data.set("share_url", formData.share_url.toString())
+    // data.append("files", new Blob([formData.files], { type: 'video/mp4' }), formData.files.name);
 
+    console.log(data.get('files'));
     // if(!file)        { console.log(1);
     //       return;}
-    await CreateVideo(data)
+    // await CreateVideo(data)
+    try {
+      const res = await axios.post('http://localhost:8000/Video/create', { ...formData}, {
+        headers: {
+          Accept: 'application/json',
+          "Content-Type": "multipart/form-data;",
+          Authorization: `Bearer ${localStorage.getItem('token')}`
+        }
+      });
+    } catch(e) {
+
+    }
+
   }
   const colourOptions = [
     { value: 'red', label: 'Red' },
@@ -100,6 +130,7 @@ export const CreateVideo = () => {
   return (
     <div>
       <form
+        onKeyDown={handleFormKeyDown}
         className={
           "space-y-7 space-x-5 xl:flex items-center justify-around my-20"
         }
@@ -150,12 +181,12 @@ export const CreateVideo = () => {
           <div className={"md:flex space-x-12"}>
             <div>
               <h1>Обложка</h1>
-              <UpdateAvatarProfile onSelectFile={() => {}} />
+              <UpdateAvatarProfile onSelectFile={(file) => {}} />
             </div>
           </div>
         </div>
 
-        <div className={"space-y-6"}>
+        <div className={"space-y-6 w-1/3"}>
           <div className={"rounded-3xl bg-gray-200 space-y-5 p-5"}>
             <Label htmlFor={"name"}>Name</Label>
             <Input
@@ -173,15 +204,15 @@ export const CreateVideo = () => {
               })}
               id={"Title"}
             />
-            <Input
-              error={errors.files}
-              type={"file"}
-              className={"block sm:hidden"}
-              {...register("files", {
-                required: { value: true, message: "Заполните login" },
-              })}
-              id={"file"}
-            />
+            {/*<Input*/}
+            {/*  error={errors.files}*/}
+            {/*  type={"file"}*/}
+            {/*  className={"block sm:block"}*/}
+            {/*  {...register("files", {*/}
+            {/*    required: { value: true, message: "Заполните login" },*/}
+            {/*  })}*/}
+            {/*  id={"file"}*/}
+            {/*/>*/}
             <Label htmlFor={"secondCategoryId"}>secondCategory</Label>
 
             <select
@@ -216,14 +247,8 @@ export const CreateVideo = () => {
                 )}}
             />
             <Label htmlFor={"tagId"}>Добавьте теги</Label>
-            <Input
-              error={errors.tagId}
-              type={"string"}
-              {...register("tagId", {
-                required: { value: true, message: "Заполните теги" },
-              })}
-              id={"tagId"}
-            />
+            <CreateTags tags={tags} injectTag={(v) => setTag( (oldArr) => ([{tag: v.tag, id: tags?.length ? tags.length + 1 : 1},...oldArr]))} deleteTag={(id) => handleDelete(id)} />
+
             <Label htmlFor={"desc"}>Описание</Label>
             <Textarea
               className={"resize-none"}

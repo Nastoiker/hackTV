@@ -98,7 +98,12 @@ export const UserApi = createApi({
       query: (commentVideo) => ({
         url: "/createVideo",
         method: "POST",
-        body: commentVideo,
+        body: { ...commentVideo},
+        headers: {
+          Accept: 'application/json',
+          'Access-Control-Allow-Origin': '*',
+          "Content-Type": "multipart/form-data;",
+        }
       }),
     }),
   }),
