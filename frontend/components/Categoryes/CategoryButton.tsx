@@ -68,7 +68,7 @@ export const CategoryButton = ({
               key={s.alias}
               variants={variantsChildren}
               className={cn(
-                "cursor-pointer block w-fit border-0 rounded-xl px-2 pr-10 py-auto mx-7  overflow-hidden ",
+                "cursor-pointer block w-fit my-2 border-0 rounded-xl pr-10 pb-1 pt-0.5 px-5 mx-7  overflow-hidden ",
                 pathname.split("/")[2] === s.alias && "bg-blue-200"
               )}
               onClick={() => router.push(`/category/${s.alias}`)}

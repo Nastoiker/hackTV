@@ -15,6 +15,8 @@ import {
 } from "@/components/ui/select"
 import { Htag } from "@/components/Htag/Htag"
 import Link from 'next/link';
+import {useRegistrationMutation} from "@/stores/slices/regapi";
+import {useState} from "react";
 const PageRegistration = () => {
   const {
     register,
@@ -22,18 +24,28 @@ const PageRegistration = () => {
     handleSubmit,
     formState: { errors },
     reset,
-  } = useForm<IRegister>()
-  const onSubmit = async (formData: IRegister) => {}
+    watch,
+  } = useForm<IRegister>();
+  const [error, setError] = useState<boolean>(false);
+  const [registrationFunc, isLoading] = useRegistrationMutation({});
+  const onSubmit = async (formData: IRegister) => {
+     try {
+       await registrationFunc(formData);
+       setError(false);
+     } catch (e) {
+        setError(true);
+     }
+
+  }
   return (
     <div className="mx-auto max-w-[500px]">
       <form
-        action=""
-        className={"space-y-5 border p-10 my-5 rounded-2xl"}
+        className={"space-y-5 text-black border p-10 my-5 rounded-2xl"}
         onSubmit={handleSubmit(onSubmit)}
       >
         <Htag type='h1' className='text-center' >Регистрация</Htag>
         <p className="text-center">
-          Есть аккаунт? 
+          Есть аккаунт?
           <Link className="border border-b-2" href='/authorization'>Авторизируйтесь</Link>
         </p>
         <Label htmlFor={"email"}>Emal</Label>
@@ -65,13 +77,25 @@ const PageRegistration = () => {
         <Label htmlFor={"password"}>Пароль</Label>
         <Input type={"password"} {...register("password", { required: true })} id={"password"} />
         <Label htmlFor={"passwordVerif"}>Подтверждение пароля</Label>
-        <Input type={"password"} id={"passwordVerif"} />
+        <Input type={"password"} id={"passwordVerif"} {...register("confirm_password", {
+          required: true,
+          validate: (val: string) => {
+            if (watch('password') != val) {
+              return "Your passwords do no match";
+            }
+          },
+        })} />
         <div className={"text-center"}>
           {" "}
           <Button type={"submit"} className={"w-full text-center"}>
             Регистрация
           </Button>
         </div>
+        { error && <div>
+          <h1>
+            Ошибка регистрации
+          </h1>
+        </div> }
       </form>
     </div>
   )
