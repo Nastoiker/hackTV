@@ -22,6 +22,9 @@ export function LayoutVideo({
   videos: IVideo[]
   user?: IUser
 }) {
+  if(!videos) {
+    return <div></div>;
+  }
   const follow = useFollowsQuery({});
   const [activeVideoValue, setActiveVideo] = useState(null)
   const [commentsVisible, setCommentsVisible] = useState({})
