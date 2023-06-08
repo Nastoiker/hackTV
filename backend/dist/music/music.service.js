@@ -46,6 +46,15 @@ let MusicService = class MusicService {
     update(id, updateMusicDto) {
         return `This action updates a #${id} music`;
     }
+    async foundMusic(search) {
+        return this.prismaService.music.findMany({
+            where: {
+                name: {
+                    startsWith: search,
+                }
+            }
+        });
+    }
     async remove(id) {
         const remove = await this.prismaService.music.findFirst({
             where: { id },

@@ -15,7 +15,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.VideoController = void 0;
 const jwt_guard_1 = require("../auth/guards/jwt.guard");
 const idValidation_pipe_1 = require("../pipes/idValidation.pipe");
-const ffmpeg = require("fluent-ffmpeg");
 const common_1 = require("@nestjs/common");
 const video_constants_1 = require("./video.constants");
 const video_model_1 = require("./video.model");
@@ -26,10 +25,12 @@ const platform_express_1 = require("@nestjs/platform-express");
 const app_root_path_1 = require("app-root-path");
 const fs_extra_1 = require("fs-extra");
 const user_service_1 = require("../user/user.service");
+const music_service_1 = require("../music/music.service");
 let VideoController = class VideoController {
-    constructor(videoService, userService) {
+    constructor(videoService, userService, musicService) {
         this.videoService = videoService;
         this.userService = userService;
+        this.musicService = musicService;
     }
     async create(request, video, dto) {
         if (!video) {
@@ -38,33 +39,14 @@ let VideoController = class VideoController {
         if (video.mimetype !== 'video/mp4') {
             throw new common_1.BadRequestException('Only MP4 videos are allowed.');
         }
+        console.log(dto);
         dto.userId = request.user.id;
         const inputPath = video.path;
         const outputPath = `${inputPath}.mp4`;
         const UploadFolder = `${app_root_path_1.path}/uploads/videos`;
         await (0, fs_extra_1.writeFile)(`${UploadFolder}/${video.originalname}`, video.buffer);
         const videopath = `${UploadFolder}/${video.originalname}`;
-        await new Promise((resolve, reject) => {
-            ffmpeg(videopath)
-                .output(UploadFolder + '/converted/' + video.originalname)
-                .audioCodec('copy')
-                .audioChannels(2)
-                .size('1080x1920')
-                .aspect('9:16')
-                .autopad(true, 'black')
-                .videoCodec('libx264')
-                .on('end', () => {
-                console.log('file has been converted successfully');
-                resolve('');
-            })
-                .on('error', (err) => {
-                console.log(`an error happened: ${err.message}`);
-                reject(`an error happened: ${err.message}`);
-            })
-                .run();
-        });
-        dto.embed_link = UploadFolder + '/converted/' + video.originalname;
-        return this.videoService.createVideo(video, dto);
+        return this.videoService.createVideo(video, dto, videopath);
     }
     async getSearch(search) {
         const product = await this.videoService.getSearch(search);
@@ -92,14 +74,15 @@ let VideoController = class VideoController {
         const videos = await this.videoService.getSearch(searchValue);
         const channels = await this.userService.foundUser(searchValue);
         const tags = await this.videoService.GetSearchTags(searchValue);
-        const res = { channels: channels, videos: videos, tags: tags };
+        const musics = await this.musicService.foundMusic(searchValue);
+        const res = { channels: channels, videos: videos, tags: tags, musics: musics };
         return res;
     }
     async getByCategoryAlias(alias) {
         const aliasValue = alias.slice(1, alias.length);
         const videos = await this.videoService.videosByCategory({ where: { name: aliasValue } });
         if (!videos) {
-            throw new common_1.NotFoundException('VideoByIdNotFount');
+            return [];
         }
         return videos;
     }
@@ -262,7 +245,7 @@ __decorate([
 ], VideoController.prototype, "getCommentsVideo", null);
 VideoController = __decorate([
     (0, common_1.Controller)('Video'),
-    __metadata("design:paramtypes", [video_service_1.VideoService, user_service_1.UserService])
+    __metadata("design:paramtypes", [video_service_1.VideoService, user_service_1.UserService, music_service_1.MusicService])
 ], VideoController);
 exports.VideoController = VideoController;
 //# sourceMappingURL=video.controller.js.map

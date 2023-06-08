@@ -17,7 +17,7 @@ export const PopularTags = () => {
     >
       {data.map((t) => (
         <Link
-          className="hover:bg-opacity-70 bg-gray-300 rounded-3xl block my-4 px-4"
+          className="hover:bg-opacity-70 bg-background rounded-3xl block my-4 px-4"
           href={t.name}
           key={t.id}
         >

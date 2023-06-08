@@ -14,7 +14,7 @@ import {MusicService} from "../music/music.service";
         serveRoot: '/video',
     }),],
     controllers: [VideoController],
-    providers: [VideoService, PrismaService, UserService, MusicService, ],})
+    providers: [VideoService, PrismaService, UserService, MusicService ],})
 export class VideoModule {
 
 }

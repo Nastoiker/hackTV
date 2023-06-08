@@ -24,10 +24,12 @@ let AuthController = class AuthController {
         this.authService = authService;
     }
     async register(dto) {
+        console.log(dto);
         const oldUser = await this.authService.findUser(dto.email);
         if (oldUser) {
             throw new common_1.BadRequestException(auth_constants_1.ALREADY_REGISTER_ERROR);
         }
+        dto.authorUrl = dto.login;
         return this.authService.createUser(dto);
     }
     async login({ email, password }) {

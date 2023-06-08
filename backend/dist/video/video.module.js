@@ -24,7 +24,7 @@ VideoModule = __decorate([
                 serveRoot: '/video',
             }),],
         controllers: [video_controller_1.VideoController],
-        providers: [video_service_1.VideoService, prisma_service_1.PrismaService, user_service_1.UserService, music_service_1.MusicService,],
+        providers: [video_service_1.VideoService, prisma_service_1.PrismaService, user_service_1.UserService, music_service_1.MusicService],
     })
 ], VideoModule);
 exports.VideoModule = VideoModule;

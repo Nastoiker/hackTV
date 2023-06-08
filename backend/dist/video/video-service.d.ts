@@ -37,17 +37,20 @@ export declare class VideoService {
         orderBy?: Prisma.SecondLevelCategoryOrderByWithRelationInput;
     }): Promise<import(".prisma/client").SecondLevelCategory & {
         videos: (Video & {
+            Comment: Comment[];
             music: import(".prisma/client").Music;
             tag: (import(".prisma/client").TagOnVideo & {
                 tag: Tag;
             })[];
-            authorVideo: UserModel;
+            authorVideo: UserModel & {
+                folowers: import(".prisma/client").Folower[];
+            };
             secondCategory: import(".prisma/client").SecondLevelCategory;
             likes: import(".prisma/client").Like[];
             watchers: HistoryWatching[];
         })[];
     }>;
-    createVideo(file: Express.Multer.File, data: createVideoDto): Promise<Video>;
+    createVideo(file: Express.Multer.File, data: createVideoDto, videopath: string): Promise<Video>;
     getSearch(value: string): Promise<Video[]>;
     updateVideo(params: {
         where: Prisma.VideoWhereUniqueInput;

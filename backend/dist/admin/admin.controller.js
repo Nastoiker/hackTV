@@ -99,7 +99,7 @@ __decorate([
 ], AdminController.prototype, "createReport", null);
 __decorate([
     (0, common_1.UseGuards)(admin_guard_1.AdminJwtAuthGuard),
-    (0, common_1.Get)('createReport'),
+    (0, common_1.Get)('users'),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", []),
     __metadata("design:returntype", void 0)

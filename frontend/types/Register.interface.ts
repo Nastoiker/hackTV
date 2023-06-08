@@ -11,9 +11,11 @@ export interface IRegister {
   login: string
   email: string
   // phone: number
-  password: string
-  confirm_password: string;
+  hashpassword: string;
   // country: string
   // gender: string
-  years: number
+  confirm_password: string;
+  phone: string;
+  role: string;
+  authorUrl: string;
 }

@@ -29,7 +29,7 @@ export class AdminController {
     return this.adminService.createReport(dto);
   }
   @UseGuards(AdminJwtAuthGuard)
-  @Get('createReport')
+  @Get('users')
   getAllUsers( ) {
     return this.userService.users({});
   }

@@ -13,12 +13,12 @@ export const SortButton = ({
   const [currentFilter, setCurrenFilter] = useState<string>('');
   return (
     <div className={className}>
-      <Button onClick={ () => setIsOpen((o) => !o)}>фильтр</Button>
+        <Button className={'mr-0 w-full'} onClick={ () => setIsOpen((o) => !o)}>фильтр</Button>
       {
         isOpen &&
-        <div className={""}>
-          <button  className={cn("block", currentFilter === "users" && "border-b-4 border-black")} onClick={() => { setIsOpen(false); sortByLike()}}>Сортировка по дате </button>
-          <button className="block"  onClick={() => { setIsOpen(false);sortByDate()}} >Сортировка по Лайкам </button>
+        <div className={"space-y-5 py-5 px-2 border rounded-md"}>
+          <button  className={cn("block hover:border-b-2 transition-all", currentFilter === "users" && "border-b-4 border-black")} onClick={() => { setIsOpen(false); sortByLike()}}>по Дате </button>
+          <button className="block hover:border-b-2 transition-all duration-75"  onClick={() => { setIsOpen(false);sortByDate()}} >по Лайкам </button>
         </div>
       }
 

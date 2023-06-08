@@ -11,12 +11,12 @@ export const LayoutFounded = ({ active, setActiveFounded}: { active: string, set
   const some = pathname.split("/")[2]
   console.log(some)
   return (
-    <div className={"flex justify-around"}>
+    <div className={"p-2 sm:flex justify-around"}>
       <div
         onClick={() => {setActiveFounded('video')}}
         className={cn(
-          " py-5 pointer transition-all hover:border-b-4 border-black ",
-          active === "video" && " border-b"
+          " py-5 pointer transition-all hover:border-b-4",
+          active === "video" && " border-b-4"
         )}
       >
         <Htag type={"h1"}>Видео</Htag>
@@ -24,8 +24,8 @@ export const LayoutFounded = ({ active, setActiveFounded}: { active: string, set
       <div
         onClick={() => {setActiveFounded('channels')}}
         className={cn(
-          " py-5 pointer transition-all hover:border-b-4 border-black",
-          active === "channels" && "border-b-4 border-black"
+          " py-5 pointer transition-all hover:border-b-4 ",
+          active === "channels" && "border-b-4"
         )}
       >
         <Htag type={"h1"}>Каналы</Htag>
@@ -33,8 +33,8 @@ export const LayoutFounded = ({ active, setActiveFounded}: { active: string, set
       <div
         onClick={() => {setActiveFounded('tags')}}
         className={cn(
-          " py-5  pointer transition-all hover:border-b-4 border-black ",
-          active === "tags" && "border-b"
+          " py-5  pointer transition-all hover:border-b-4  ",
+          active === "tags" && "border-b-4"
         )}
       >
         <Htag type={"h1"}>Теги</Htag>
@@ -42,8 +42,8 @@ export const LayoutFounded = ({ active, setActiveFounded}: { active: string, set
        <div
         onClick={() => {setActiveFounded('musics')}}
         className={cn(
-          " py-5  pointer transition-all hover:border-b-4 border-black ",
-          active === "musics" && "border-b"
+          " py-5  pointer transition-all hover:border-b-4 ",
+          active === "musics" && "border-b-4"
         )}
       >
         <Htag type={"h1"}>Музыка</Htag>

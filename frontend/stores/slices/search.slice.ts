@@ -22,6 +22,7 @@ interface  Found {
   videos: IVideo[]
   channels: IUser[]
   tags: ITag[],
+  music: IMusic[],
 }
 const initialState: IState = {
   search: '',

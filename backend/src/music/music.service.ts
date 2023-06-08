@@ -38,6 +38,15 @@ export class MusicService {
   update(id: number, updateMusicDto: UpdateMusicDto) {
     return `This action updates a #${id} music`;
   }
+  async foundMusic(search: string) {
+    return  this.prismaService.music.findMany({
+      where:{
+        name: {
+          startsWith: search,
+        }
+      }
+    });
+  }
   async remove(id: string) {
     const remove = await this.prismaService.music.findFirst({
       where: {id},

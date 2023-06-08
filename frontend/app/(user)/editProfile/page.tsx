@@ -26,7 +26,7 @@ import { Textarea } from "@/components/ui/textarea"
 import Profile from "@/components/user/Profile.svg"
 
 export default function IndexPage() {
-  const { data, isLoading } = useCheckAuthQuery({})
+  const { data, isLoading, error } = useCheckAuthQuery({})
   const [file, setFile] = useState<File>()
   const [editProfile] = useEditProfileMutation()
   const [onDrag, setOnDrag] = useState<boolean>(false)
@@ -65,7 +65,6 @@ export default function IndexPage() {
   }
   return (
     <div className={"w-full"}>
-      {" "}
       {isLoading ? (
         <div>loading</div>
       ) : (

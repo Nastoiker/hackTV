@@ -73,7 +73,7 @@ export const CategoryButton = ({
               )}
               onClick={() => router.push(`/category/${s.alias}`)}
             >
-              <Link href={s.name}> {s.name}</Link>
+              {s.name}
             </motion.div>
           ))}
       </motion.div>

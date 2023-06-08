@@ -22,9 +22,7 @@ export function LayoutVideo({
   videos: IVideo[]
   user?: IUser
 }) {
-  if(!videos) {
-    return <div></div>;
-  }
+
   const [filteredVideo, setFilteredVideo ] = useState<IVideo[]>(videos);
   const follow = useFollowsQuery({});
   const [activeVideoValue, setActiveVideo] = useState(null)
@@ -65,6 +63,9 @@ export function LayoutVideo({
   const filterByDate = useMemo(() => FilterByDate(videos), [videos])
   const filterByLike = useMemo(() => filerLike(videos), [videos])
   const filterBySubs = useMemo(() => FilterBySubs(videos), [videos])
+  if(!videos) {
+    return <div></div>;
+  }
   // const user = useCheckAuthQuery({})
   return (
     <div className={"mx-auto flex"}>

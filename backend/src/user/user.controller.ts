@@ -243,6 +243,6 @@ export class UserController {
 
     dto.embed_link = UploadFolder + '/converted/' + video.originalname;
     // возвращаем URL конвертированного файла
-    return this.videoService.createVideo(video, dto);
+    return this.videoService.createVideo(video, dto, videopath);
   }
 }

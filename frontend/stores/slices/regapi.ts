@@ -32,8 +32,12 @@ export const AuthApi = createApi({
       query: (register) => ({
         url: "/register",
         method: "POST",
-        body: { ...register },
+        body: {...register},
+        headers: {
+          'Content-Type': 'application/json',
+        }
       }),
+
     }),
     checkAuth: builder.query({
       query: () => "/authByJwt",

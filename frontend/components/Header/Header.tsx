@@ -54,14 +54,14 @@ export const Header = () => {
   return (
     <div
       className={cn(
-        "flex items-center h-16 border-b  max-w-screen-2xl ",
-        scrolled ? "bg-blue-50" : "bg-background"
+        "flex items-center z-60 h-16 border-b bg-background  max-w-screen-2xl ",
+        scrolled ? "bg-background" : "bg-background"
       )}
     >
       <div className={"min-w-68 lg:pr-36"}>
-        <Link href={"/"}>
+        <Link className={"min-w-[40px]"} href={"/"}>
           {
-            theme==='light' ?  <Image height={100} width={100} src={Logo} alt={'logo'} /> :  <Image height={100} width={100} src={LogoDark} alt={'logo'} />
+            theme!=='dark' ?  <Image height={100} width={100} src={Logo} alt={'logo'} /> :  <Image height={100} width={100} src={LogoDark} alt={'logo'} />
           }
            </Link>
       </div>

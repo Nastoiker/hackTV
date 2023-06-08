@@ -2,14 +2,17 @@ import { useState } from "react"
 import Image from "next/image"
 import Link from "next/link"
 import { convertDate } from "@/helpers/Data"
-import UserIcon from "@/public/UserBlack.svg"
+import UserIconBlack from "@/public/UserBlack.svg"
 import { motion } from "framer-motion"
+import UserIcon from "@/public/User.svg"
 
 import { LikeSimple } from "@/components/like/LikeSimple"
 import { Separator } from "@/components/ui/separator"
 import { ICommentProps } from "./Comment.props"
+import {useTheme} from "next-themes";
 
 export const CommentCard = ({ comment }: ICommentProps): JSX.Element => {
+  const {theme, setTheme} = useTheme();
   return (
     <div className={"space-y-3 mb-5"}>
       <div className={"flex items-start  space-x-3 justify-between"}>
@@ -25,7 +28,7 @@ export const CommentCard = ({ comment }: ICommentProps): JSX.Element => {
             src={
               comment.writtenBy.avatar
                 ? "http://localhost:8000/user" + comment.writtenBy.avatar
-                : UserIcon
+                :  theme==='light' ? UserIconBlack : UserIcon
             }
           />
           <h1>{comment.writtenBy.login}</h1>

@@ -65,7 +65,7 @@ const [durationTime, setDurationTime] = useState('0: 00');
   }
   return (
     <div className="sm:flex justify-between items-center">
-      <div className={"sm:flex sm:space-x-5 "}>
+      <div className={"sm:flex space-y-10 sm:space-y-0 sm:space-x-5 "}>
         <div>
           <Image
             alt="oblosjka"

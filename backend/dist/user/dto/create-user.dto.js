@@ -18,7 +18,7 @@ __decorate([
     __metadata("design:type", String)
 ], CreateUserDto.prototype, "authorUrl", void 0);
 __decorate([
-    (0, class_validator_1.IsString)({ message: 'Email должен быть строкой' }),
+    (0, class_validator_1.IsEmail)(),
     __metadata("design:type", String)
 ], CreateUserDto.prototype, "email", void 0);
 __decorate([

@@ -1,9 +1,9 @@
-import {IsBoolean, IsNumber, IsOptional, IsString, ValidateNested} from 'class-validator';
+import {IsBoolean, IsEmail, IsNumber, IsOptional, IsString, ValidateNested} from 'class-validator';
 export class CreateUserDto {
     @IsString({ message: 'URL автора должен быть строкой' })
     authorUrl: string;
 
-    @IsString({ message: 'Email должен быть строкой' })
+    @IsEmail()
     email: string;
 
     @IsString({ message: 'Логин должен быть строкой' })

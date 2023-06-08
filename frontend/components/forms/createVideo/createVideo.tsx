@@ -42,6 +42,7 @@ export const CreateVideo = () => {
   const [onDrag, setOnDrag] = useState<boolean>(false)
   const [selectedFile, setSelectedFile] = useState<any>()
   const [tags, setTag] = useState<{tag: string, id: number}[]>([]);
+  const [loading, setLoading] = useState<boolean>(false);
   const handleDelete = (id) => {
     const updatedItems = tags.filter((item) => item.id !== id);
     setTag(updatedItems);
@@ -204,7 +205,7 @@ export const CreateVideo = () => {
         </div>
 
         <div className={"space-y-6 w-1/3"}>
-          <div className={"rounded-3xl bg-gray-200 space-y-5 p-5"}>
+          <div className={"rounded-3xl border space-y-5 p-5"}>
             <Label htmlFor={"name"}>Name</Label>
             <Input
               error={errors.name}
@@ -281,11 +282,33 @@ export const CreateVideo = () => {
               id={"desc"}
             />
           </div>
+          <Button disabled={loading} onClick={(_) => console.log(getValues())} type={"submit"}>
+            Создать
+          </Button>
         </div>
-        <Button onClick={(_) => console.log(getValues())} type={"submit"}>
-          Создать
-        </Button>
       </form>
+      {loading &&
+        <div className="flex my-10 items-center text-4xl">Видео загружается <svg
+          className="animate-spin  mx-3 h-16 w-16 text-white"
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          viewBox="0 0 24 24"
+        >
+          <circle
+            className="opacity-25"
+            cx="12"
+            cy="12"
+            r="10"
+            stroke="currentcolor"
+            stroke-width="4"
+          ></circle>
+          <path
+            className="opacity-75"
+            fill="currentcolor"
+            d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+          ></path>
+        </svg></div>
+      }
     </div>
   )
 }

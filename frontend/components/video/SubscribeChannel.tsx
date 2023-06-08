@@ -47,7 +47,7 @@ export const SubscribeChannel = ({
     }
   }
   return (
-    <div className="z-10 ml-2 absolute flex justify-between my-8 w-80">
+    <div className="z-10 ml-2 absolute flex justify-between my-8 sm:w-96 w-80">
       {isSubscribe ? (
         <>
           <div

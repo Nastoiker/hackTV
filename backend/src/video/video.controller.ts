@@ -28,12 +28,14 @@ import {path} from "app-root-path";
 import {unlink, writeFile} from "fs-extra";
 import {AuthService} from "../auth/auth.service";
 import {UserService} from "../user/user.service";
+import {Music} from "../music/entities/music.entity";
+import {MusicService} from "../music/music.service";
 
 
 
 @Controller('Video')
 export class VideoController {
-    constructor(private readonly videoService: VideoService, private readonly userService: UserService) {}
+    constructor(private readonly videoService: VideoService, private readonly userService: UserService, private readonly  musicService: MusicService) {}
     // @UseGuards(JwtAuthGuard)
     @UseGuards(JwtAuthGuard)
     @Post('create')
@@ -53,34 +55,15 @@ export class VideoController {
         if (video.mimetype !== 'video/mp4') {
             throw new BadRequestException('Only MP4 videos are allowed.');
         }
+        console.log(dto);
         dto.userId = request.user.id;
         const inputPath = video.path;
         const outputPath = `${inputPath}.mp4`;
         const UploadFolder = `${path}/uploads/videos`;
         await writeFile(`${UploadFolder}/${video.originalname}`, video.buffer);
         const videopath = `${UploadFolder}/${video.originalname}`
-        await new Promise((resolve, reject) => {
-            ffmpeg(videopath)
-                .output(UploadFolder + '/converted/' + video.originalname)
-                .audioCodec('copy')
-                .audioChannels(2)
-                .size('1080x1920')
-                .aspect('9:16')
-        .autopad(true, 'black')
-                .videoCodec('libx264')
-                .on('end', () => {
-                    console.log('file has been converted successfully');
-                    resolve('');
-                })
-                .on('error', (err) => {
-                    console.log(`an error happened: ${err.message}`);
-                    reject(`an error happened: ${err.message}`);
-                })
-                .run();
-        })
-        dto.embed_link = UploadFolder + '/converted/' + video.originalname;
         // возвращаем URL конвертированного файла
-        return this.videoService.createVideo(video, dto);
+        return this.videoService.createVideo(video, dto, videopath);
     }
     @Get('/search/:search')
     async getSearch(@Param(':search', IdValidationpipe) search: string) {
@@ -115,7 +98,8 @@ export class VideoController {
         const videos = await this.videoService.getSearch(searchValue);
         const channels = await this.userService.foundUser(searchValue);
         const tags = await this.videoService.GetSearchTags(searchValue);
-        const res = {channels: channels, videos: videos, tags: tags};
+        const musics = await this.musicService.foundMusic(searchValue)
+        const res = {channels: channels, videos: videos, tags: tags, musics: musics};
         return res;
     }
     @Get('/category/:alias')
@@ -123,7 +107,7 @@ export class VideoController {
         const aliasValue = alias.slice(1, alias.length);
         const videos = await this.videoService.videosByCategory({ where: { name: aliasValue}});
         if (!videos) {
-            throw new NotFoundException('VideoByIdNotFount');
+            return [];
         }
         return videos;
     }

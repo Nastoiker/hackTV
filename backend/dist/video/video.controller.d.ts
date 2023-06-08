@@ -4,10 +4,12 @@ import { createVideoDto } from "./dto/create-video.dto";
 import { VideoService } from "./video-service";
 import { VideoReportDto } from "./dto/report-video.dto";
 import { UserService } from "../user/user.service";
+import { MusicService } from "../music/music.service";
 export declare class VideoController {
     private readonly videoService;
     private readonly userService;
-    constructor(videoService: VideoService, userService: UserService);
+    private readonly musicService;
+    constructor(videoService: VideoService, userService: UserService, musicService: MusicService);
     create(request: any, video: Express.Multer.File, dto: createVideoDto): Promise<import(".prisma/client").Video>;
     getSearch(search: string): Promise<import(".prisma/client").Video[]>;
     get(id: string): Promise<import(".prisma/client").Video>;
@@ -16,19 +18,23 @@ export declare class VideoController {
         channels: import(".prisma/client").UserModel[];
         videos: import(".prisma/client").Video[];
         tags: import(".prisma/client").Tag[];
+        musics: import(".prisma/client").Music[];
     }>;
-    getByCategoryAlias(alias: string): Promise<import(".prisma/client").SecondLevelCategory & {
+    getByCategoryAlias(alias: string): Promise<any[] | (import(".prisma/client").SecondLevelCategory & {
         videos: (import(".prisma/client").Video & {
             music: import(".prisma/client").Music;
             tag: (import(".prisma/client").TagOnVideo & {
                 tag: import(".prisma/client").Tag;
             })[];
-            authorVideo: import(".prisma/client").UserModel;
+            authorVideo: import(".prisma/client").UserModel & {
+                folowers: import(".prisma/client").Folower[];
+            };
             secondCategory: import(".prisma/client").SecondLevelCategory;
             likes: import(".prisma/client").Like[];
+            Comment: import(".prisma/client").Comment[];
             watchers: import(".prisma/client").HistoryWatching[];
         })[];
-    }>;
+    })>;
     WatchVideo(request: any, { videoId }: {
         videoId: string;
     }): Promise<import(".prisma/client").HistoryWatching>;

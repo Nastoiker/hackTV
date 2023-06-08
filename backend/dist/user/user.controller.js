@@ -164,7 +164,7 @@ let UserController = class UserController {
         });
         console.log('end convert');
         dto.embed_link = UploadFolder + '/converted/' + video.originalname;
-        return this.videoService.createVideo(video, dto);
+        return this.videoService.createVideo(video, dto, videopath);
     }
 };
 __decorate([

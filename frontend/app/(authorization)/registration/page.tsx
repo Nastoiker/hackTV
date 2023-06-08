@@ -17,7 +17,9 @@ import { Htag } from "@/components/Htag/Htag"
 import Link from 'next/link';
 import {useRegistrationMutation} from "@/stores/slices/regapi";
 import {useState} from "react";
+import { useRouter } from "next/navigation"
 const PageRegistration = () => {
+  const router =  useRouter();
   const {
     register,
     control,
@@ -25,14 +27,25 @@ const PageRegistration = () => {
     formState: { errors },
     reset,
     watch,
-  } = useForm<IRegister>();
+  } = useForm<IRegister>({
+    defaultValues: {
+      role: 'user',
+      authorUrl: 'http://user',
+    }
+  });
+  const [password, notCorrect] = useState<boolean>();
   const [error, setError] = useState<boolean>(false);
   const [registrationFunc, isLoading] = useRegistrationMutation({});
   const onSubmit = async (formData: IRegister) => {
      try {
-       await registrationFunc(formData);
+       delete formData.confirm_password;
+       const { confirm_password, ...dataAuth} = formData;
+       console.log(dataAuth);
+       await registrationFunc(dataAuth);
        setError(false);
+       router.push('/authorization');
      } catch (e) {
+       console.log(e.message);
         setError(true);
      }
 
@@ -46,41 +59,32 @@ const PageRegistration = () => {
         <Htag type='h1' className='text-center' >Регистрация</Htag>
         <p className="text-center">
           Есть аккаунт?
-          <Link className="border border-b-2" href='/authorization'>Авторизируйтесь</Link>
+          <Link className="border-b-2" href='/authorization'>Авторизируйтесь</Link>
         </p>
+
         <Label htmlFor={"email"}>Emal</Label>
         <Input error={errors.email} {...register("email", { required: true, pattern: {
             value: /\S+@\S+\.\S+/,
             message: "Введите  email",
           }, })} id={"email"} />
         <Label htmlFor={"login"}>Login</Label>
-        <Input {...register("login", { required: true })} id={"login"} />
+        <Input {...register("login", { required:  {value: true,  message: "Заполните login"} })} id={"login"} />
         <Label htmlFor={"number"}>Номер телефона</Label>
         <Input
           type={"string"}
-          {...register("phone", { required: true })}
+          {...register("phone", { required: {value: true,  message: "Заполните номер"},  pattern: {
+              value: /^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$/,
+              message: "Введите  номер",
+            } })}
           id={"number"}
         />
-        <Label htmlFor={"years"}>Ваш возраст</Label>
-        <Input
-          {...register("years", { required: true, min: 8, max: 87 })}
-          id={"years"}
-        />
-        <Label htmlFor={"gender"}>Гендер</Label>
-        <select className={"block outline-0"} id="gender">
-          <option value="man">Мужчина</option>
-          <option value="woman" className={"p-7"}>
-            Женщина
-          </option>
-        </select>
-        <Input {...register("gender", { required: true })} id={"gender"} />
         <Label htmlFor={"password"}>Пароль</Label>
-        <Input type={"password"} {...register("password", { required: true })} id={"password"} />
+        <Input type={"password"} {...register("hashpassword", { required: true })} id={"password"} />
         <Label htmlFor={"passwordVerif"}>Подтверждение пароля</Label>
         <Input type={"password"} id={"passwordVerif"} {...register("confirm_password", {
           required: true,
           validate: (val: string) => {
-            if (watch('password') != val) {
+            if (watch('hashpassword') != val) {
               return "Your passwords do no match";
             }
           },

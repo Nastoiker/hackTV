@@ -7,6 +7,7 @@ import {path} from "app-root-path";
 import {VideoReportDto} from "./dto/report-video.dto";
 import { mkdirSync } from "fs";
 import {SecondLevelCategory} from "../category/entities/category.entity";
+import * as ffmpeg from "fluent-ffmpeg";
  interface tagsOnVideo {
     tag: { connect: { id: string } };
 }
@@ -140,16 +141,17 @@ export class VideoService {
                     videos: {  include: {
                             music: true,
                             tag: { include: {tag: true}},
-                            authorVideo: true,
+                            authorVideo: { include: { folowers: true }},
                             secondCategory: true,
                             likes: true,
+                            Comment: true,
                             watchers: true,
                         }}
                 }
             },
         );
     }
-    async createVideo(file: Express.Multer.File, data: createVideoDto): Promise<Video> {
+    async createVideo(file: Express.Multer.File, data: createVideoDto, videopath: string): Promise<Video> {
 
         const UploadFolder = `${path}/uploads/users/${data.userId}/video/${data.alias}`;
         setTimeout(() => {}, 100);
@@ -163,6 +165,7 @@ export class VideoService {
         for (const id of strArr) {
             const checkExistTag = await this.prisma.tag.findUnique({ where: { name: id }, select: {id: true, name: true}})
             if(!checkExistTag) {
+                console.log(checkExistTag);
                 const tag = await this.prisma.tag.create({ data: { name: id }, select: {id: true, name: true}})
                 tagIdArr.push(tag);
             } else {
@@ -179,9 +182,27 @@ export class VideoService {
         videoDto.width = 1080;
         videoDto.height = 1920;
         const extension = file.originalname.split('.');
-        console.log(`${UploadFolder}/${videoDto.name}.${extension[extension.length-1]}`);
-        await writeFile(`${UploadFolder}/${videoDto.name}.${extension[extension.length-1]}`, file.buffer);
-        videoDto.embed_link = `/users/${data.userId}/video/${data.alias}/${data.name}.${extension[extension.length-1]}`;
+        await new Promise((resolve, reject) => {
+            ffmpeg(videopath)
+                .output(`${UploadFolder}/${videoDto.alias}.${extension[extension.length-1]}`)
+                .audioCodec('copy')
+                .audioChannels(2)
+                .size('1080x1920')
+                .aspect('9:16')
+                .autopad(true, 'black')
+                .videoCodec('libx264')
+                .on('end', () => {
+                    console.log('file has been converted successfully');
+                    resolve('');
+                })
+                .on('error', (err) => {
+                    console.log(`an error happened: ${err.message}`);
+                    reject(`an error happened: ${err.message}`);
+                })
+                .run();
+        });
+        unlink(videopath);
+        videoDto.embed_link = `/users/${data.userId}/video/${data.alias}/${data.alias}.${extension[extension.length-1]}`;
         console.log(videoDto);
         const {name, alias, embed_link, userId,share_count, Type,  embed_html, duration, musicId, isActive,cover_image_url, Description, height, width , Title, share_url, secondCategoryId} = videoDto;
         return this.prisma.video.create({data: { name, share_count, embed_html, duration, musicId, alias, embed_link, userId, isActive, Description, cover_image_url, height, Type, width, secondCategoryId, Title, share_url, tag: { create: [...setTags]} }});

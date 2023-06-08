@@ -43,7 +43,7 @@ model HistoryWatching {
      createdAt        DateTime            @default(now())
     videoId String
     video Video @relation("watchHistoryVideo",  fields: [videoId], references: [id], onDelete: Cascade)
-    userId String?  @unique
+    userId String?
     user UserModel? @relation("watchUserHistory",  fields: [userId], references: [id], onUpdate: NoAction)
 }
 model Folower {
@@ -85,7 +85,7 @@ model SecondLevelCategory {
 }
 
 model Video {
-   name String  @unique()
+   name String
    alias String  @unique()
   isActive         Boolean
   updated_at       DateTime            @updatedAt

@@ -49,9 +49,9 @@ export const CommentForm = ({
     reset();
   }
   return (
-    <div className="space-y-3 mt-2 rounded-3xl bg-blue-50 p-5">
+    <div className="space-y-3 mt-2 rounded-3xl bg-background border p-5">
       <Label htmlFor={"comment"}>Оставьте свой комментарий</Label>
-      <div className={"block bg-white rounded-xl p-3"}>
+      <div className={"block bg-background rounded-xl p-3"}>
         {user ? (
           <form
             action=""
@@ -59,7 +59,6 @@ export const CommentForm = ({
             onSubmit={handleSubmit(onSubmit)}
           >
             <Textarea
-              className={"text-black"}
               placeholder={"comment"}
               {...register("comment", { required: true })}
               id={"comment"}

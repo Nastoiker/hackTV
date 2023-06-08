@@ -45,7 +45,7 @@ export default function PageFounded({ params }: PageProps) {
     <div className="  w-full">
       <LayoutFounded active={activeFound} setActiveFounded={(s) => setActiveFound(s)} />
       <div className="space-y-4">
-        <h1 className="inline-block text-4xl font-extrabold tracking-tight text-slate-900 lg:text-5xl">
+        <h1 className="inline-block text-4xl font-extrabold tracking-tight lg:text-5xl">
           {searchState}
         </h1>
         {

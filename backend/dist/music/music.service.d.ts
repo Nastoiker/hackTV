@@ -11,5 +11,6 @@ export declare class MusicService {
     })[]>;
     findOne(id: string): import(".prisma/client").Prisma.Prisma__MusicClient<import(".prisma/client").Music, never>;
     update(id: number, updateMusicDto: UpdateMusicDto): string;
+    foundMusic(search: string): Promise<import(".prisma/client").Music[]>;
     remove(id: string): Promise<import(".prisma/client").Music>;
 }
