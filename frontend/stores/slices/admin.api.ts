@@ -55,6 +55,13 @@ export const AdminApi = createApi({
         body: { ...firstCategory },
       }),
     }),
+    musicsAll: builder.query({
+      query: (firstCategory) => ({
+        url: "/createFirstCategory",
+        method: "POST",
+        body: { ...firstCategory },
+      }),
+    }),
     users: builder.query({
       query: (commentVideo) => ({
         url: "/createVideo",
@@ -80,4 +87,5 @@ export const {
   useRemoveAdminMutation,
   useRemoveAdminAbilityMutation,
   useDeleteVideoMutation,
+  useMusicsAllQuery,
 } = AdminApi

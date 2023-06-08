@@ -46,7 +46,7 @@ export function LayoutMusic({
   return (
     <div className={"mx-auto flex"}>
       <div className={"w-full mr-20"}>
-        {musics.length > 0 ? (
+        {musics  ? (
           musics.map((m) => <Music activeMusic={activeMusicValue} setActiveMusic={() => setActiveMusicValue(m.id)} music={m} />)
         ) : (
           <div className={"mx-auto"}>

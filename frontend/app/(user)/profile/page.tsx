@@ -11,11 +11,14 @@ import { LayoutMusic } from "@/components/Layout.music"
 import { Button } from "@/components/ui/button"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import Profile from "@/components/user/Profile.svg"
+import Profile2 from "@/components/user/Profile2.svg"
+import {useTheme} from "next-themes";
 
 export default function IndexPage() {
   const { data } = useCheckAuthQuery({})
   const video = useGetVideosQuery({ limit: 10, offset: 0 })
   console.log(data)
+  const { setTheme, theme } = useTheme();
   return (
     <div className={"w-full"}>
       {data ? (
@@ -34,7 +37,7 @@ export default function IndexPage() {
                 src={
                   data.avatar?.length > 0
                     ? "http://localhost:8000/user" + data.avatar
-                    : Profile.src
+                    : theme==='light' ? Profile.src : Profile2.src
                 }/>
               <div className={"my-5"}>
                 <h1>{data.login}</h1>

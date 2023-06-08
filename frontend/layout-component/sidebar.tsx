@@ -58,7 +58,7 @@ export const LeftSite = ({ className }: LeftSiteProps) => {
       />
       <motion.div
         className={
-          "w-48 fixed border-b  px-2 bg-white top-18 z-50  pr-2 border-r " +
+          "w-48 fixed border-b  px-2  top-18 z-50  pr-2 border-r " +
           styles.leftSideMargin
         }
         variants={variants}

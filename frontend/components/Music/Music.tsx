@@ -13,7 +13,8 @@ import ProgressBar from "@/components/video/progress.video"
 export const Music = ({ music, setActiveMusic, activeMusic}: { music: IMusic, setActiveMusic: () => void, activeMusic: string }) => {
   const [isPlaying, setIsPlaying] = useState(false)
   const [audio, setAudio] = useState<HTMLAudioElement | null>(null)
-
+  const [currentTime, setCurrentTime] = useState('0:00');
+const [durationTime, setDurationTime] = useState('0: 00');
   useEffect(() => {
     const audioEl = new Audio("http://localhost:8000/user/" + music.music_url)
     audioEl.addEventListener("ended", () => {
@@ -29,6 +30,23 @@ export const Music = ({ music, setActiveMusic, activeMusic}: { music: IMusic, se
       setIsPlaying(false);
     }
   }, [audio?.currentTime]);
+  useEffect(() => {
+    if(!audio) return;
+
+    const interval = setInterval(() => {
+      const seconds = Math.floor(audio?.currentTime % 60);
+      const minutes = Math.floor(audio?.currentTime / 60);
+
+      const formattedTime =
+        (minutes < 10 ? `0${minutes}` : minutes) +
+        ':' +
+        (seconds < 10 ? `0${seconds}` : seconds);
+
+      setCurrentTime(formattedTime);
+    }, 1000);
+
+    return () => clearInterval(interval);
+  }, [audio]);
   const handlePlayPause = () => {
     if (!audio) return
 
@@ -51,12 +69,12 @@ export const Music = ({ music, setActiveMusic, activeMusic}: { music: IMusic, se
         <div>
           <Image
             alt="oblosjka"
-            className={"w-20 h-20"}
+            className={"w-20 h-20 rounded-md"}
             height={100}
             width={100}
             src={"http://localhost:8000/user/" + music.img}
           />
-          <div className={"absolute ml-10 -my-6 flex"}>
+          <div className={"absolute ml-10 bg-white rounded-full p-2 border  -my-6 flex items-center"}>
             <svg
               width={20}
               height={20}
@@ -69,6 +87,7 @@ export const Music = ({ music, setActiveMusic, activeMusic}: { music: IMusic, se
           </div>
         </div>
         <div>
+          <Htag type={"h1"}>{music.name}</Htag>
           <div className={"flex items-center"}>
             <img
               className={"rounded-full w-6 h-6"}
@@ -81,9 +100,8 @@ export const Music = ({ music, setActiveMusic, activeMusic}: { music: IMusic, se
                   : Profile.src
               }
             />
-            <Htag type={"h3"}>{music.user.login}</Htag>
+            <Htag type={"h3"} className={'text-gray-600'}>{music.user.login}</Htag>
           </div>
-          <Htag type={"h1"}>{music.name}</Htag>
           <input
             type="range"
             min="0"
@@ -94,6 +112,8 @@ export const Music = ({ music, setActiveMusic, activeMusic}: { music: IMusic, se
           />
         </div>
       </div>
+      <p>{currentTime}</p>
+
       <Button onClick={handlePlayPause}>{isPlaying ? "Pause" : "Play"}</Button>
     </div>
   )

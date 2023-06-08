@@ -25,6 +25,7 @@ export function LayoutVideo({
   if(!videos) {
     return <div></div>;
   }
+  const [filteredVideo, setFilteredVideo ] = useState<IVideo[]>(videos);
   const follow = useFollowsQuery({});
   const [activeVideoValue, setActiveVideo] = useState(null)
   const [commentsVisible, setCommentsVisible] = useState({})
@@ -38,8 +39,8 @@ export function LayoutVideo({
   },[]);
 
   const filerLike = useCallback(function (videos: IVideo[]) {
-    const sort = [...videos]
-    const sortByTime = sort?.sort((a, b) => a.likesCount - b.likesCount)
+    const sort = [...videos];
+    const sortByTime = sort?.sort((a, b) => b.likesCount - a.likesCount);
     return sortByTime
   }, []);
   const FilterBySubs= useCallback(function (videos: IVideo[]) {
@@ -68,8 +69,8 @@ export function LayoutVideo({
   return (
     <div className={"mx-auto flex"}>
       <div>
-        {videos.length > 0 ? (
-          videos.map((v) => <Video activeVideo={activeVideoValue} onClickVideoProps={() => setActiveVideo(v.id)} key={v.id} user={user && user} video={v} />)
+        {filteredVideo.length > 0 ? (
+          filteredVideo.map((v) => <Video activeVideo={activeVideoValue} onClickVideoProps={() => setActiveVideo(v.id)} key={v.id} user={user && user} video={v} />)
         ) : (
           <div className={"mx-auto"}>
             <Htag type={"h1"}> Ничего не найдено</Htag>
@@ -78,8 +79,8 @@ export function LayoutVideo({
       </div>
       <SortButton
         className="fixed top-18 right-5 xl:right-44"
-        sortByLike={() => {}}
-        sortByDate={() => {}}
+        sortByLike={() => {setFilteredVideo(filterByLike)}}
+        sortByDate={() => {setFilteredVideo(filterByDate)}}
       />
     </div>
   )

@@ -45,12 +45,12 @@ export function LayoutChannels({
                                }: {
   channels: any[]
 }) {
-  const  user = useAuthorizationQuery({});
+  const  user = useCheckAuthQuery({});
   return (
     <div className={"mx-auto flex"}>
       <div className={"w-full mr-20"}>
         {channels.length > 0 ? (
-          channels.map((m) => <ChannelUser channel={m} userFollows={user.data}/>)
+          channels.map((m) => <ChannelUser user={user.data && user.data} channel={m}/>)
         ) : (
           <div className={"mx-auto"}>
             <Htag type={"h1"}> Ничего не найдено</Htag>

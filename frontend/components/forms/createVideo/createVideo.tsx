@@ -1,6 +1,6 @@
 "use client"
 
-import { useRef, useState } from "react"
+import {ChangeEvent, useRef, useState} from "react"
 import Image from "next/image"
 import { useAppSelector } from "@/stores"
 import { useMusicGetQuery } from "@/stores/slices/music.slice"
@@ -81,6 +81,19 @@ export const CreateVideo = () => {
     e.preventDefault()
     setOnDrag(false)
   }
+  const handleInputVideo = (e: ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files[0];
+    setFile(file);
+    uploadedFile(file);
+    const reader = new FileReader()
+    reader.readAsDataURL(file)
+    reader.onloadend = () => {
+
+    }
+    setSelectedFile(file)
+    setValue("files", file);
+    setOnDrag(true)
+  }
   const onSubmit: SubmitHandler<ICreateVideo> = async (formData: ICreateVideo) => {
     console.log(getValues());
     console.log(tags.map( t =>  `#${t.tag}`).join(', '));
@@ -148,32 +161,36 @@ export const CreateVideo = () => {
             >
               {onDrag ? (
                 <div className={"bg-blue-200 m-9"}>
-                  <img src={selectedFile} alt="Preview" />
                   <video
                     width={350}
                     height={350}
                     className={"rounded-3xl"}
                     loop
+                    controls={true}
                     src={selectedFile}
                   ></video>
                 </div>
               ) : (
                 <div className={"m-auto"}>
-                  <svg
-                    width="148"
-                    className={"m-auto"}
-                    height="173"
-                    viewBox="0 0 148 173"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path
-                      fillRule="evenodd"
-                      clipRule="evenodd"
-                      d="M78.2432 1.7584C75.9 -0.584668 72.101 -0.584668 69.7578 1.7584L29.7578 41.7584C27.4146 44.1016 27.4146 47.9005 29.7578 50.2437C32.101 52.5868 35.9 52.5868 38.2432 50.2437L68.0005 20.4864V112.666C68.0005 115.98 70.6868 118.666 74.0005 118.666C77.3142 118.666 80.0005 115.98 80.0005 112.666V20.4864L109.759 50.2437C112.101 52.5868 115.9 52.5868 118.243 50.2437C120.587 47.9005 120.587 44.1016 118.243 41.7584L78.2432 1.7584ZM7.33317 119.333C11.015 119.333 13.9998 122.317 13.9998 126V146C13.9998 153.384 19.9418 159.333 27.2845 159.333H120.683C128.039 159.333 134 153.371 134 146V126C134 122.317 136.985 119.333 140.667 119.333C144.348 119.333 147.333 122.317 147.333 126V146C147.333 160.72 135.416 172.667 120.683 172.667H27.2845C12.5357 172.667 0.666504 160.707 0.666504 146V126C0.666504 122.317 3.6513 119.333 7.33317 119.333Z"
-                      fill="black"
-                    />
-                  </svg>
+                  <label htmlFor={'uploadVideo'}>
+                    <input type={'file'} accept={'video/*'} id={'uploadVideo'} onChange={(e) => handleInputVideo(e)} height={400} width={400} className={'hidden w-64 h-64'} />
+                    <svg
+                      width="148"
+                      className={"m-auto"}
+                      height="173"
+                      viewBox="0 0 148 173"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        fillRule="evenodd"
+                        clipRule="evenodd"
+                        d="M78.2432 1.7584C75.9 -0.584668 72.101 -0.584668 69.7578 1.7584L29.7578 41.7584C27.4146 44.1016 27.4146 47.9005 29.7578 50.2437C32.101 52.5868 35.9 52.5868 38.2432 50.2437L68.0005 20.4864V112.666C68.0005 115.98 70.6868 118.666 74.0005 118.666C77.3142 118.666 80.0005 115.98 80.0005 112.666V20.4864L109.759 50.2437C112.101 52.5868 115.9 52.5868 118.243 50.2437C120.587 47.9005 120.587 44.1016 118.243 41.7584L78.2432 1.7584ZM7.33317 119.333C11.015 119.333 13.9998 122.317 13.9998 126V146C13.9998 153.384 19.9418 159.333 27.2845 159.333H120.683C128.039 159.333 134 153.371 134 146V126C134 122.317 136.985 119.333 140.667 119.333C144.348 119.333 147.333 122.317 147.333 126V146C147.333 160.72 135.416 172.667 120.683 172.667H27.2845C12.5357 172.667 0.666504 160.707 0.666504 146V126C0.666504 122.317 3.6513 119.333 7.33317 119.333Z"
+                        fill="black"
+                      />
+                    </svg>
+                  </label>
+
                 </div>
               )}
             </div>
@@ -213,21 +230,26 @@ export const CreateVideo = () => {
             {/*  })}*/}
             {/*  id={"file"}*/}
             {/*/>*/}
+            <Label htmlFor={"secondCategoryId"}>Выберите музыку</Label>
+            <Controller
+              name={"secondCategoryId"}
+              control={control}
+              render={({ field: { onChange, value,ref } }) => {
+
+                return (
+                  <Select  onValueChange={onChange}>
+                    <SelectTrigger className="w-[180px]">
+                      <SelectValue placeholder="Категория" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {secondCategory.map(s2 => <SelectItem key={s2.id}  value={s2.id}>{s2.name}</SelectItem>)}
+
+                    </SelectContent>
+                  </Select>
+                )}}
+            />
             <Label htmlFor={"secondCategoryId"}>secondCategory</Label>
 
-            <select
-              className={"block"}
-              id={"secondCategoryId"}
-              {...register("secondCategoryId", {
-                required: { value: true, message: "Заполните login" },
-              })}
-            >
-              {secondCategory.map((s) =>
-                s.secondLevelCategory.map((s2) => (
-                  <option value={s2.id}>{s2.name}</option>
-                ))
-              )}
-            </select>
             <Label htmlFor={"musicId"}>Выберите музыку</Label>
             <Controller
               name={"musicId"}

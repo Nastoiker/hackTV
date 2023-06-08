@@ -9,14 +9,18 @@ import {
   useAuthorizationQuery,
   useCheckAuthQuery,
 } from "@/stores/slices/regapi"
-
+import Logo from '/public/logo.svg';
+import LogoDark from '/public/logoDark.svg';
 import { cn } from "@/lib/utils"
 import { AuthComponent } from "@/components/Auth/Auth"
 import { IHeaderProps } from "@/components/Header/HeaderProps"
 import { Search } from "@/components/search/search"
 import { Button } from "@/components/ui/button"
 import { ProfileIcon } from "@/components/user/Profile.icon"
-
+import Image from "next/image";
+import Moon from 'public/moon.svg';
+import Sun from 'public/sun.svg';
+import {useTheme} from "next-themes";
 export const Header = () => {
   const { data } = useCheckAuthQuery({})
   if (!data) {
@@ -24,7 +28,12 @@ export const Header = () => {
     console.log("Data:", data.email)
   }
   const [scrolled, setScrolled] = useState(false)
+  const { setTheme, theme } = useTheme()
 
+  const changeTheme = () => {
+    console.log(theme);
+    setTheme( theme==='light' ? 'dark' : 'light');
+  }
   const handleScroll = () => {
     const offset = window.scrollY
     if (offset > 50) {
@@ -46,18 +55,23 @@ export const Header = () => {
     <div
       className={cn(
         "flex items-center h-16 border-b  max-w-screen-2xl ",
-        scrolled ? "bg-blue-50" : "bg-white"
+        scrolled ? "bg-blue-50" : "bg-background"
       )}
     >
       <div className={"min-w-68 lg:pr-36"}>
-        <Link href={"/"}>HackTv</Link>
+        <Link href={"/"}>
+          {
+            theme==='light' ?  <Image height={100} width={100} src={Logo} alt={'logo'} /> :  <Image height={100} width={100} src={LogoDark} alt={'logo'} />
+          }
+           </Link>
       </div>
 
       <Search />
+      <button onClick={ () => changeTheme()}><img height={100} width={100} className={"h-8 w-8"} src={theme==='dark' ? Moon.src : Sun.src} alt="toggleTheme" /></button>
       {data ? (
         <div className={"flex items-center"}>
           <Link href={"/profile"}>
-            <ProfileIcon user={data} />
+            <ProfileIcon theme={theme} user={data} />
           </Link>{" "}
           <Button onClick={() => localStorage.removeItem("token")}>
             <a href={"/"}>Выйти</a>

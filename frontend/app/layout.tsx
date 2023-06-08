@@ -1,5 +1,4 @@
 import { Inter as FontSans } from "@next/font/google"
-import { ThemeProvider } from "next-themes"
 
 import { cn } from "@/lib/utils"
 import { SiteHeader } from "@/components/site-header"
@@ -16,6 +15,7 @@ import { Categories } from "@/components/Categoryes/Categories"
 import { Header } from "@/components/Header/Header"
 import { PopularTags } from "@/components/Header/PopularTags"
 import { Search } from "@/components/search/search"
+import {ThemeProvider} from "@/components/ThemeProvider";
 
 const fontSans = FontSans({
   subsets: ["latin"],
@@ -33,17 +33,18 @@ const TagsObject = [
 ]
 export default function RootLayout({ children }: RootLayoutProps) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <head />
       <body>
+      <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
         <div
           className={cn(
-            "max-w-screen-2xl mx-auto AutoMargin min-h-screen bg-white font-sans  box-border text-slate-900 antialiased ",
+            "max-w-screen-2xl bg-background  mx-auto AutoMargin min-h-screen  font-sans  box-border antialiased ",
             fontSans.variable
           )}
         >
           <Providers>
-            <div className={"flex flex-col MainLayout"}>
+            <div className={"flex  flex-col MainLayout"}>
               <header className={"w-full z-40  fixed top-0"}>
                 <Header />
               </header>
@@ -62,6 +63,8 @@ export default function RootLayout({ children }: RootLayoutProps) {
             </div>
           </Providers>
         </div>
+      </ThemeProvider>
+
       </body>
     </html>
   )

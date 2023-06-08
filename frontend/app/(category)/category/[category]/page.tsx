@@ -43,7 +43,7 @@ export default async function PageCategory({ params }: PageProps) {
   return (
     <article className="container max-w-3xl py-6 lg:py-10">
       <div className="space-y-4">
-        <h1 className="inline-block text-4xl font-extrabold tracking-tight text-slate-900 lg:text-5xl">
+        <h1 className="inline-block text-4xl font-extrabold tracking-tight  lg:text-5xl">
           {slug}
         </h1>
           <LayoutVideoCategory videos={result} />

@@ -2,6 +2,7 @@ import Link from "next/link";
 import {Button} from "@/components/ui/button";
 import {useEffect, useState} from "react";
 import Profile from "@/components/user/Profile.svg";
+import {IUser} from "@/types/User.interface";
 
 interface IChannelUser {
   id: string,
@@ -17,11 +18,11 @@ interface IChannelUser {
   LikeCount: number,
   hisLike: number
 }
-export const ChannelUser = ({channel, userFollows}: {channel: IChannelUser, userFollows?: any}) => {
+export const ChannelUser = ({channel, userFollows, user}: {channel: IChannelUser, userFollows?: any, user?: any}) => {
   useEffect(() => {
-    if(userFollows) {
-      setIsFollow( userFollows.find(f => f.id ===channel.id));
-    }
+    // if(userFollows) {
+    //   setIsFollow( userFollows.find(f => f.id ===channel.id));
+    // }
   }, []);
   const [isFollow, setIsFollow] = useState<boolean>();
   return <div>
@@ -48,7 +49,11 @@ export const ChannelUser = ({channel, userFollows}: {channel: IChannelUser, user
         </div>
       </Link>
       <div>
-        <Button onClick={() => {setIsFollow((is) => !is)}}>{isFollow ? 'Отписаться' : 'Подписаться'}</Button>
+        {
+          channel.id===user?.id &&
+          <Button onClick={() => {setIsFollow((is) => !is)}}>{isFollow ? 'Отписаться' : 'Подписаться'}</Button>
+
+        }
       </div>
     </div>
   </div>

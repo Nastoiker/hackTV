@@ -57,7 +57,7 @@ const PageRegistration = () => {
         <Input {...register("login", { required: true })} id={"login"} />
         <Label htmlFor={"number"}>Номер телефона</Label>
         <Input
-          type={"number"}
+          type={"string"}
           {...register("phone", { required: true })}
           id={"number"}
         />

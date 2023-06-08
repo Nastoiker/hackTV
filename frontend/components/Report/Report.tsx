@@ -21,7 +21,11 @@ export const Report = ({ videoId, userId }) => {
           fill="black"
         />
       </motion.svg>
-      {isOpen && <div className={"absolute"}> sadasdasd </div>}
+      {isOpen && <div className={"absolute flex flex-col"}>
+          <button><h1>Оскорбление личности</h1></button>
+          <button><h1>Издевательство над животными</h1></button>
+          <button><h1>Насилие</h1></button>
+      </div>}
     </div>
   )
 }
