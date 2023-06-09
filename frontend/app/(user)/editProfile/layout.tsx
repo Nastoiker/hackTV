@@ -16,7 +16,7 @@ export default function UserLayout({ children }: UserLayoutProps) {
   return (
     <div
       className={cn(
-        "  min-h-screen w-full bg-white font-sans text-slate-900 antialiased ",
+        "  min-h-screen w-full font-sans text-slate-900 antialiased ",
         fontSans.variable
       )}
     >

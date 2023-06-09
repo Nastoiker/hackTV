@@ -9,6 +9,8 @@ import { VideoUserApi } from "@/stores/slices/video.api"
 import createSagaMiddleware from "@redux-saga/core"
 import { configureStore } from "@reduxjs/toolkit"
 import { TypedUseSelectorHook, useDispatch, useSelector } from "react-redux"
+import {AdminApi} from "@/stores/slices/admin.api";
+import tagSlice from "@/stores/slices/tag.slice";
 
 export type RootState = ReturnType<typeof store.getState>
 export type AppDispatch = typeof store.dispatch
@@ -20,11 +22,13 @@ export const store = configureStore({
   reducer: {
     search: searchSlice,
     category: categorySlice,
+    tag: tagSlice,
     [MusicApi.reducerPath]: MusicApi.reducer,
     [VideoUserApi.reducerPath]: VideoUserApi.reducer,
     [videoHostingApi.reducerPath]: videoHostingApi.reducer,
     [AuthApi.reducerPath]: AuthApi.reducer,
     [UserApi.reducerPath]: UserApi.reducer,
+    [AdminApi.reducerPath]: AdminApi.reducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware().concat(
@@ -33,6 +37,7 @@ export const store = configureStore({
       UserApi.middleware,
       VideoUserApi.middleware,
       MusicApi.middleware,
+      AdminApi.middleware,
       sagaMiddleWate
     ),
 })

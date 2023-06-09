@@ -8,9 +8,8 @@ import Profile2 from "./Profile2.svg"
 
 export const ProfileIcon = ({ theme='light',  user }: ProfileIconProps) => {
   return (
-    <div className={"min-w-[20px] min-h-[20px]"}>
+    <div className={"min-w-[40px] min-h-[20px]"}>
       {user.avatar && user.avatar?.length > 0 ? (
-          <Link className={"min-w-10"} href={"/profile"}>
             <img
               alt={"avatar"}
               className={"rounded-full w-12 h-12"}
@@ -18,10 +17,8 @@ export const ProfileIcon = ({ theme='light',  user }: ProfileIconProps) => {
               height={12}
               src={"http://localhost:8000/user" + user.avatar}
             />
-          </Link>
       ) : (
-          <Link className={"min-w-[100px] w-full"} href={"/profile"}>
-            {
+
               theme==='light' ?   <img
                 alt={"avatar"}
                 className={"rounded-full  min-w-10 min-h-10 w-full h-20"}
@@ -36,9 +33,7 @@ export const ProfileIcon = ({ theme='light',  user }: ProfileIconProps) => {
                   height={34}
                   src={Profile2.src}
                 />
-            }
 
-          </Link>
       )}
     </div>
   )

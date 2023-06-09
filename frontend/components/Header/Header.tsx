@@ -73,7 +73,7 @@ export const Header = () => {
           <Link href={"/profile"}>
             <ProfileIcon theme={theme} user={data} />
           </Link>{" "}
-          <Button onClick={() => localStorage.removeItem("token")}>
+          <Button className={"hidden sm:block"} onClick={() => localStorage.removeItem("token")}>
             <a href={"/"}>Выйти</a>
           </Button>
         </div>

@@ -47,7 +47,7 @@ export function LayoutVideo({
       (a, b) => a.authorVideo.subscribers_count - b.authorVideo.subscribers_count
     )
     return sortByTime
-  }, [])
+  }, []);
 
   const handleToggleComments = (videoId) => {
     setCommentsVisible((prev) => ({

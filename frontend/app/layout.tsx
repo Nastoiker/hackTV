@@ -2,7 +2,6 @@ import { Inter as FontSans } from "@next/font/google"
 
 import { cn } from "@/lib/utils"
 import { SiteHeader } from "@/components/site-header"
-import "@/styles/globals.css"
 import { LeftSite } from "@/layout-component/sidebar"
 import Providers from "@/provider/providerRedux"
 import UserIcon from "@/public/User.svg"
@@ -16,6 +15,7 @@ import { Header } from "@/components/Header/Header"
 import { PopularTags } from "@/components/Header/PopularTags"
 import { Search } from "@/components/search/search"
 import {ThemeProvider} from "@/components/ThemeProvider";
+import "@/styles/globals.css"
 
 const fontSans = FontSans({
   subsets: ["latin"],
@@ -44,7 +44,7 @@ export default function RootLayout({ children }: RootLayoutProps) {
           )}
         >
           <Providers>
-            <div className={"flex  flex-col MainLayout"}>
+            <div className={"flex  flex-col "}>
               <header className={"w-full z-40  fixed top-0"}>
                 <Header />
               </header>
@@ -53,7 +53,7 @@ export default function RootLayout({ children }: RootLayoutProps) {
               {/*</header>*/}
 
               <div className={""}>
-                <LeftSite />
+                <LeftSite className={'MainLayout'} />
               </div>
               <div
                 className={"md:pl-64 xl:max-w-screen-2xl  pt-20  MainMargin"}

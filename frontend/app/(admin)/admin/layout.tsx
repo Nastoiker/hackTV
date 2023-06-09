@@ -1,9 +1,8 @@
 import { Inter as FontSans } from "@next/font/google"
 import { ThemeProvider } from "next-themes"
-
+import '/styles/admin.css';
 import { cn } from "@/lib/utils"
 import { SiteHeader } from "@/components/site-header"
-import "@/styles/globals.css"
 import Head from "next/head"
 import Providers from "@/provider/providerRedux"
 import UserIcon from "@/public/User.svg"
@@ -14,25 +13,26 @@ import { Categories } from "@/components/Categoryes/Categories"
 import { Header } from "@/components/Header/Header"
 import { PopularTags } from "@/components/Header/PopularTags"
 import { Search } from "@/components/search/search"
-import "/styles/admin.css"
+import {ReactNode} from "react";
 
 interface AdminLayoutProps {
-  children: React.ReactNode
+  children: ReactNode
 }
 const fontSans = FontSans({
   subsets: ["latin"],
   variable: "--font-sans",
   display: "swap",
 })
-export default function AdminLayot({ children }: AdminLayoutProps) {
+export default function AdminLayout({ children }: AdminLayoutProps) {
   return (
+
     <div
       className={cn(
-        " mx-auto  min-h-screen bg-white font-sans text-slate-900 antialiased ",
-        fontSans.variable
+        " mx-auto  min-h-screen bg-white font-sans text-slate-900 antialiased "
       )}
     >
       {children}
     </div>
+
   )
 }

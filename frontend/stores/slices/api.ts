@@ -13,6 +13,12 @@ export const videoHostingApi = createApi({
         method: "get",
       }),
     }),
+    videoByTag: builder.query({
+      query: (tagId: string) => ({
+        url: `/tagVideo/:${tagId}`,
+        method: "get",
+      }),
+    }),
     getVideos: builder.query({
       query: () => ({
         url: "/",
@@ -24,4 +30,4 @@ export const videoHostingApi = createApi({
 
 // Export hooks for usage in function components, which are
 // auto-generated based on the defined endpoints
-export const { useGetVideosQuery, useTagsQuery } = videoHostingApi
+export const { useGetVideosQuery, useTagsQuery, useVideoByTagQuery } = videoHostingApi

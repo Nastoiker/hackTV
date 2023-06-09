@@ -55,7 +55,7 @@ export default function PageFounded({ params }: PageProps) {
           activeFound==='channels' && <LayoutChannels channels={video.channels} />
         }
          {
-          activeFound==='tags' && <LayoutChannels channels={video.channels} />
+          activeFound==='tags' && <LayoutVideo videos={video.tags} />
         }
         {
           activeFound === 'musics' && <LayoutMusic musics={video.music} />

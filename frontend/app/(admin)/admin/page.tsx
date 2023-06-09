@@ -8,25 +8,21 @@ import {
 } from "@/stores/slices/admin.api"
 import { useCheckAuthQuery } from "@/stores/slices/regapi"
 
-import "/styles/admin.css"
 import {cn} from "@/lib/utils";
 
 export default function IndexPage() {
-  const [createCategory, Category] = useCreateCategoryMutation({});
-  const [createSecond, Second] = useCreateSecondCategoryMutation({});
-  const { data, isLoading }= useCheckAuthQuery({});
-  const [value, onChange] = useState(new Date());
-  const musics = useMusicsAllQuery({});
-  const users = useUsersQuery({});
   const [currentSector, setCurrentSector] = useState<string>( );
-  if(isLoading) {
-    return <div>loading</div>
-  }
+
+  // const [createCategory, Category] = useCreateCategoryMutation({});
+  // const [createSecond, Second] = useCreateSecondCategoryMutation({});
+  // const musics = useMusicsAllQuery({});
+  // const users = useUsersQuery({});
   const router = useRouter();
-  if( data && data.role !== 'admin') {
-     router.push('/');
-  }
-  return <div className={"mx-auto"}>Админка
+
+  // if( data && data.role !== 'admin') {
+  //    router.push('/');
+  // }
+  return <div className={"mx-auto w-full"}>Админка
     <div className={'flex flex-wrap space-x-5'}>
       <button onClick={() => setCurrentSector('createCategory')}>
         Создание категории

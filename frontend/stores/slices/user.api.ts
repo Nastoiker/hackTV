@@ -31,7 +31,12 @@ export const UserApi = createApi({
       query: (profileEdit) => ({
         url: "/updateProfile",
         method: "PATCH",
-        body: { ...profileEdit },
+        body: { profileEdit },
+        headers: {
+          Accept: 'application/json',
+          'Access-Control-Allow-Origin': '*',
+          "Content-Type": "multipart/form-data;",
+        }
       }),
     }),
     CommentVideo: builder.mutation({

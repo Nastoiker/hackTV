@@ -10,31 +10,19 @@ interface IState {
   search: string
   pending: boolean
   error: boolean
-  found?: {
-    videos: IVideo[]
-    channels: IUser[]
-    tags: IVideo[],
-    music: IMusic[],
-  }
-
-}
-interface  Found {
-  videos: IVideo[]
-  channels: IUser[]
-  tags: IVideo[],
-  music: IMusic[],
+  videos?: IVideo[]
 }
 const initialState: IState = {
   search: '',
   pending: false,
   error: false,
 }
-export const searchContent = createAsyncThunk<
-  Found,
+export const searchVideoByTag = createAsyncThunk<
+  IVideo[],
   string,
   { rejectValue: string }
->("searchVideo", async (search: string, { rejectWithValue }) => {
-  const response = await fetch(DOMEN.video.search + search)
+>("searchTag", async (search: string, { rejectWithValue }) => {
+  const response = await fetch(DOMEN.video.getVideoByTagName + search)
   if (!response) {
     console.log(`Not found`)
 
@@ -50,30 +38,30 @@ export const searchContent = createAsyncThunk<
   return data
 })
 
-const searchSlice = createSlice({
-  name: "searchSlice",
+const tagSlice = createSlice({
+  name: "tagSlice",
   initialState,
   reducers: {
-    setSearch: (state, { payload }) => {
+    setTag: (state, { payload }) => {
       state.search = payload
     },
   },
   extraReducers: (builder) => {
     builder
-      .addCase(searchContent.pending, (state) => {
+      .addCase(searchVideoByTag.pending, (state) => {
         state.pending = true
       })
-      .addCase(searchContent.fulfilled, (state, { payload }) => {
+      .addCase(searchVideoByTag.fulfilled, (state, { payload }) => {
         state.pending = false
-        state.found = payload;
+        state.videos = payload;
       })
-      .addCase(searchContent.rejected, (state) => {
+      .addCase(searchVideoByTag.rejected, (state) => {
         state.pending = false
         state.error = true
       })
 
   },
 })
-export const { setSearch } = searchSlice.actions
+export const { setTag } = tagSlice.actions
 
-export default searchSlice.reducer
+export default tagSlice.reducer

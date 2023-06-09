@@ -3,4 +3,5 @@ export interface IEditProfileInterface {
   password: string
   oldpassword: string
   phone: string
+  file: File,
 }

@@ -57,7 +57,7 @@ export const SubscribeChannel = ({
               <HoverCardTrigger>
                 {" "}
                 <Link
-                  className={"flex items-center"}
+                  className={"flex items-center space-x-2"}
                   href={"/channel/" + video.authorVideo.id}
                 >
                   {" "}
@@ -108,7 +108,7 @@ export const SubscribeChannel = ({
               <HoverCardTrigger>
                 {" "}
                 <Link
-                  className={"flex items-center"}
+                  className={"flex items-center  space-x-2"}
                   href={"/channel/" + video.authorVideo.id}
                 >
                   {" "}

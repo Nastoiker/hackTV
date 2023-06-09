@@ -1,7 +1,7 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/dist/query/react"
 
 export const AdminApi = createApi({
-  reducerPath: "userApi",
+  reducerPath: "adminApi",
   baseQuery: fetchBaseQuery({
     baseUrl: "http://localhost:8000/admin",
     prepareHeaders: (headers) => {
@@ -15,7 +15,7 @@ export const AdminApi = createApi({
   endpoints: (builder) => ({
     deleteVideo: builder.mutation({
       query: (videoId) => ({
-        url: "/likeVideo",
+        url: "/deleteVideo",
         method: "POST",
         body: { ...videoId },
       }),
@@ -36,14 +36,14 @@ export const AdminApi = createApi({
     }),
     unBanUser: builder.mutation({
       query: (user) => ({
-        url: "/commentVideo",
+        url: "/unBanUser",
         method: "POST",
         body: { ...user },
       }),
     }),
     removeAdminAbility: builder.mutation({
       query: (commentVideo) => ({
-        url: "/commentVideo",
+        url: "/removeAdminAbility",
         method: "POST",
         body: { ...commentVideo },
       }),
@@ -57,21 +57,21 @@ export const AdminApi = createApi({
     }),
     musicsAll: builder.query({
       query: (firstCategory) => ({
-        url: "/createFirstCategory",
+        url: "/musics",
         method: "POST",
         body: { ...firstCategory },
       }),
     }),
     users: builder.query({
       query: (commentVideo) => ({
-        url: "/createVideo",
+        url: "/users",
         method: "POST",
         body: { ...commentVideo },
       }),
     }),
     createSecondCategory: builder.mutation({
       query: (secondCategory) => ({
-        url: "//createSecondCategory",
+        url: "/createSecondCategory",
         method: "POST",
         body: { ...secondCategory },
       }),

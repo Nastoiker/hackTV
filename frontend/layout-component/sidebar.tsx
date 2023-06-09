@@ -47,7 +47,7 @@ export const LeftSite = ({ className }: LeftSiteProps) => {
   // , isOpen && " block ", styles.LeftSide
   console.log(isOpen)
   return (
-    <div className={""}>
+    <div className={cn(className,"")}>
       <ButtonIcon
         appearance={"white"}
         className={"fixed my-20  w-24 z-40   " + styles.MenuButtin}

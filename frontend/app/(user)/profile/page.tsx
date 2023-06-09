@@ -49,6 +49,9 @@ export default function IndexPage() {
               <h1>Подписчки: {data.subscribers_count}</h1>
               <h1>Лайков: {data.LikeCount}</h1>
               <Link href={"/folows"}>Подписки: {data.following_count}</Link>
+              <Button className={"block sm:hidden  w-full max-w-[100px] bg-red-500"} onClick={() => localStorage.removeItem("token")}>
+                <a href={"/"}>Выйти</a>
+              </Button>
             </div>
           </div>
           <div className={""}>
