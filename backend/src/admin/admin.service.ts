@@ -48,6 +48,16 @@ export class AdminService {
       }
     })
   }
+    async unBanOne(id: string) {
+        return this.prisma.userModel.update({
+            where: {
+                id
+            },
+            data: {
+                isActive: true,
+            }
+        })
+    }
   async removeVideo(id: string) {
     return this.prisma.video.delete({
       where: {
@@ -56,6 +66,14 @@ export class AdminService {
     }
     );
   }
+    async removeUser(id: string) {
+        return this.prisma.video.delete({
+                where: {
+                    id
+                }
+            }
+        );
+    }
   async createReport(dto: CreateReportDto) {
     return this.prisma.reportVideo.create({
           data: {
@@ -63,20 +81,5 @@ export class AdminService {
           }
         }
     );
-  }
-  findAll() {
-    return `This action returns all admin`;
-  }
-
-  findOne(id: number) {
-    return `This action returns a #${id} admin`;
-  }
-
-  update(id: number, updateAdminDto: UpdateAdminDto) {
-    return `This action updates a #${id} admin`;
-  }
-
-  remove(id: string) {
-    return ;
   }
 }

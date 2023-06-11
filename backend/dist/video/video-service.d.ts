@@ -12,6 +12,19 @@ export declare class VideoService {
     })[]>;
     some<T>(arr: T[], callback: (item: T) => boolean): boolean;
     watchVideo(userId: string | null, videoId: string): Promise<HistoryWatching>;
+    getVideoByTag(tagName: any): Promise<(Video & {
+        Comment: Comment[];
+        music: import(".prisma/client").Music;
+        tag: (import(".prisma/client").TagOnVideo & {
+            tag: Tag;
+        })[];
+        authorVideo: UserModel & {
+            folowers: import(".prisma/client").Folower[];
+        };
+        secondCategory: import(".prisma/client").SecondLevelCategory;
+        likes: import(".prisma/client").Like[];
+        watchers: HistoryWatching[];
+    })[]>;
     videosRecom(userId: string): Promise<Video[]>;
     reportVideo(report: VideoReportDto): Promise<import(".prisma/client").ReportOnVideo>;
     videos(params: {
@@ -28,7 +41,19 @@ export declare class VideoService {
         where?: Prisma.VideoWhereInput;
         orderBy?: Prisma.VideoOrderByWithRelationInput;
     }): Promise<Tag[]>;
-    GetSearchTags(name: any): Promise<Tag[]>;
+    GetSearchTags(name: any): Promise<(Video & {
+        Comment: Comment[];
+        music: import(".prisma/client").Music;
+        tag: (import(".prisma/client").TagOnVideo & {
+            tag: Tag;
+        })[];
+        authorVideo: UserModel & {
+            folowers: import(".prisma/client").Folower[];
+        };
+        secondCategory: import(".prisma/client").SecondLevelCategory;
+        likes: import(".prisma/client").Like[];
+        watchers: HistoryWatching[];
+    })[]>;
     videosByCategory(params: {
         skip?: number;
         take?: number;
@@ -57,5 +82,6 @@ export declare class VideoService {
         data: Prisma.VideoUpdateInput;
     }): Promise<Video>;
     commentsVideo(videoId: string): Promise<Comment[] | null>;
+    deleteMusic(id: string): Promise<import(".prisma/client").Music>;
     deleteVideo(id: string): Promise<Video>;
 }

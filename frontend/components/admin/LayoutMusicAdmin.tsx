@@ -2,7 +2,7 @@
 
 import {useCallback, useEffect, useMemo, useState} from "react"
 import { useCheckAuthQuery } from "@/stores/slices/regapi"
-import {useDeleteMusicMutation, useFollowsQuery} from "@/stores/slices/user.api"
+import { useFollowsQuery } from "@/stores/slices/user.api"
 
 import { IMusic } from "@/types/Music.interface"
 import { IUser } from "@/types/User.interface"
@@ -11,7 +11,6 @@ import { Htag } from "@/components/Htag/Htag"
 import { Music } from "@/components/Music/Music"
 import { SortButton } from "@/components/Sorts/Sort.button"
 import { Video } from "@/components/video/video"
-import {Button} from "@/components/ui/button";
 
 interface LayoutProps {
   children: React.ReactNode
@@ -36,15 +35,13 @@ function FilterBySubs(videos: IVideo[]) {
   return sortByTime
 }
 export function LayoutMusic({
-  musics,
-  user,
-}: {
+                              musics,
+                            }: {
   musics: IMusic[]
-  user?: IUser
 }) {
   const [activeMusicValue, setActiveMusicValue] = useState<string>(null);
   const [filteredVideo, setFilteredVideo ] = useState<IMusic[]>(musics);
-  const [deleteMusic] = useDeleteMusicMutation();
+
 
   const FilterByDate = useCallback(function (videos) {
     const sort = [...videos]
@@ -54,25 +51,11 @@ export function LayoutMusic({
     return sortByTime
   },[]);
   const filterByDate = useMemo(() => FilterByDate(musics), [musics])
-  const deleteMusicHandler = async (id: string) => {
-    try {
-      const result = await deleteMusic(id)
-      console.log(result)
-    } catch (err) {
-      console.error(err)
-    }
-  }
   return (
     <div className={"mx-auto flex"}>
       <div className={"w-full mr-20"}>
         {filteredVideo.length>0  ? (
-          musics.map((m) => <>
-            <Music activeMusic={activeMusicValue} setActiveMusic={() => setActiveMusicValue(m.id)} music={m} />
-            {
-              user.id === m.user.id &&
-              <Button onClick={() => deleteMusicHandler(m.id)} className={'my-8'}>Удалить видео</Button>
-            }
-          </> )
+          musics.map((m) => <Music activeMusic={activeMusicValue} setActiveMusic={() => setActiveMusicValue(m.id)} music={m} />)
         ) : (
           <div className={"mx-auto"}>
             <Htag type={"h1"}> Ничего не найдено</Htag>

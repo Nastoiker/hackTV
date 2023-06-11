@@ -59,7 +59,7 @@ export const Header = () => {
       )}
     >
       <div className={"min-w-68 lg:pr-36"}>
-        <Link className={"min-w-[40px]"} href={"/"}>
+        <Link className={"min-w-[40px] min-h-[100px]"} href={"/"}>
           {
             theme!=='dark' ?  <Image height={100} width={100} src={Logo} alt={'logo'} /> :  <Image height={100} width={100} src={LogoDark} alt={'logo'} />
           }

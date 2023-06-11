@@ -16,8 +16,8 @@ export default function IndexPage() {
   return (
     <>
       <section className={"grid  "}>
-        <div className="flex max-w-[980px] mx-auto flex-col gap-2">
-          <h1 className="text-3xl font-extrabold leading-tight tracking-tighter md:text-5xl lg:text-6xl lg:leading-[1.1]">
+        <div className="flex max-w-[980px]  mx-auto flex-col gap-2">
+          <h1 className="text-3xl font-extrabold my-10 leading-tight tracking-tighter md:text-5xl lg:text-6xl lg:leading-[1.1]">
             Рекомендации
           </h1>
           <div className={"ml-6"}>

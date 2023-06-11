@@ -51,9 +51,9 @@ const PageRegistration = () => {
 
   }
   return (
-    <div className="mx-auto max-w-[500px]">
+    <div className="mx-auto bg-background max-w-[500px]">
       <form
-        className={"space-y-5 text-black border p-10 my-5 rounded-2xl"}
+        className={"space-y-5 border p-10 my-5 rounded-2xl"}
         onSubmit={handleSubmit(onSubmit)}
       >
         <Htag type='h1' className='text-center' >Регистрация</Htag>

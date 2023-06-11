@@ -13,9 +13,24 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
 import { UpdateAvatarProfile } from "@/components/uploadImage/UploadImage"
-import {SelectContent, SelectItem, Select, SelectTrigger, SelectValue} from "@/components/ui/select";
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
+import {
+  SelectContent,
+  SelectItem,
+  Select,
+  SelectTrigger,
+  SelectValue,
+  SelectLabel,
+  SelectGroup
+} from "@/components/ui/select";
 import {CreateTags} from "@/components/forms/createVideo/createTags";
 import axios from "axios";
+import {AlertCircle, Terminal} from "lucide-react";
+export  interface  IState{
+  loading: boolean;
+  error: boolean;
+  success: boolean;
+}
 export const CreateVideo = () => {
   const [CreateVideo, data] = useCreateVideoMutation()
   const videoRef = useRef()
@@ -37,12 +52,14 @@ export const CreateVideo = () => {
   })
   const secondCategory = useAppSelector(
     (state) => state.category.category
-  ).flat()
+  ).flatMap(obj => obj.secondLevelCategory);
   const [file, setFile] = useState<File>()
   const [onDrag, setOnDrag] = useState<boolean>(false)
   const [selectedFile, setSelectedFile] = useState<any>()
   const [tags, setTag] = useState<{tag: string, id: number}[]>([]);
-  const [loading, setLoading] = useState<boolean>(false);
+
+
+  const [state, setState] = useState<IState>({ loading: false, error: false, success: false });
   const handleDelete = (id) => {
     const updatedItems = tags.filter((item) => item.id !== id);
     setTag(updatedItems);
@@ -124,6 +141,7 @@ export const CreateVideo = () => {
     //       return;}
     // await CreateVideo(data)
     try {
+      setState({error: false, loading: true, success: false});
       const res = await axios.post('http://localhost:8000/Video/create', { ...formData}, {
         headers: {
           Accept: 'application/json',
@@ -131,8 +149,9 @@ export const CreateVideo = () => {
           Authorization: `Bearer ${localStorage.getItem('token')}`
         }
       });
+      setState({...state, loading: false, success: true});
     } catch(e) {
-
+      setState({error: true, loading: false, success: true});
     }
 
   }
@@ -156,23 +175,22 @@ export const CreateVideo = () => {
           >
             <h1>Видео</h1>
             <div
-              className={"bg-gray-200 p-9 m-9"}
+              className={"w-full"}
               onDrop={onDrop}
               onDragOver={handleDragOver}
             >
               {onDrag ? (
-                <div className={"bg-blue-200 m-9"}>
+                <div className={"bg-sky-700 p-2 "}>
                   <video
                     width={350}
                     height={350}
-                    className={"rounded-3xl"}
                     loop
                     controls={true}
                     src={selectedFile}
                   ></video>
                 </div>
               ) : (
-                <div className={"m-auto"}>
+                <div className={"m-auto m-9 p-9 bg-gray-200"}>
                   <label htmlFor={'uploadVideo'}>
                     <input type={'file'} accept={'video/*'} id={'uploadVideo'} onChange={(e) => handleInputVideo(e)} height={400} width={400} className={'hidden w-64 h-64'} />
                     <svg
@@ -204,7 +222,7 @@ export const CreateVideo = () => {
           </div>
         </div>
 
-        <div className={"space-y-6 w-1/3"}>
+        <div className={"space-y-6 max-w-[500px] lg:w-1/3"}>
           <div className={"rounded-3xl border space-y-5 p-5"}>
             <Label htmlFor={"name"}>Name</Label>
             <Input
@@ -231,7 +249,7 @@ export const CreateVideo = () => {
             {/*  })}*/}
             {/*  id={"file"}*/}
             {/*/>*/}
-            <Label htmlFor={"secondCategoryId"}>Выберите музыку</Label>
+            <Label htmlFor={"secondCategoryId"}>secondCategory</Label>
             <Controller
               name={"secondCategoryId"}
               control={control}
@@ -243,13 +261,15 @@ export const CreateVideo = () => {
                       <SelectValue placeholder="Категория" />
                     </SelectTrigger>
                     <SelectContent>
-                      {secondCategory.map(s2 => <SelectItem key={s2.id}  value={s2.id}>{s2.name}</SelectItem>)}
+                      <SelectGroup>
+                        <SelectLabel>Вторая категория</SelectLabel>
+                        {secondCategory.map(s2 => <SelectItem key={s2.id}  value={s2.id}>{s2.name}</SelectItem>)}
+                      </SelectGroup>
 
                     </SelectContent>
                   </Select>
                 )}}
             />
-            <Label htmlFor={"secondCategoryId"}>secondCategory</Label>
 
             <Label htmlFor={"musicId"}>Выберите музыку</Label>
             <Controller
@@ -282,12 +302,12 @@ export const CreateVideo = () => {
               id={"desc"}
             />
           </div>
-          <Button disabled={loading} onClick={(_) => console.log(getValues())} type={"submit"}>
+          <Button disabled={state.loading} onClick={(_) => console.log(getValues())} type={"submit"}>
             Создать
           </Button>
         </div>
       </form>
-      {loading &&
+      {state.loading &&
         <div className="flex my-10 items-center text-4xl">Видео загружается <svg
           className="animate-spin  mx-3 h-16 w-16 text-white"
           xmlns="http://www.w3.org/2000/svg"
@@ -308,6 +328,27 @@ export const CreateVideo = () => {
             d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
           ></path>
         </svg></div>
+      }
+      {
+        state.error && <Alert>
+          <AlertTitle>Успешно</AlertTitle>
+          <AlertDescription>
+            Вы создали видео
+          </AlertDescription>
+        </Alert>
+
+      }
+      {
+        state.success && <h1>
+          <Alert variant="destructive">
+            <AlertCircle className="h-4 w-4" />
+            <AlertTitle>Error</AlertTitle>
+            <AlertDescription>
+              Ошибка создания видео
+            </AlertDescription>
+          </Alert>
+        </h1>
+
       }
     </div>
   )

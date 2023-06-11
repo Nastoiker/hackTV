@@ -28,11 +28,18 @@ export const AuthComponent = () => {
     handleSubmit,
     formState: { errors },
     reset,
-  } = useForm<ILogin>()
-  const{ data, isLoading, error } = useAuthorizationQuery(login);
 
+  } = useForm<ILogin>();
+  const{ data, isLoading, error } = useAuthorizationQuery(login);
   const onSubmit = async (formData: ILogin) => {
-    setLogin(formData)
+    try {
+      setLogin(formData)
+      if(localStorage.getItem('token')) {
+        location.reload();
+      }
+    } catch {
+      console.log(error);
+    }
   }
   return (
     <Dialog>
@@ -43,12 +50,12 @@ export const AuthComponent = () => {
         <DialogHeader>
           <DialogTitle>Авторизация</DialogTitle>
           <DialogDescription>
-            Make changes to your profile here. Click save when youre done.
+            <Link href={'/registration'} >Нет аккаунта? Зарегистрируйтесь</Link>
           </DialogDescription>
         </DialogHeader>
         <form  className="my-5" onSubmit={handleSubmit(onSubmit)}>
           <Label htmlFor={"email"}>Emal</Label>
-          <Input {...register("email", { required: true, pattern: {
+          <Input error={errors.email} {...register("email", { required: true, pattern: {
               value: /\S+@\S+\.\S+/,
               message: "Введите  email",
             } }, )} id={"email"} />
@@ -56,6 +63,11 @@ export const AuthComponent = () => {
           <Input type={"password"} {...register("password", { required: true })} id={"email"} />
           <Button type={"submit"}>Авторизация</Button>
         </form>
+        {
+          (error && ('status' in error) && error.status===401)  && <div>
+              <p>Ошибка авторизации</p>
+          </div>
+        }
       </DialogContent>
     </Dialog>
   )

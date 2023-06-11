@@ -155,6 +155,13 @@ export class VideoController {
         }
         return UpdatedProduct;
     }
+    @Get('tagVideo/:tagId')
+    async getByTag(@Param('tagId', IdValidationpipe) id: string, @Body() dto: VideoModel) {
+        const tag = id.slice(1, id.length);
+        const UpdatedProduct = await this.videoService.getVideoByTag(tag);
+        if(!UpdatedProduct) return [];
+        return UpdatedProduct;
+    }
     @UseGuards(JwtAuthGuard)
     @Post('ReportOnVideo')
     async reportOnVideo(@Body() dto: VideoReportDto) {

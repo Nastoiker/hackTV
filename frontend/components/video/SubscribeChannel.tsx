@@ -55,12 +55,10 @@ export const SubscribeChannel = ({
           >
             <HoverCard>
               <HoverCardTrigger>
-                {" "}
                 <Link
                   className={"flex items-center space-x-2"}
                   href={"/channel/" + video.authorVideo.id}
                 >
-                  {" "}
                   <Image
                     className={"rounded-full w-12 h-12"}
                     width={50}
@@ -91,7 +89,7 @@ export const SubscribeChannel = ({
             />
           ) : (
             <Button
-              onClick={() => setIsSubscribe}
+              onClick={() => setIsSubscribe()}
               className={"bg-red-500 h-12 border-red right-0"}
             >
               Отписаться
@@ -142,7 +140,7 @@ export const SubscribeChannel = ({
             />
           ) : (
             <Button
-              onClick={() => setIsSubscribe}
+              onClick={() => setIsSubscribe()}
               className={"bg-red-500 h-12 border-red right-0"}
             >
               Подписаться

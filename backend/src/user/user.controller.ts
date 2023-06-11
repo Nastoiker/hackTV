@@ -128,11 +128,11 @@ export class UserController {
   @UseInterceptors(FileInterceptor('file'))
   async updateProfile(@Req() query, @UploadedFile(
       new ParseFilePipeBuilder()
-          .addMaxSizeValidator({ maxSize: 5242880 })
           .build({
             errorHttpStatusCode: HttpStatus.UNPROCESSABLE_ENTITY
           }),
   ) avatar: Express.Multer.File, @Body() body: UpdateUserDto) {
+    console.log(body);
     return this.userService.updateProfile(query.user, avatar, body);
   }
   @Get()
@@ -178,12 +178,19 @@ export class UserController {
     const videoId = id.slice(1, id.length);
     return this.videoService.deleteVideo(videoId);
   }
+  @Delete('/deleteMusic/:id')
+  @UseGuards(JwtAuthGuard)
+  DeleteMusic(@Param('id') id: string) {
+    const musicId = id.slice(1, id.length);
+    return this.videoService.deleteMusic(musicId);
+  }
   @UseGuards(JwtAuthGuard)
   @Post('createCommentOnUser')
   createUserComment(@Req() request, @Body() createCommentOnUserDto: CreateCommentOnUserDto) {
     createCommentOnUserDto.userId = request.user.id
     return this.commentService.createCommentOnUserDto(createCommentOnUserDto);
   }
+
   @Get('/search/:search')
   async getSearch(@Param('search', IdValidationpipe) search: string) {
     const searchValue = search.slice(1, search.length);

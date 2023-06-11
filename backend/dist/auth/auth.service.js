@@ -41,12 +41,24 @@ let AuthService = class AuthService {
             throw new common_1.UnauthorizedException(auth_constants_1.USER_NOT_FOUND_ERROR);
         }
         const isCorrectUser = await (0, bcryptjs_1.compare)(password, User.hashpassword);
+        if (User.isActive === false) {
+            throw new common_1.UnauthorizedException(auth_constants_1.USER_WAS_BANNED);
+        }
         if (!isCorrectUser) {
             throw new common_1.UnauthorizedException(auth_constants_1.WRONG_PASSWORD_ERROR);
         }
         return { email: User.email };
     }
     async authByJwt(id) {
+        const checkBanned = await this.prisma.userModel.findUnique({
+            where: { id },
+            select: {
+                isActive: true
+            }
+        });
+        if (checkBanned && checkBanned.isActive === false) {
+            throw new common_1.UnauthorizedException(auth_constants_1.USER_WAS_BANNED);
+        }
         return this.prisma.userModel.findUnique({
             where: { id },
             include: {

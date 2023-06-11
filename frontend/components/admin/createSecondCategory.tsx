@@ -1,60 +1,65 @@
-// import {useAppSelector} from "../../store";
-// import {useForm} from "react-hook-form";
-// import {ICreateSecondCategoryWithBrand} from "../../../interfaces/admin.interface";
-// import {Input} from "../Input/Input";
-// import {Label} from "../../ui/label";
-// import axios from "axios";
-// import {Htag} from "../Htag/Htag";
-// import {Button} from "../../ui/button";
 
-export const CreateSecondCategoryWithBrand = (): JSX.Element => {
-  return <div></div>
-  // const brands = useAppSelector(state =>  state.brands.brands);
-  // const firstLevel = useAppSelector(state => state.firstCategory.category);
-  // const {register, control, handleSubmit, formState: {errors}, reset} = useForm<ICreateSecondCategoryWithBrand>();
-  // const onSubmit = async (formData: ICreateSecondCategoryWithBrand) => {
-  //     console.log(formData);
-  //     try {
-  //         const {data} = await axios.post(DOMEN.admin.createCategory, {...formData}, {
-  //             headers: {
-  //                 'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImRhbXVyMjAwNEBnbWFpbC5jb20iLCJpYXQiOjE2NzUzMzI2OTB9.T2hefmVdkX_Zg54NtF_OAg-6u0N6-uk8nqVcWn22Rbs',
-  //             }});
-  //         if  (data.message) {
-  //             reset();
-  //         }
-  //     } catch(e) {
-  //         if(e instanceof Error ) {
-  //             console.log(e.message);
-  //         }
-  //     }
-  // }
-  // return (
-  //     <>
-  //         <Htag type={"h1"}>Создание второй категории с брендами</Htag>
-  //         <form action="" className="bg-white space-y-8 rounded-3xl text-center w-full" onSubmit={handleSubmit(onSubmit)}>
-  //             <Label htmlFor={'alias'}>name alias</Label>
-  //             <Input {...register('alias', {required: true})} id={'alias'}/>
-  //             <Label htmlFor={'name'}>name category</Label>
-  //             <Input {...register('name', {required: true})} id={'name'}/>
-  //             <Label htmlFor={'alias'}>firstLevelId</Label>
-  //             <select  className="mx-auto text-center block" {...register('firstLevelId')} >
-  //                 {firstLevel?.map( t => {
-  //                     return (
-  //                         <option key={t.id}  value={t.id}>{t.name}</option>
-  //                     );
-  //                 })}
-  //             </select>
-  //             <Label htmlFor={'brands'}>brands</Label>
-  //
-  //             <select multiple className="mx-auto text-center block" {...register('id')} >
-  //                 {brands?.map( b => {
-  //                     return (
-  //                         <option key={b.id}  value={b.id}>{b.name}</option>
-  //                     );
-  //                 })}
-  //             </select>
-  //             <Button type={"submit"}>Создать</Button>
-  //         </form>
-  //     </>
-  // );
+
+import {Controller, useForm} from "react-hook-form";
+import {useCreateSecondCategoryMutation} from "@/stores/slices/admin.api";
+import {Input} from "@/components/ui/input";
+import {Button} from "@/components/ui/button";
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectLabel,
+  SelectTrigger,
+  SelectValue
+} from "@/components/ui/select";
+import {useAppSelector} from "@/stores";
+interface ICreateSecondCategory {
+  name: string,
+  alias: string,
+  firstLevelId: string,
+}
+export const CreateSecondCategory = (): JSX.Element => {
+  const {register, handleSubmit, formState: {errors}, reset, control} = useForm<ICreateSecondCategory>();
+  const [createFirstCategory, data] = useCreateSecondCategoryMutation();
+  const firstCategory = useAppSelector(
+    (state) => state.category.category
+  );
+  const onSubmit = async (formData: ICreateSecondCategory) => {
+    try {
+      await createFirstCategory(formData);
+      reset();
+    } catch {
+
+    }
+  }
+  return <form onSubmit={handleSubmit(onSubmit)}>
+    <Input placeholder={'Введите название категории'} {...register('name')}/>
+    <Input error={errors.alias} placeholder={' Введите alias '} {...register('alias', {
+      pattern: {
+        value: /^[A-Za-z][A-Za-z0-9]*$/,
+        message: 'Введите только английские символы'
+      }
+    })} />
+    <Controller
+      name={"firstLevelId"}
+      control={control}
+      render={({ field: { onChange, value,ref } }) => {
+
+        return (
+          <Select  onValueChange={onChange}>
+            <SelectTrigger className="w-[180px] ">
+              <SelectValue placeholder="Категория" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectGroup>
+                <SelectLabel>Категории</SelectLabel>
+              {firstCategory.map(s2 => <SelectItem key={s2.id}  value={s2.id}>{s2.name}</SelectItem>)}
+              </SelectGroup>
+            </SelectContent>
+          </Select>
+        )}}
+    />
+    <Button>Создать категорию</Button>
+  </form>
 }

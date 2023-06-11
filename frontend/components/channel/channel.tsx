@@ -17,9 +17,18 @@ export const Channel = ({ userFollows, author }: { userFollows?: any, author: an
   const {isLoading, data} = useAuthorizationQuery({});
   useEffect(() => {
     if(userFollows) {
-      setIsFollow( userFollows.find(f => f.id ===author));
+      setIsFollow( userFollows.find(f => f.id === author.id));
     }
   }, []);
+  const handleFollow =  async () => {
+    if(followChannel) {
+      const checkExist = userFollows.find(
+        (f) => f.authorId === author.id
+      )
+      setIsFollow(false)
+      await unfollowChannel({ id: checkExist.id, authorId: author.id })
+    }
+  }
   const [isFollow, setIsFollow] = useState<boolean>();
   return (
     <div>

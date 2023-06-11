@@ -23,17 +23,22 @@ export default  function PagePage({ params }: PageProps) {
   const tag = useAppSelector(state=>state.tag.search);
   useEffect(() => {
     dispatch(searchVideoByTag(tag));
-  },[]);
+  },[tag]);
   const videos = useAppSelector(state=> state.tag.videos);
   if(!videos) {
-    notFound();
+    return <div>loading</div>
   }
   return (
-    <div className={"w-full"}>
-      <h1>
-        {tag}
-      </h1>
+    <section className={"grid  "}>
+    <div className={"flex max-w-[980px] mx-auto flex-col gap-2"}>
+      <div>
+        <h1 className="inline mr-2 text-3xl font-extrabold leading-tight tracking-tighter md:text-5xl lg:text-6xl lg:leading-[1.1]">
+          #{tag}
+        </h1>
+        <span>{videos.length}</span>
+      </div>
       <LayoutVideo videos={ videos}  />
     </div>
+    </section>
   )
 }

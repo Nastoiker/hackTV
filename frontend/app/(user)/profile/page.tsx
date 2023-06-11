@@ -59,17 +59,27 @@ export default function IndexPage() {
               <Button>Изменить профиль</Button>
             </Link>
             <Link
-              className={"transition-all  p-3 rounded-md hover:bg-blue-100"}
+              className={"transition-all  p-3 rounded-md "}
               href={"createMusic"}
             >
               Создать музыку
             </Link>
             <Link
-              className={"transition-all  p-3 rounded-md hover:bg-blue-100"}
+              className={"transition-all  p-3 rounded-md "}
               href={"createVideo"}
             >
               Создать видео
             </Link>
+            {
+              data.role==='admin' &&
+              <Link
+                className={"transition-all text-red-600  p-3 rounded-md "}
+                href={"/admin"}
+              >
+                Войти в админку
+              </Link>
+            }
+
           </div>
           <Tabs defaultValue="account" className="w-full">
             <TabsList>
@@ -87,7 +97,7 @@ export default function IndexPage() {
               <LayoutVideo videos={data.videos} user={data} />
             </TabsContent>
             <TabsContent value="music">
-              <LayoutMusic musics={data.music} />
+              <LayoutMusic user={data} musics={data.music} />
             </TabsContent>
             <TabsContent value="likes">
               <LayoutVideo

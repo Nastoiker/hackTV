@@ -20,10 +20,13 @@ export const AuthApi = createApi({
         url: "/login",
         method: "POST",
         body: { ...login },
+        headers: {
+          'Content-Type': 'application/json',
+        }
       }),
       transformResponse: (response) => {
         // @ts-ignore
-        const { accesToken } = response
+        const { accesToken } = response;
         localStorage.setItem("token", accesToken)
         return response
       },

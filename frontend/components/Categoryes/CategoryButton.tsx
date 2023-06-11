@@ -51,7 +51,7 @@ export const CategoryButton = ({
       <div
         onClick={() => setIsOpen((s) => !s)}
         className={
-          " cursor-pointer text-white mr-2 w-36 block border-0 bg-blue-400 rounded-2xl px-5 py-2 "
+          " cursor-pointer text-white mr-2 w-36 block border-0 bg-blue-400 rounded-lg px-5 py-2 "
         }
       >
         {name}
@@ -68,8 +68,8 @@ export const CategoryButton = ({
               key={s.alias}
               variants={variantsChildren}
               className={cn(
-                "cursor-pointer block w-fit my-2 border-0 rounded-xl pr-10 pb-1 pt-0.5 px-5 mx-7  overflow-hidden ",
-                pathname.split("/")[2] === s.alias && "bg-blue-200"
+                "cursor-pointer block w-fit my-2 border-0 rounded-md pr-10 pb-1 pt-0.5 px-5 mx-7  overflow-hidden ",
+                pathname.split("/")[2] === s.alias && "border-b-2"
               )}
               onClick={() => router.push(`/category/${s.alias}`)}
             >

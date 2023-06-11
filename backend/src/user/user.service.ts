@@ -105,14 +105,22 @@ export class UserService {
       const likesCountVideo = await this.prisma.video.findUnique({where: {
           id: checkExistVideo.videoId
         },
-        select: { likesCount: true}
-        })
+        select: { likesCount: true, authorVideo: true}
+        });
       await this.prisma.video.update({where: {
         id: checkExistVideo.videoId
         },
       data: {
         likesCount: likesCountVideo.likesCount - 1
       }})
+      await this.prisma.userModel.update({
+        where: {
+          id: likesCountVideo.authorVideo.id,
+        },
+        data: {
+          LikeCount: likesCountVideo.authorVideo.LikeCount - 1,
+        }
+      });
       return await this.prisma.like.delete({where: {
          id: checkExistVideo.likeId,
         }});
@@ -120,7 +128,7 @@ export class UserService {
     const likesCountVideo = await this.prisma.video.findUnique({where: {
         id: videoId
       },
-      select: { likesCount: true}
+      select: { likesCount: true, authorVideo: true}
     })
     await this.prisma.video.update({where: {
         id: videoId
@@ -129,6 +137,14 @@ export class UserService {
         likesCount: likesCountVideo.likesCount + 1
       }})
     console.log(checkExistVideo);
+    await this.prisma.userModel.update({
+      where: {
+        id: likesCountVideo.authorVideo.id,
+      },
+      data: {
+        LikeCount: likesCountVideo.authorVideo.LikeCount + 1,
+      }
+    });
     return this.prisma.like.create({
       data: {
         likeById,

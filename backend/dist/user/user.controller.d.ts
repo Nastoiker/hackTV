@@ -44,6 +44,7 @@ export declare class UserController {
     update(id: string, updateUserDto: UpdateUserDto): Promise<import(".prisma/client").UserModel>;
     remove(id: string): Promise<import(".prisma/client").UserModel>;
     DeleteVideo(id: string): Promise<import(".prisma/client").Video>;
+    DeleteMusic(id: string): Promise<import(".prisma/client").Music>;
     createUserComment(request: any, createCommentOnUserDto: CreateCommentOnUserDto): Promise<import(".prisma/client").UserCommentOnComment>;
     getSearch(search: string): Promise<import(".prisma/client").UserModel[]>;
     createVideo(request: any, video: Express.Multer.File, dto: createVideoDto): Promise<import(".prisma/client").Video>;

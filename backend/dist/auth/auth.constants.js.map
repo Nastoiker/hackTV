@@ -1,1 +1,1 @@
-{"version":3,"file":"auth.constants.js","sourceRoot":"","sources":["../../src/auth/auth.constants.ts"],"names":[],"mappings":";;;AAAa,QAAA,sBAAsB,GAAG,sCAAsC,CAAC;AAChE,QAAA,oBAAoB,GAAG,wBAAwB,CAAC;AAChD,QAAA,oBAAoB,GAAG,kBAAkB,CAAC"}
+{"version":3,"file":"auth.constants.js","sourceRoot":"","sources":["../../src/auth/auth.constants.ts"],"names":[],"mappings":";;;AAAa,QAAA,sBAAsB,GAAG,sCAAsC,CAAC;AAChE,QAAA,oBAAoB,GAAG,wBAAwB,CAAC;AAChD,QAAA,oBAAoB,GAAG,kBAAkB,CAAC;AAC1C,QAAA,eAAe,GAAG,0BAA0B,CAAC"}

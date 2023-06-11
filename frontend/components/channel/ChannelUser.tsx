@@ -50,7 +50,7 @@ export const ChannelUser = ({channel, userFollows, user}: {channel: IChannelUser
       </Link>
       <div>
         {
-          channel.id===user?.id &&
+          channel.id!==user?.id &&
           <Button onClick={() => {setIsFollow((is) => !is)}}>{isFollow ? 'Отписаться' : 'Подписаться'}</Button>
 
         }

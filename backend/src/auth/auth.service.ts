@@ -2,7 +2,7 @@ import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { AuthDto } from './dto/auth.dto';
 import { UserModel } from '@prisma/client';
 import { genSalt, hash, compare } from 'bcryptjs';
-import { USER_NOT_FOUND_ERROR, WRONG_PASSWORD_ERROR } from './auth.constants';
+import {USER_NOT_FOUND_ERROR, USER_WAS_BANNED, WRONG_PASSWORD_ERROR} from './auth.constants';
 import { JwtService } from '@nestjs/jwt';
 import {PrismaService} from "../prisma/prisma-service";
 import {CreateUserDto} from "../user/dto/create-user.dto";
@@ -34,12 +34,24 @@ export class AuthService {
 			throw new UnauthorizedException(USER_NOT_FOUND_ERROR);
 		}
 		const isCorrectUser = await compare(password, User.hashpassword);
+		if(User.isActive===false) {
+			throw new UnauthorizedException(USER_WAS_BANNED);
+		}
 		if (!isCorrectUser) {
 			throw new UnauthorizedException(WRONG_PASSWORD_ERROR);
 		}
 		return { email: User.email };
 	}
 	async authByJwt(id: string) {
+		const checkBanned = await this.prisma.userModel.findUnique({
+			where: {id},
+			select: {
+				isActive: true
+			}
+		});
+		if(checkBanned && checkBanned.isActive===false) {
+			throw new UnauthorizedException(USER_WAS_BANNED);
+		}
 		return this.prisma.userModel.findUnique({
 			where: {id},
 			include: {

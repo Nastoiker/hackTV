@@ -15,7 +15,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.AdminController = void 0;
 const common_1 = require("@nestjs/common");
 const admin_service_1 = require("./admin.service");
-const update_admin_dto_1 = require("./dto/update-admin.dto");
 const admin_guard_1 = require("../auth/guards/admin.guard");
 const create_report_dto_1 = require("./dto/create-report.dto");
 const user_service_1 = require("../user/user.service");
@@ -43,19 +42,13 @@ let AdminController = class AdminController {
         return this.adminService.removeAdminAbility(id);
     }
     unBanUser({ id }) {
-        return this.adminService.removeAdminAbility(id);
+        return this.adminService.unBanOne(id);
     }
     removeAdminAbility({ id }) {
         return this.adminService.removeAdminAbility(id);
     }
-    findOne(id) {
-        return this.adminService.findOne(+id);
-    }
     babOneUser(id) {
         return this.adminService.banOne(id);
-    }
-    update(id, updateAdminDto) {
-        return this.adminService.update(+id, updateAdminDto);
     }
     createFirstCategory(query, createFirstCategory) {
         return this.categoryService.createFirstCategory(createFirstCategory);
@@ -64,10 +57,10 @@ let AdminController = class AdminController {
         return this.categoryService.createSecondCategory(createSecondCategory);
     }
     deleteFirstCategory(id) {
-        return this.categoryService.deleteFirstCategory(id);
+        return this.categoryService.deleteFirstCategory(id.id);
     }
     deleteSecondCategory(id) {
-        return this.categoryService.deleteFirstCategory(id);
+        return this.categoryService.deleteFirstCategory(id.id);
     }
     removeVideo(id) {
         return this.adminService.removeVideo(id);
@@ -114,7 +107,7 @@ __decorate([
 ], AdminController.prototype, "banAdmin", null);
 __decorate([
     (0, common_1.UseGuards)(admin_guard_1.AdminJwtAuthGuard),
-    (0, common_1.Post)('banAdmin'),
+    (0, common_1.Post)('unBanUser'),
     __param(0, (0, common_1.Body)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Object]),
@@ -129,27 +122,12 @@ __decorate([
     __metadata("design:returntype", void 0)
 ], AdminController.prototype, "removeAdminAbility", null);
 __decorate([
-    (0, common_1.Get)(':id'),
-    __param(0, (0, common_1.Param)('id')),
-    __metadata("design:type", Function),
-    __metadata("design:paramtypes", [String]),
-    __metadata("design:returntype", void 0)
-], AdminController.prototype, "findOne", null);
-__decorate([
     (0, common_1.Get)('banUser:id'),
     __param(0, (0, common_1.Param)('id')),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [String]),
     __metadata("design:returntype", void 0)
 ], AdminController.prototype, "babOneUser", null);
-__decorate([
-    (0, common_1.Patch)(':id'),
-    __param(0, (0, common_1.Param)('id')),
-    __param(1, (0, common_1.Body)()),
-    __metadata("design:type", Function),
-    __metadata("design:paramtypes", [String, update_admin_dto_1.UpdateAdminDto]),
-    __metadata("design:returntype", void 0)
-], AdminController.prototype, "update", null);
 __decorate([
     (0, common_1.UseGuards)(admin_guard_1.AdminJwtAuthGuard),
     (0, common_1.Post)('createFirstCategory'),
@@ -169,17 +147,17 @@ __decorate([
 ], AdminController.prototype, "createSecondCategory", null);
 __decorate([
     (0, common_1.UseGuards)(admin_guard_1.AdminJwtAuthGuard),
-    (0, common_1.Delete)('deleteFirstCategory:id'),
+    (0, common_1.Delete)('deleteFirstCategory'),
     __param(0, (0, common_1.Body)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [String]),
+    __metadata("design:paramtypes", [Object]),
     __metadata("design:returntype", void 0)
 ], AdminController.prototype, "deleteFirstCategory", null);
 __decorate([
     (0, common_1.Delete)('deleteSecondCategory:id'),
     __param(0, (0, common_1.Param)('id')),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [String]),
+    __metadata("design:paramtypes", [Object]),
     __metadata("design:returntype", void 0)
 ], AdminController.prototype, "deleteSecondCategory", null);
 __decorate([

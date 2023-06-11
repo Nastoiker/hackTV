@@ -20,7 +20,7 @@ model UserModel {
   login        String
   phone        String?
   hashpassword String
-  isActive     Boolean @default(false)
+  isActive     Boolean @default(true)
   Comment      Comment[] @relation("CommentWritenBy")
   userComment  UserCommentOnComment[] @relation("UserCommentOnUser")
   videos       Video[]   @relation("UserVideo")

@@ -46,7 +46,24 @@ let AdminService = class AdminService {
             }
         });
     }
+    async unBanOne(id) {
+        return this.prisma.userModel.update({
+            where: {
+                id
+            },
+            data: {
+                isActive: true,
+            }
+        });
+    }
     async removeVideo(id) {
+        return this.prisma.video.delete({
+            where: {
+                id
+            }
+        });
+    }
+    async removeUser(id) {
         return this.prisma.video.delete({
             where: {
                 id
@@ -57,18 +74,6 @@ let AdminService = class AdminService {
         return this.prisma.reportVideo.create({
             data: Object.assign({}, dto)
         });
-    }
-    findAll() {
-        return `This action returns all admin`;
-    }
-    findOne(id) {
-        return `This action returns a #${id} admin`;
-    }
-    update(id, updateAdminDto) {
-        return `This action updates a #${id} admin`;
-    }
-    remove(id) {
-        return;
     }
 };
 AdminService = __decorate([

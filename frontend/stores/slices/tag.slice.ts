@@ -28,12 +28,13 @@ export const searchVideoByTag = createAsyncThunk<
 
     return rejectWithValue("Not found")
   }
+
   if (!response.ok) {
     console.log(`SERVER ERROR 500`)
     return rejectWithValue("SERVER ERROR 500")
   }
   const data = await response.json()
-  console.log(data)
+  console.log(DOMEN.video.getVideoByTagName + search)
   // await new Promise((resolve) => setTimeout(() => resolve(''),1000));
   return data
 })

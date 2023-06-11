@@ -1,23 +1,23 @@
-import { NotFound } from "next/dist/client/components/error"
 import Link from "next/link"
-import { notFound } from "next/navigation"
-import { useCheckAuthQuery } from "@/stores/slices/regapi"
+
 
 import { IUser } from "@/types/User.interface"
-import { LayoutVideo } from "@/components/Layot.video"
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
+
 import Profile from "@/components/user/Profile.svg";
+import axios from "axios";
+import {LayoutVideoCheckUser} from "@/components/LayoutVideoCheckUser";
+import {notFound} from "next/navigation";
 
 interface PageProps {
   params: { id: string }
 }
 async function getChannel(userId): Promise<IUser | null> {
   try {
-    const res = await fetch("http://localhost:8000/user/" + userId)
-    if (!res?.ok) {
+    const res = await axios.get("http://localhost:8000/user/" + userId)
+    if (!res?.data) {
       return null
     }
-    return await res.json()
+    return await res.data;
   } catch (error) {
     return null
   }
@@ -25,8 +25,8 @@ async function getChannel(userId): Promise<IUser | null> {
 
 export default async function PagePage({ params }: PageProps) {
   const id = params?.id
-  const data = await getChannel(id)
-  if (!data) return <div>{id}</div>
+  const data = await getChannel(id);
+  if (!data) notFound();
   return (
     <div className={"w-full"}>
       <div className={"space-y-5"}>
@@ -60,8 +60,8 @@ export default async function PagePage({ params }: PageProps) {
           </div>
         </div>
       </div>
-      <div className={"border rounded-xl p-10 my-10"}>
-        <LayoutVideo videos={data.videos} user={data} />
+      <div className={"border flex flex-col  rounded-xl p-2 sm:p-10 my-10"}>
+        <LayoutVideoCheckUser videos={data.videos} />
       </div>
     </div>
   )

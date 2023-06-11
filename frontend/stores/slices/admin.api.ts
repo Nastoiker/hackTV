@@ -7,7 +7,9 @@ export const AdminApi = createApi({
     prepareHeaders: (headers) => {
       const token = localStorage.getItem("token")
       if (token) {
-        headers.set("Authorization", `Bearer ${token}`)
+        // headers.set("Authorization", `Bearer ${token}`)
+        headers.set("Authorization", `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImRhbXVyMjAwNEBnbWFpbC5jb20iLCJyb2xlIjoidXNlciIsImlhdCI6MTY4MjAxMTQ0MX0.vMprCHLNlo-pTAiqrUzNb-ElweUN8b1G_cxNSX87r5Q`)
+
       }
       return headers
     },
@@ -21,10 +23,9 @@ export const AdminApi = createApi({
       }),
     }),
     banUser: builder.mutation({
-      query: (commentVideo) => ({
-        url: "/commentVideo",
-        method: "POST",
-        body: { ...commentVideo },
+      query: (id) => ({
+        url: `/banUser:${id}`,
+        method: "get",
       }),
     }),
     removeAdmin: builder.mutation({
@@ -65,8 +66,21 @@ export const AdminApi = createApi({
     users: builder.query({
       query: (commentVideo) => ({
         url: "/users",
-        method: "POST",
-        body: { ...commentVideo },
+        method: "get",
+      }),
+    }),
+    deleteFirstCategory:builder.mutation({
+      query: (secondCategory) => ({
+        url: "/deleteFirstCategory",
+        method: "DELETE",
+        body: { ...secondCategory },
+      }),
+  }),
+    deleteSecondCategory:builder.mutation({
+      query: (secondCategory) => ({
+        url: "/deleteSecondCategory",
+        method: "DELETE",
+        body: { ...secondCategory },
       }),
     }),
     createSecondCategory: builder.mutation({
@@ -87,5 +101,7 @@ export const {
   useRemoveAdminMutation,
   useRemoveAdminAbilityMutation,
   useDeleteVideoMutation,
+  useDeleteFirstCategoryMutation,
+  useDeleteSecondCategoryMutation,
   useMusicsAllQuery,
 } = AdminApi

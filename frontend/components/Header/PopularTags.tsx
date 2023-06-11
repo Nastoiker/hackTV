@@ -18,16 +18,16 @@ export const PopularTags = () => {
   return (
     <div
       className={
-        "bg-gray-200 rounded-3xl my-8 mr-4 border-4 p-4 border-gray-400"
+        "rounded-2xl my-8  bg-background  mr-4 border-4 p-4 border-gray-400"
       }
     >
       {data.map((t) => {
         const link = t.name.replace('#', '');
         return (
         <Link
-          className="hover:bg-opacity-70 bg-background rounded-3xl block my-4 px-4"
+          className="hover:bg-opacity-70 border rounded-3xl block my-4 px-4"
           href={`/tags/${link}`.replace(' ', '')}
-          onClick={() => handleTag(link)}
+          onClick={() => handleTag(link.replace(' ', ''))}
           key={t.id}
         >
           {t.name}

@@ -39,27 +39,25 @@ export class AdminController {
     return this.adminService.removeAdminAbility(id);
   }
   @UseGuards(AdminJwtAuthGuard)
-  @Post('banAdmin')
+  @Post('unBanUser')
   unBanUser(@Body() {id}:  { id: string }) {
-    return this.adminService.removeAdminAbility(id);
+    return this.adminService.unBanOne(id);
   }
   @UseGuards(AdminJwtAuthGuard)
   @Post('removeAdmin')
   removeAdminAbility(@Body() {id}:  { id: string }) {
     return this.adminService.removeAdminAbility(id);
   }
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.adminService.findOne(+id);
-  }
+
   @Get('banUser:id')
   babOneUser(@Param('id') id: string) {
     return this.adminService.banOne(id);
   }
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateAdminDto: UpdateAdminDto) {
-    return this.adminService.update(+id, updateAdminDto);
-  }
+
+  // @Patch(':id')
+  // update(@Param('id') id: string, @Body() updateAdminDto: UpdateAdminDto) {
+  //   return this.adminService.update(+id, updateAdminDto);
+  // }
   @UseGuards(AdminJwtAuthGuard)
   @Post('createFirstCategory')
   createFirstCategory(@Req() query, @Body() createFirstCategory: createFirstCategoryDto) {
@@ -71,12 +69,13 @@ export class AdminController {
   }
 
   @UseGuards(AdminJwtAuthGuard)
-  @Delete('deleteFirstCategory:id')
-  deleteFirstCategory(@Body() id: string) {
-    return this.categoryService.deleteFirstCategory(id);
+  @Delete('deleteFirstCategory')
+  deleteFirstCategory(@Body() id: { id: string } ) {
+    return this.categoryService.deleteFirstCategory(id.id);
   }
-  @Delete('deleteSecondCategory:id') deleteSecondCategory(@Param('id') id: string) {
-    return this.categoryService.deleteFirstCategory(id);
+
+  @Delete('deleteSecondCategory:id') deleteSecondCategory(@Param('id') id: { id: string }) {
+    return this.categoryService.deleteFirstCategory(id.id);
   }
   @Delete('Video:id')
   removeVideo(@Param('id') id: string) {

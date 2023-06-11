@@ -122,6 +122,13 @@ let VideoController = class VideoController {
         }
         return UpdatedProduct;
     }
+    async getByTag(id, dto) {
+        const tag = id.slice(1, id.length);
+        const UpdatedProduct = await this.videoService.getVideoByTag(tag);
+        if (!UpdatedProduct)
+            return [];
+        return UpdatedProduct;
+    }
     async reportOnVideo(dto) {
         const reportVideo = await this.videoService.reportVideo(dto);
         if (!reportVideo) {
@@ -228,6 +235,14 @@ __decorate([
     __metadata("design:paramtypes", [String, video_model_1.VideoModel]),
     __metadata("design:returntype", Promise)
 ], VideoController.prototype, "patch", null);
+__decorate([
+    (0, common_1.Get)('tagVideo/:tagId'),
+    __param(0, (0, common_1.Param)('tagId', idValidation_pipe_1.IdValidationpipe)),
+    __param(1, (0, common_1.Body)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String, video_model_1.VideoModel]),
+    __metadata("design:returntype", Promise)
+], VideoController.prototype, "getByTag", null);
 __decorate([
     (0, common_1.UseGuards)(jwt_guard_1.JwtAuthGuard),
     (0, common_1.Post)('ReportOnVideo'),

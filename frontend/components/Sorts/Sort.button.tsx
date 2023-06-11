@@ -2,7 +2,7 @@ import { SortButtonProps } from "@/components/Sorts/sort.button.props"
 import { Button } from "@/components/ui/button"
 import {useState} from "react";
 import {cn} from "@/lib/utils";
-
+import './sort.module.css';
 export const SortButton = ({
   className,
   sortByLike,
@@ -12,7 +12,7 @@ export const SortButton = ({
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [currentFilter, setCurrenFilter] = useState<string>('');
   return (
-    <div className={className}>
+    <div className={cn(className, 'VisibleSort')}>
         <Button className={'mr-0 w-full'} onClick={ () => setIsOpen((o) => !o)}>фильтр</Button>
       {
         isOpen &&

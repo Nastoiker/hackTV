@@ -83,6 +83,7 @@ let UserController = class UserController {
         return this.userService.updateAvatar(query.user, avatar);
     }
     async updateProfile(query, avatar, body) {
+        console.log(body);
         return this.userService.updateProfile(query.user, avatar, body);
     }
     findAll() {
@@ -114,6 +115,10 @@ let UserController = class UserController {
     DeleteVideo(id) {
         const videoId = id.slice(1, id.length);
         return this.videoService.deleteVideo(videoId);
+    }
+    DeleteMusic(id) {
+        const musicId = id.slice(1, id.length);
+        return this.videoService.deleteMusic(musicId);
     }
     createUserComment(request, createCommentOnUserDto) {
         createCommentOnUserDto.userId = request.user.id;
@@ -248,7 +253,6 @@ __decorate([
     (0, common_1.UseInterceptors)((0, platform_express_1.FileInterceptor)('file')),
     __param(0, (0, common_1.Req)()),
     __param(1, (0, common_1.UploadedFile)(new common_1.ParseFilePipeBuilder()
-        .addMaxSizeValidator({ maxSize: 5242880 })
         .build({
         errorHttpStatusCode: common_1.HttpStatus.UNPROCESSABLE_ENTITY
     }))),
@@ -320,6 +324,14 @@ __decorate([
     __metadata("design:paramtypes", [String]),
     __metadata("design:returntype", void 0)
 ], UserController.prototype, "DeleteVideo", null);
+__decorate([
+    (0, common_1.Delete)('/deleteMusic/:id'),
+    (0, common_1.UseGuards)(jwt_guard_1.JwtAuthGuard),
+    __param(0, (0, common_1.Param)('id')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String]),
+    __metadata("design:returntype", void 0)
+], UserController.prototype, "DeleteMusic", null);
 __decorate([
     (0, common_1.UseGuards)(jwt_guard_1.JwtAuthGuard),
     (0, common_1.Post)('createCommentOnUser'),

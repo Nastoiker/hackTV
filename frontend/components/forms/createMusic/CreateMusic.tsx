@@ -1,6 +1,6 @@
 "use client"
 
-import {useEffect, useRef, useState} from "react"
+import {ChangeEvent, useEffect, useRef, useState} from "react"
 import Image from "next/image"
 import { useAppSelector } from "@/stores"
 import { useMusicGetQuery } from "@/stores/slices/music.slice"
@@ -24,6 +24,9 @@ import { UpdateAvatarProfile } from "@/components/uploadImage/UploadImage"
 import {Htag} from "@/components/Htag/Htag";
 import Profile from "@/components/user/Profile.svg";
 import {ICreateMusic} from "@/types/CreateMusic.interface";
+import {Alert, AlertDescription, AlertTitle} from "@/components/ui/alert";
+import {AlertCircle} from "lucide-react";
+import {IState} from "@/components/forms/createVideo/createVideo";
 
 export const CreateMusicComponent = () => {
   const [CreateMusic, data] = useCreateMusicMutation()
@@ -33,7 +36,7 @@ export const CreateMusicComponent = () => {
   const [musicCreate, setMusicCreate] = useState<File>();
   const [onDrag, setOnDrag] = useState<boolean>(false)
   const [selectedFile, setSelectedFile] = useState<any>()
-  const [loading, setLoading] = useState<boolean>(false);
+  const [state, setState] = useState<IState>({ loading: false, error: false, success: false });
 
   const {
     register,
@@ -95,7 +98,17 @@ export const CreateMusicComponent = () => {
     }
     setIsPlaying(!isPlaying)
   }
+  const handleInputMusic = (e: ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files[0];
+    uploadedFileMusic(file)
+    setOnDrag(true)
+    const reader = new FileReader()
+    reader.readAsDataURL(file)
+    reader.onloadend = () => {
 
+    }
+    setValue("music", file);
+  }
 
 
   const onSubmit = async (formData: ICreateMusic) => {
@@ -107,7 +120,9 @@ export const CreateMusicComponent = () => {
     data.set("picture", formData.picture);
     data.set("name", formData.name.toString())
     data.set("alias", formData.alias.toString().replace(" ", "-"))
+    setState({error: false, loading: true, success: false});
     await CreateMusic(data);
+    setState({...state, loading: false, success: true});
   }
   return (
     <div>
@@ -133,21 +148,25 @@ export const CreateMusicComponent = () => {
                 </div>
               ) : (
                 <div className={"m-auto"}>
-                  <svg
-                    width="50"
-                    className={"m-auto"}
-                    height="50"
-                    viewBox="0 0 148 173"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path
-                      fillRule="evenodd"
-                      clipRule="evenodd"
-                      d="M78.2432 1.7584C75.9 -0.584668 72.101 -0.584668 69.7578 1.7584L29.7578 41.7584C27.4146 44.1016 27.4146 47.9005 29.7578 50.2437C32.101 52.5868 35.9 52.5868 38.2432 50.2437L68.0005 20.4864V112.666C68.0005 115.98 70.6868 118.666 74.0005 118.666C77.3142 118.666 80.0005 115.98 80.0005 112.666V20.4864L109.759 50.2437C112.101 52.5868 115.9 52.5868 118.243 50.2437C120.587 47.9005 120.587 44.1016 118.243 41.7584L78.2432 1.7584ZM7.33317 119.333C11.015 119.333 13.9998 122.317 13.9998 126V146C13.9998 153.384 19.9418 159.333 27.2845 159.333H120.683C128.039 159.333 134 153.371 134 146V126C134 122.317 136.985 119.333 140.667 119.333C144.348 119.333 147.333 122.317 147.333 126V146C147.333 160.72 135.416 172.667 120.683 172.667H27.2845C12.5357 172.667 0.666504 160.707 0.666504 146V126C0.666504 122.317 3.6513 119.333 7.33317 119.333Z"
-                      fill="black"
-                    />
-                  </svg>
+                  <label htmlFor={'musicFileId'}>
+                    <svg
+                      width="50"
+                      className={"m-auto"}
+                      height="50"
+                      viewBox="0 0 148 173"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        fillRule="evenodd"
+                        clipRule="evenodd"
+                        d="M78.2432 1.7584C75.9 -0.584668 72.101 -0.584668 69.7578 1.7584L29.7578 41.7584C27.4146 44.1016 27.4146 47.9005 29.7578 50.2437C32.101 52.5868 35.9 52.5868 38.2432 50.2437L68.0005 20.4864V112.666C68.0005 115.98 70.6868 118.666 74.0005 118.666C77.3142 118.666 80.0005 115.98 80.0005 112.666V20.4864L109.759 50.2437C112.101 52.5868 115.9 52.5868 118.243 50.2437C120.587 47.9005 120.587 44.1016 118.243 41.7584L78.2432 1.7584ZM7.33317 119.333C11.015 119.333 13.9998 122.317 13.9998 126V146C13.9998 153.384 19.9418 159.333 27.2845 159.333H120.683C128.039 159.333 134 153.371 134 146V126C134 122.317 136.985 119.333 140.667 119.333C144.348 119.333 147.333 122.317 147.333 126V146C147.333 160.72 135.416 172.667 120.683 172.667H27.2845C12.5357 172.667 0.666504 160.707 0.666504 146V126C0.666504 122.317 3.6513 119.333 7.33317 119.333Z"
+                        fill="black"
+                      />
+                    </svg>
+                    <input onChange={(e) => handleInputMusic(e)} type={'file'} className={'hidden'} accept={'audio/*'} id={'musicFileId'}/>
+                  </label>
+
                 </div>
               )}
             </div>
@@ -187,7 +206,7 @@ export const CreateMusicComponent = () => {
         </div>
 
       </form>
-      {loading &&
+      {state.loading &&
         <div className="flex my-10 items-center text-4xl">Видео загружается <svg
           className="animate-spin  mx-3 h-16 w-16 text-white"
           xmlns="http://www.w3.org/2000/svg"
@@ -208,6 +227,27 @@ export const CreateMusicComponent = () => {
             d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
           ></path>
         </svg></div>
+      }
+      {
+        state.error && <Alert>
+          <AlertTitle>Успешно</AlertTitle>
+          <AlertDescription>
+            Вы создали видео
+          </AlertDescription>
+        </Alert>
+
+      }
+      {
+        state.success && <h1>
+          <Alert variant="destructive">
+            <AlertCircle className="h-4 w-4" />
+            <AlertTitle>Error</AlertTitle>
+            <AlertDescription>
+              Ошибка создания видео
+            </AlertDescription>
+          </Alert>
+        </h1>
+
       }
     </div>
   )

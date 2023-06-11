@@ -61,6 +61,38 @@ let VideoService = class VideoService {
             }
         });
     }
+    async getVideoByTag(tagName) {
+        const tag = await this.prisma.tag.findUnique({
+            where: {
+                name: `#${tagName}`,
+            },
+            select: {
+                id: true,
+            }
+        });
+        if (!tag)
+            return [];
+        const tags = await this.prisma.tagOnVideo.findMany({
+            where: {
+                tagId: tag.id,
+            },
+            include: {
+                video: {
+                    include: {
+                        music: true,
+                        tag: { include: { tag: true } },
+                        authorVideo: { include: { folowers: true } },
+                        secondCategory: true,
+                        likes: true,
+                        Comment: true,
+                        watchers: true,
+                    }
+                }
+            }
+        });
+        return tags.map(t => t.video);
+    }
+    ;
     async videosRecom(userId) {
         const user = await this.prisma.historyWatching.findMany({ where: { userId },
             select: { videoId: true }
@@ -102,7 +134,7 @@ let VideoService = class VideoService {
     }
     async tags(params) {
         const { skip, take, cursor, where, orderBy } = params;
-        return this.prisma.tag.findMany({
+        const tags = await this.prisma.tag.findMany({
             skip,
             take,
             cursor,
@@ -110,15 +142,38 @@ let VideoService = class VideoService {
             orderBy,
             include: { videos: true }
         });
+        return tags.sort((a, b) => b.videos.length - a.videos.length);
     }
     async GetSearchTags(name) {
-        return this.prisma.tag.findMany({
+        const tags = await this.prisma.tag.findMany({
             where: {
                 name: {
-                    startsWith: name,
+                    startsWith: `#${name}`,
                 }
-            }
+            },
+            select: { id: true },
         });
+        const videos = await this.prisma.tagOnVideo.findMany({
+            where: {
+                tagId: {
+                    in: tags.map(t => t.id),
+                }
+            },
+            include: {
+                video: {
+                    include: {
+                        music: true,
+                        tag: { include: { tag: true } },
+                        authorVideo: { include: { folowers: true } },
+                        secondCategory: true,
+                        likes: true,
+                        Comment: true,
+                        watchers: true,
+                    }
+                }
+            },
+        });
+        return videos.map(v => v.video);
     }
     async videosByCategory(params) {
         const { skip, take, cursor, where, orderBy } = params;
@@ -228,6 +283,15 @@ let VideoService = class VideoService {
                 videoId,
             },
             include: { writtenBy: true, userComments: { include: { user: true } } }
+        });
+    }
+    async deleteMusic(id) {
+        const music = await this.prisma.music.findUnique({ where: { id } });
+        const pathDelete = `uploads` + music.music_url;
+        if (!music)
+            return null;
+        return await this.prisma.music.delete({
+            where: { id },
         });
     }
     async deleteVideo(id) {

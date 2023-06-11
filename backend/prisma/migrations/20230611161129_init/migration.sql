@@ -6,7 +6,7 @@ CREATE TABLE "UserModel" (
     "login" TEXT NOT NULL,
     "phone" TEXT,
     "hashpassword" TEXT NOT NULL,
-    "isActive" BOOLEAN NOT NULL DEFAULT false,
+    "isActive" BOOLEAN NOT NULL DEFAULT true,
     "avatar" TEXT,
     "role" TEXT NOT NULL DEFAULT 'user',
     "subscribers_count" INTEGER NOT NULL DEFAULT 0,
@@ -177,9 +177,6 @@ CREATE TABLE "Tag" (
 
 -- CreateIndex
 CREATE UNIQUE INDEX "UserModel_email_key" ON "UserModel"("email");
-
--- CreateIndex
-CREATE UNIQUE INDEX "HistoryWatching_userId_key" ON "HistoryWatching"("userId");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "Folower_userId_key" ON "Folower"("userId");

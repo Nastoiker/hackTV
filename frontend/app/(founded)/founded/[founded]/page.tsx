@@ -11,6 +11,7 @@ import { LayoutFounded } from "@/components/layout/layout.founded"
 import {searchContent} from "@/stores/slices/search.slice";
 import {LayoutMusic} from "@/components/Layout.music";
 import {LayoutChannels} from "@/components/Layout.channel";
+import {useCheckAuthQuery} from "@/stores/slices/regapi";
 
 export interface VideoByCategory {
   id: string
@@ -28,7 +29,7 @@ export default function PageFounded({ params }: PageProps) {
   const found = params?.founded;
   const [search, setSearch] = useState();
   const searchParams = useSearchParams();
-
+  const  user = useCheckAuthQuery({});
   const searchvValue = searchParams.get('byValue');
   const searchState = useAppSelector(state=> state.search.search);
   const [activeFound, setActiveFound] = useState<string>('video');
@@ -49,13 +50,13 @@ export default function PageFounded({ params }: PageProps) {
           {searchState}
         </h1>
         {
-          activeFound==='video' && <LayoutVideo videos={video.videos} />
+          activeFound==='video' && <LayoutVideo user={user.data && user.data} videos={video.videos} />
         }
         {
           activeFound==='channels' && <LayoutChannels channels={video.channels} />
         }
          {
-          activeFound==='tags' && <LayoutVideo videos={video.tags} />
+          activeFound==='tags' && <LayoutVideo user={user.data && user.data}  videos={video.tags} />
         }
         {
           activeFound === 'musics' && <LayoutMusic musics={video.music} />

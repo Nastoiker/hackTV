@@ -79,6 +79,12 @@ export const UserApi = createApi({
         method: "DELETE",
       }),
     }),
+    DeleteMusic: builder.mutation({
+      query: (id) => ({
+        url: `/deleteMusic/:${id}`,
+        method: "DELETE",
+      }),
+    }),
     WatchVideo: builder.mutation({
       query: (videoId) => ({
         url: `/videoWatch`,
@@ -123,6 +129,7 @@ export const {
   useFollowsQuery,
   useCreateMusicMutation,
   useDeleteVideoMutation,
+  useDeleteMusicMutation,
   useFollowChannelMutation,
   useUnfollowChannelMutation,
 } = UserApi
