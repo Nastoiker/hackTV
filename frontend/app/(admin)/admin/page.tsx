@@ -4,7 +4,7 @@ import { useState } from "react"
   import { useRouter } from "next/navigation"
 import {
   useCreateCategoryMutation,
-  useCreateSecondCategoryMutation, useMusicsAllQuery, useUsersQuery,
+  useCreateSecondCategoryMutation, useMusicsAllQuery, useUsersQuery, useVideoWithReportQuery,
 } from "@/stores/slices/admin.api"
 import { useCheckAuthQuery } from "@/stores/slices/regapi"
 
@@ -17,6 +17,7 @@ import {LayoutUserForAdmin} from "@/components/admin/UsersAdminLayout";
 import {Input} from "@/components/ui/input";
 import {DeleteFirstCategory} from "@/components/admin/deleteFirstCategory";
 import {DeleteSecondCategoryComponent} from "@/components/admin/deleteSecondCategory";
+import {LayoutVideoforAdmin} from "@/components/admin/LayoutVideoAdmin";
 
 export default function IndexPage() {
   const [currentSector, setCurrentSector] = useState<string>( );
@@ -26,7 +27,9 @@ export default function IndexPage() {
   // const musics = useMusicsAllQuery({});
   const users = useUsersQuery({});
   const router = useRouter();
+  const video = useVideoWithReportQuery({});
   const [searchtUser, setSearchUser] = useState<string>('');
+  const [searchVideo, setSearchVideo] = useState<string>('');
   // if( data && data.role !== 'admin') {
   //    router.push('/');
   // }
@@ -89,6 +92,12 @@ export default function IndexPage() {
     {
       currentSector==='musics' && <div>
 
+      </div>
+    }
+    {
+      currentSector==='video' && <div>
+        <Input placeholder='Поиск видео' onChange={(e) => {setSearchVideo(e.target.value)}} />
+        <LayoutVideoforAdmin sortBy={searchVideo} video={video.data && video.data} />
       </div>
     }
   </div>

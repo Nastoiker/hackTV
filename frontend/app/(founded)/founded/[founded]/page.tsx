@@ -59,7 +59,7 @@ export default function PageFounded({ params }: PageProps) {
           activeFound==='tags' && <LayoutVideo user={user.data && user.data}  videos={video.tags} />
         }
         {
-          activeFound === 'musics' && <LayoutMusic musics={video.music} />
+          activeFound === 'musics' && <LayoutMusic musics={video.musics} />
         }
       </div>
     </div>

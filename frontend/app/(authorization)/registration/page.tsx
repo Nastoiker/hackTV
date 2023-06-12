@@ -43,7 +43,7 @@ const PageRegistration = () => {
        console.log(dataAuth);
        await registrationFunc(dataAuth);
        setError(false);
-       router.push('/authorization');
+       await router.push('/authorization');
      } catch (e) {
        console.log(e.message);
         setError(true);

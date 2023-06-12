@@ -38,7 +38,7 @@ export function LayoutVideo({
 
   const filerLike = useCallback(function (videos: IVideo[]) {
     const sort = [...videos];
-    const sortByTime = sort?.sort((a, b) => b.likesCount - a.likesCount);
+    const sortByTime = sort?.sort((a, b) =>  Number(b.likesCount) - Number(a.likesCount));
     return sortByTime
   }, []);
   const FilterBySubs= useCallback(function (videos: IVideo[]) {

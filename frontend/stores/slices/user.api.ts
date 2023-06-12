@@ -39,6 +39,13 @@ export const UserApi = createApi({
         }
       }),
     }),
+    ReportOnVideo: builder.mutation({
+      query: (report) => ({
+        url: "/ReportOnVideo",
+        method: "POST",
+        body: { ...report },
+      }),
+    }),
     CommentVideo: builder.mutation({
       query: (commentVideo) => ({
         url: "/createComment",
@@ -131,5 +138,6 @@ export const {
   useDeleteVideoMutation,
   useDeleteMusicMutation,
   useFollowChannelMutation,
+  useReportOnVideoMutation,
   useUnfollowChannelMutation,
 } = UserApi

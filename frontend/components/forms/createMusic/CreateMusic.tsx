@@ -229,7 +229,7 @@ export const CreateMusicComponent = () => {
         </svg></div>
       }
       {
-        state.error && <Alert>
+        state.success && <Alert>
           <AlertTitle>Успешно</AlertTitle>
           <AlertDescription>
             Вы создали видео
@@ -238,7 +238,7 @@ export const CreateMusicComponent = () => {
 
       }
       {
-        state.success && <h1>
+        state.error && <h1>
           <Alert variant="destructive">
             <AlertCircle className="h-4 w-4" />
             <AlertTitle>Error</AlertTitle>

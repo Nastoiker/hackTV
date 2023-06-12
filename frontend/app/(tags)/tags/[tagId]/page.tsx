@@ -25,6 +25,7 @@ export default  function PagePage({ params }: PageProps) {
     dispatch(searchVideoByTag(tag));
   },[tag]);
   const videos = useAppSelector(state=> state.tag.videos);
+  const  user = useCheckAuthQuery({});
   if(!videos) {
     return <div>loading</div>
   }
@@ -37,7 +38,7 @@ export default  function PagePage({ params }: PageProps) {
         </h1>
         <span>{videos.length}</span>
       </div>
-      <LayoutVideo videos={ videos}  />
+      <LayoutVideo user={user.data && user.data}  videos={ videos}  />
     </div>
     </section>
   )

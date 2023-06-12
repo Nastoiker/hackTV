@@ -43,7 +43,7 @@ interface PageProps {
 export default async function PageCategory({ params }: PageProps) {
   const slug = params.categoryId;
   const videos = await getCategory(slug);
-  if (videos.videos.length===0)  {
+  if (videos.video && videos.videos.length===0)  {
     notFound();
   }
   console.log(slug);

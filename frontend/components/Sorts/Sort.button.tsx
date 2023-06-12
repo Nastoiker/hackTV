@@ -17,8 +17,8 @@ export const SortButton = ({
       {
         isOpen &&
         <div className={"space-y-5 py-5 px-2 border rounded-md"}>
-          <button  className={cn("block hover:border-b-2 transition-all", currentFilter === "users" && "border-b-4 border-black")} onClick={() => { setIsOpen(false); sortByLike()}}>по Дате </button>
-          <button className="block hover:border-b-2 transition-all duration-75"  onClick={() => { setIsOpen(false);sortByDate()}} >по Лайкам </button>
+          <button  className={cn("block hover:border-b-2 transition-all", currentFilter === "users" && "border-b-4 border-black")} onClick={() => { setIsOpen(false); sortByDate()}}>по Дате </button>
+          <button className="block hover:border-b-2 transition-all duration-75"  onClick={() => { setIsOpen(false); sortByLike()}} >по Лайкам </button>
         </div>
       }
 

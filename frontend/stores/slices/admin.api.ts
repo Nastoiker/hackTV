@@ -63,6 +63,12 @@ export const AdminApi = createApi({
         body: { ...firstCategory },
       }),
     }),
+    videoWithReport: builder.query({
+      query: (commentVideo) => ({
+        url: "/videoReports",
+        method: "get",
+      }),
+    }),
     users: builder.query({
       query: (commentVideo) => ({
         url: "/users",
@@ -101,6 +107,7 @@ export const {
   useRemoveAdminMutation,
   useRemoveAdminAbilityMutation,
   useDeleteVideoMutation,
+  useVideoWithReportQuery,
   useDeleteFirstCategoryMutation,
   useDeleteSecondCategoryMutation,
   useMusicsAllQuery,

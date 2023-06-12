@@ -19,8 +19,7 @@ export const DeleteFirstCategory = () => {
   const [deleteFirstCategory] = useDeleteFirstCategoryMutation();
   const {register, handleSubmit, formState: {errors}, reset, control} = useForm<{id: string}>();
 
-  const onSubmit = async (formData) => {s
-
+  const onSubmit = async (formData) => {
     try {
       await deleteFirstCategory(formData);
       reset();
@@ -48,6 +47,6 @@ export const DeleteFirstCategory = () => {
           </Select>
         )}}
     />
-    <Button>Создать категорию</Button>
+    <Button>Удалить категорию</Button>
   </form>
 }

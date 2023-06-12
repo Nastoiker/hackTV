@@ -26,6 +26,9 @@ import { Textarea } from "@/components/ui/textarea"
 import Profile from "@/components/user/Profile.svg"
 import {useRouter} from "next/navigation";
 import axios from "axios";
+import {Alert, AlertDescription, AlertTitle} from "@/components/ui/alert";
+import {AlertCircle} from "lucide-react";
+import {IState} from "@/components/forms/createVideo/createVideo";
 
 export default function IndexPage() {
   const { data, isLoading, error } = useCheckAuthQuery({});
@@ -34,7 +37,8 @@ export default function IndexPage() {
   const [onDrag, setOnDrag] = useState<boolean>(false);
   const picture = useRef(null);
   const [selectedFile, setSelectedFile] = useState<any>();
-  const router = useRouter()
+  const router = useRouter();
+  const [state, setState] = useState<IState>({ loading: false, error: false, success: false });
   if(error) {
     router.push('/');
   }
@@ -73,9 +77,7 @@ export default function IndexPage() {
     uploadedFile(file);
     const reader = new FileReader()
     reader.readAsDataURL(file)
-    reader.onloadend = () => {
-
-    }
+    reader.onloadend = () => {}
     setSelectedFile(file)
     setValue("file", file);
     setOnDrag(true)
@@ -89,6 +91,7 @@ export default function IndexPage() {
     console.log(formData);
     // await EditProfile(formData);
     try {
+      setState({error: false, loading: false, success: false});
       const res = await axios.patch('http://localhost:8000/user/updateProfile', { ...formData}, {
         headers: {
           Accept: 'application/json',
@@ -96,9 +99,10 @@ export default function IndexPage() {
           Authorization: `Bearer ${localStorage.getItem('token')}`
         }
       });
+      setState({error: false, loading: false, success: true});
       reset();
     } catch(e) {
-
+      setState({error: true, loading: false, success: false});
     }
 
   }
@@ -195,6 +199,27 @@ export default function IndexPage() {
           </div>
         </div>
       )}
+      {
+        state.error &&
+        <Alert variant="destructive">
+          <AlertCircle className="h-4 w-4" />
+          <AlertTitle>Error</AlertTitle>
+          <AlertDescription>
+            Ошибка Редактирования
+          </AlertDescription>
+        </Alert>
+      }
+      {
+        state.success &&
+          <Alert>
+            <AlertTitle>Успешно</AlertTitle>
+            <AlertDescription>
+              Вы изменили профиль
+            </AlertDescription>
+          </Alert>
+
+
+      }
     </div>
   )
 }

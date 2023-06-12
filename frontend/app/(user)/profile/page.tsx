@@ -46,7 +46,7 @@ export default function IndexPage() {
               </div>
             </div>
             <div className={"px-8 sm:text-end my-5"}>
-              <h1>Подписчки: {data.subscribers_count}</h1>
+              <h1>Пидписчиков: {data.subscribers_count}</h1>
               <h1>Лайков: {data.LikeCount}</h1>
               <Link href={"/folows"}>Подписки: {data.following_count}</Link>
               <Button className={"block sm:hidden  w-full max-w-[100px] bg-red-500"} onClick={() => localStorage.removeItem("token")}>
@@ -54,7 +54,7 @@ export default function IndexPage() {
               </Button>
             </div>
           </div>
-          <div className={""}>
+          <div className={"flex flex-wrap"}>
             <Link href={"/editProfile"}>
               <Button>Изменить профиль</Button>
             </Link>
@@ -84,13 +84,13 @@ export default function IndexPage() {
           <Tabs defaultValue="account" className="w-full">
             <TabsList>
               <TabsTrigger value="video">
-                <h1 className={"text-white"}>Ваши видео</h1>
+                <h1>Ваши видео</h1>
               </TabsTrigger>
-              <TabsTrigger value="likes" className={"text-white"}>
-                <h1 className={"text-white"}>Ваши лайки</h1>
+              <TabsTrigger value="likes">
+                <h1 >Ваши лайки</h1>
               </TabsTrigger>
               <TabsTrigger value="music">
-                <h1 className={"text-white"}>Ваша музыка</h1>
+                <h1 >Ваша музыка</h1>
               </TabsTrigger>
             </TabsList>
             <TabsContent value="video">

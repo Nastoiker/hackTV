@@ -43,7 +43,7 @@ export function LayoutMusic({
   user?: IUser
 }) {
   const [activeMusicValue, setActiveMusicValue] = useState<string>(null);
-  const [filteredVideo, setFilteredVideo ] = useState<IMusic[]>(musics);
+  const [filteredMusic, setFilteredMusic ] = useState<IMusic[]>(musics);
   const [deleteMusic] = useDeleteMusicMutation();
 
   const FilterByDate = useCallback(function (videos) {
@@ -65,12 +65,12 @@ export function LayoutMusic({
   return (
     <div className={"mx-auto flex"}>
       <div className={"w-full mr-20"}>
-        {filteredVideo.length>0  ? (
+        {(filteredMusic && filteredMusic.length>0)  ? (
           musics.map((m) => <>
             <Music activeMusic={activeMusicValue} setActiveMusic={() => setActiveMusicValue(m.id)} music={m} />
             {
               user.id === m.user.id &&
-              <Button onClick={() => deleteMusicHandler(m.id)} className={'my-8'}>Удалить видео</Button>
+              <Button onClick={() => deleteMusicHandler(m.id)} className={'my-8'}>Удалить музыку</Button>
             }
           </> )
         ) : (
@@ -82,7 +82,7 @@ export function LayoutMusic({
       <SortButton
         className="fixed top-25 right-5 xl:right-44"
         sortByLike={() => {}}
-        sortByDate={() => {setFilteredVideo(filterByDate)}}
+        sortByDate={() => {setFilteredMusic(filterByDate)}}
       />
     </div>
   )

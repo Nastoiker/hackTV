@@ -1,6 +1,6 @@
 "use client"
 
-import { useEffect, useMemo, useRef, useState } from "react"
+import {DetailedHTMLProps, HTMLAttributes, useEffect, useMemo, useRef, useState} from "react"
 import Image from "next/image"
 import { useGetVideosQuery } from "@/stores/slices/api"
 import { useCheckAuthQuery } from "@/stores/slices/regapi"
@@ -21,18 +21,22 @@ import { Repost } from "@/components/Repost/Repost"
 import { Like } from "@/components/like/Like"
 import { LikeSimple } from "@/components/like/LikeSimple"
 import { SubscribeChannel } from "@/components/video/SubscribeChannel"
-import { VideoProps } from "@/components/video/VideoProps"
 import ProgressBar from "@/components/video/progress.video"
 import View from "./View.svg"
 import cn from 'classnames';
-export const Video = ({
-  user,
-  video,
-  className,
-  onClickVideoProps,
-                        activeVideo,
-  ...props
-}: VideoProps): JSX.Element => {
+import {IVideo} from "@/types/Video.interface";
+ interface VideoProps
+  extends DetailedHTMLProps<HTMLAttributes<HTMLDivElement>, HTMLDivElement> {
+  video: IVideo
+  user?: IUser
+}
+
+export const VideoForAdmin = ({
+                        user,
+                        video,
+                        className,
+                        ...props
+                      }: VideoProps): JSX.Element => {
   const query = { videoId: video.id }
   const [likeVideo, { isLoading, isError, data, error }] =
     useLikeVideoMutation()
@@ -75,12 +79,6 @@ export const Video = ({
       console.log(1)
       audio.currentTime = 0 // reset the current time to zero
       audio.play()
-    }
-    if(activeVideo!==video.id) {
-      audio?.pause();
-      videoRef?.current?.pause()
-      setIsPlaying(false);
-      setIsPlayingAudio(false);
     }
     console.log(videoRef?.current?.duration)
   }, [currentTime])
@@ -133,12 +131,11 @@ export const Video = ({
   const onVideoClick = async () => {
 
     if (isPlaying) {
-       audio.pause();
+      audio.pause();
       videoRef?.current?.pause();
       setIsPlayingAudio(false);
       setIsPlaying(false)
     } else {
-      onClickVideoProps();
       setIsPlaying(true)
       setIsPlayingAudio(true)
       await audio.play();

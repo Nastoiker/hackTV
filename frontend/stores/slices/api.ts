@@ -25,9 +25,15 @@ export const videoHostingApi = createApi({
         method: "get",
       }),
     }),
+    getReports: builder.query({
+      query: () => ({
+        url: "/report/reports",
+        method: "get",
+      }),
+    }),
   }),
 })
 
 // Export hooks for usage in function components, which are
 // auto-generated based on the defined endpoints
-export const { useGetVideosQuery, useTagsQuery, useVideoByTagQuery } = videoHostingApi
+export const { useGetVideosQuery, useTagsQuery, useVideoByTagQuery, useGetReportsQuery } = videoHostingApi

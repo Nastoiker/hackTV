@@ -47,6 +47,6 @@ export const DeleteSecondCategoryComponent = () => {
           </Select>
         )}}
     />
-    <Button>Создать категорию</Button>
+    <Button>Удалить категорию</Button>
   </form>
 }

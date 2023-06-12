@@ -1,8 +1,18 @@
 import { useState } from "react"
 import { motion } from "framer-motion"
+import {useReportOnVideoMutation} from "@/stores/slices/user.api";
+import {useAuthorizationQuery} from "@/stores/slices/regapi";
+import {useGetReportsQuery} from "@/stores/slices/api";
 
-export const Report = ({ videoId, userId }) => {
+export const Report = ({ videoId, userId }: {videoId: string, userId?: string}) => {
   const [isOpen, setIsOpen] = useState<boolean>(false)
+  const [reportVideo] = useReportOnVideoMutation();
+  const reports = useGetReportsQuery({});
+  const HandleReportVideo = async (reportId: string) =>  {
+    setIsOpen(false)
+    if(!userId) return;
+    await reportVideo({reportId, userId, videoId});
+  }
   return (
     <div>
       <motion.svg
@@ -21,10 +31,8 @@ export const Report = ({ videoId, userId }) => {
           fill="currentcolor"
         />
       </motion.svg>
-      {isOpen && <div className={"absolute flex flex-col"}>
-          <button><h1>Оскорбление личности</h1></button>
-          <button><h1>Издевательство над животными</h1></button>
-          <button><h1>Насилие</h1></button>
+      {isOpen && <div className={"absolute border bg-background rounded-lg p-2 flex flex-col space-y-5"}>
+        {reports.data && reports.data.map( r => <button key={r.id} onClick={() => HandleReportVideo(r.id)} ><h1 className={"block hover:border-b-2 transition-all"}>{r.message}</h1></button> )}
       </div>}
     </div>
   )

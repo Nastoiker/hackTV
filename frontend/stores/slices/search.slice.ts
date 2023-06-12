@@ -14,7 +14,7 @@ interface IState {
     videos: IVideo[]
     channels: IUser[]
     tags: IVideo[],
-    music: IMusic[],
+    musics: IMusic[],
   }
 
 }
@@ -22,7 +22,7 @@ interface  Found {
   videos: IVideo[]
   channels: IUser[]
   tags: IVideo[],
-  music: IMusic[],
+  musics: IMusic[],
 }
 const initialState: IState = {
   search: '',

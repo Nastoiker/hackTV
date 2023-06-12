@@ -190,7 +190,7 @@ export const CreateVideo = () => {
                   ></video>
                 </div>
               ) : (
-                <div className={"m-auto m-9 p-9 bg-gray-200"}>
+                <div className={"m-9 p-9 bg-gray-200"}>
                   <label htmlFor={'uploadVideo'}>
                     <input type={'file'} accept={'video/*'} id={'uploadVideo'} onChange={(e) => handleInputVideo(e)} height={400} width={400} className={'hidden w-64 h-64'} />
                     <svg
@@ -330,7 +330,7 @@ export const CreateVideo = () => {
         </svg></div>
       }
       {
-        state.error && <Alert>
+        state.success && <Alert>
           <AlertTitle>Успешно</AlertTitle>
           <AlertDescription>
             Вы создали видео
@@ -339,15 +339,14 @@ export const CreateVideo = () => {
 
       }
       {
-        state.success && <h1>
-          <Alert variant="destructive">
+        state.error &&
+           <Alert variant="destructive">
             <AlertCircle className="h-4 w-4" />
             <AlertTitle>Error</AlertTitle>
             <AlertDescription>
               Ошибка создания видео
             </AlertDescription>
           </Alert>
-        </h1>
 
       }
     </div>
