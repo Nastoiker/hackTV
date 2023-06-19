@@ -9,12 +9,12 @@ services:
       - ./env:/opt/app/.env
       - ./uploads:/opt/app/uploads
   frontend:
-      image: frontend
-      container_name: hackTv_frontend
-      ports:
-        - "3000:3000"
+    image: frontend
+    container_name: hackTv_frontend
+    ports:
+      - "3000:3000"
 networks:
-      default:
-        external: true
+  default:
+    external: true
 volumes:
   data:
