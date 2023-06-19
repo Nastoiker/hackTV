@@ -1,0 +1,19 @@
+version: '3'
+services:
+  top.api:
+    image: api
+    container_name: hackTv_api
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./env:/opt/app/.env
+  frontend:
+      image: frontend
+      container_name: hackTv_frontend
+      ports:
+        - "3000:3000"
+networks:
+      default:
+        external: true
+volumes:
+  data:

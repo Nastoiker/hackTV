@@ -6,21 +6,21 @@ import { getJwtConfig } from '../configs/jwt.config';
 import { AuthController } from './auth.controller';
 import { AuthService } from './auth.service';
 import { JwtStratagy } from './strategies/jwt.stratagy';
-import {PrismaService} from "../prisma/prisma-service";
-import {EmailModule} from "../email/email.module";
+import { PrismaService } from '../prisma/prisma-service';
+import { EmailModule } from '../email/email.module';
 
 @Module({
-	controllers: [AuthController],
-	imports: [
-		EmailModule,
-		ConfigModule,
-		JwtModule.registerAsync({
-			imports: [ConfigModule],
-			inject: [ConfigService],
-			useFactory: getJwtConfig,
-		}),
-		PassportModule,
-	],
-	providers: [AuthService, JwtStratagy,  PrismaService, ConfigService],
+  controllers: [AuthController],
+  imports: [
+    EmailModule,
+    ConfigModule,
+    JwtModule.registerAsync({
+      imports: [ConfigModule],
+      inject: [ConfigService],
+      useFactory: getJwtConfig,
+    }),
+    PassportModule,
+  ],
+  providers: [AuthService, JwtStratagy, PrismaService, ConfigService],
 })
 export class AuthModule {}

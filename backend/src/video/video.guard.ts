@@ -7,7 +7,6 @@ export class VideoGuard implements CanActivate {
     context: ExecutionContext,
   ): boolean | Promise<boolean> | Observable<boolean> {
     const request = context.switchToHttp().getRequest();
-    if(request)
-    return true;
+    if (request) return true;
   }
 }

@@ -1,3 +1,1 @@
-export class VideoModel {
-
-}
+export class VideoModel {}

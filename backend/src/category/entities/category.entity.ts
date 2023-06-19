@@ -1,36 +1,36 @@
-import {IsString, ValidateNested} from "class-validator";
-import {Video} from "../../video/entities/video.entity";
+import { IsString, ValidateNested } from 'class-validator';
+import { Video } from '../../video/entities/video.entity';
 
 export class FirstLevelCategory {
-    @IsString()
-    id: string;
+  @IsString()
+  id: string;
 
-    @IsString()
-    name: string;
+  @IsString()
+  name: string;
 
-    @IsString()
-    alias: string;
+  @IsString()
+  alias: string;
 
-    @ValidateNested({ each: true })
-    secondLevelCategory: SecondLevelCategory[];
+  @ValidateNested({ each: true })
+  secondLevelCategory: SecondLevelCategory[];
 }
 
 export class SecondLevelCategory {
-    @IsString()
-    id: string;
+  @IsString()
+  id: string;
 
-    @IsString()
-    name: string;
+  @IsString()
+  name: string;
 
-    @IsString()
-    alias: string;
+  @IsString()
+  alias: string;
 
-    @ValidateNested()
-    firstLevelCategory: FirstLevelCategory;
+  @ValidateNested()
+  firstLevelCategory: FirstLevelCategory;
 
-    @IsString()
-    firstLevelId: string;
+  @IsString()
+  firstLevelId: string;
 
-    @ValidateNested({ each: true })
-    videos: Video[];
+  @ValidateNested({ each: true })
+  videos: Video[];
 }

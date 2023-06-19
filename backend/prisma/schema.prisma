@@ -180,7 +180,7 @@ model ReportOnVideo {
 }
 model ReportVideo {
   id      String          @id @default(uuid())
-  code    String
+  code    String @unique()
   message String
   video   ReportOnVideo[] @relation("Reports")
 }

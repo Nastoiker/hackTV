@@ -1,6 +1,5 @@
-
 export class UserModel {
-	email: string;
+  email: string;
 
-	passwordHash: string;
+  passwordHash: string;
 }

@@ -1,3 +1,3 @@
 export class CreateAdminDto {
-    id: string;
+  id: string;
 }

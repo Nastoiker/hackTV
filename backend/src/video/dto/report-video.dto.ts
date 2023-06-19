@@ -1,9 +1,9 @@
 export class VideoReportDto {
-    videoId: string;
-    reportId: string;
-    userId: string;
+  videoId: string;
+  reportId: string;
+  userId: string;
 }
 export class ReportVideo {
-    code: string;
-    message: string;
+  code: string;
+  message: string;
 }

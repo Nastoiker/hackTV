@@ -1,4 +1,12 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+} from '@nestjs/common';
 import { ConvertVideoService } from './convert-video.service';
 import { CreateConvertVideoDto } from './dto/create-convert-video.dto';
 import { UpdateConvertVideoDto } from './dto/update-convert-video.dto';
@@ -23,7 +31,10 @@ export class ConvertVideoController {
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateConvertVideoDto: UpdateConvertVideoDto) {
+  update(
+    @Param('id') id: string,
+    @Body() updateConvertVideoDto: UpdateConvertVideoDto,
+  ) {
     return this.convertVideoService.update(+id, updateConvertVideoDto);
   }
 

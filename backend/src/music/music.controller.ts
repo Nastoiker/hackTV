@@ -2,18 +2,21 @@ import {
   Body,
   Controller,
   Delete,
-  Get, HttpStatus,
-  Param, ParseFilePipeBuilder,
+  Get,
+  HttpStatus,
+  Param,
+  ParseFilePipeBuilder,
   Post,
-  Query, Req,
+  Query,
+  Req,
   UploadedFile,
   UseGuards,
-  UseInterceptors
+  UseInterceptors,
 } from '@nestjs/common';
-import {MusicService} from './music.service';
-import {CreateMusicDto} from './dto/create-music.dto';
-import {FileInterceptor} from "@nestjs/platform-express";
-import {JwtAuthGuard} from "../auth/guards/jwt.guard";
+import { MusicService } from './music.service';
+import { CreateMusicDto } from './dto/create-music.dto';
+import { FileInterceptor } from '@nestjs/platform-express';
+import { JwtAuthGuard } from '../auth/guards/jwt.guard';
 
 @Controller('music')
 export class MusicController {

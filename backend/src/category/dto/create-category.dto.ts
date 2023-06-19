@@ -1,13 +1,10 @@
-export class CreateCategoryDto {
-
-}
+export class CreateCategoryDto {}
 export class createSecondCategoryDto {
-    name: string;
-    alias: string;
-    firstLevelId: string;
-
+  name: string;
+  alias: string;
+  firstLevelId: string;
 }
 export class createFirstCategoryDto {
-    name: string;
-    alias: string;
+  name: string;
+  alias: string;
 }

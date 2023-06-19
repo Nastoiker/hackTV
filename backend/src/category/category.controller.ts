@@ -8,13 +8,18 @@ import {
   Delete,
   UseGuards,
   Query,
-  UnauthorizedException, Req
+  UnauthorizedException,
+  Req,
 } from '@nestjs/common';
 import { CategoryService } from './category.service';
-import {CreateCategoryDto, createFirstCategoryDto, createSecondCategoryDto} from './dto/create-category.dto';
+import {
+  CreateCategoryDto,
+  createFirstCategoryDto,
+  createSecondCategoryDto,
+} from './dto/create-category.dto';
 import { UpdateCategoryDto } from './dto/update-category.dto';
-import {JwtAuthGuard} from "../auth/guards/jwt.guard";
-import {AdminJwtAuthGuard} from "../auth/guards/admin.guard";
+import { JwtAuthGuard } from '../auth/guards/jwt.guard';
+import { AdminJwtAuthGuard } from '../auth/guards/admin.guard';
 
 @Controller('category')
 export class CategoryController {
@@ -23,5 +28,4 @@ export class CategoryController {
   getCategories() {
     return this.categoryService.categories();
   }
-
 }

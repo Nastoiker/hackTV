@@ -13,7 +13,7 @@ export const SortButton = ({
   const [currentFilter, setCurrenFilter] = useState<string>('');
   return (
     <div className={cn(className, 'VisibleSort')}>
-        <Button className={'mr-0 w-full'} onClick={ () => setIsOpen((o) => !o)}>фильтр</Button>
+        <Button className={'mr-0 w-full VisibleSort'} onClick={ () => setIsOpen((o) => !o)}>фильтр</Button>
       {
         isOpen &&
         <div className={"space-y-5 py-5 px-2 border rounded-md"}>

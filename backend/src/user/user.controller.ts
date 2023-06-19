@@ -8,31 +8,48 @@ import {
   Delete,
   UploadedFile,
   ParseFilePipeBuilder,
-  HttpStatus, UseInterceptors, UseGuards, Query, Req, BadRequestException, NotFoundException, UploadedFiles
+  HttpStatus,
+  UseInterceptors,
+  UseGuards,
+  Query,
+  Req,
+  BadRequestException,
+  NotFoundException,
+  UploadedFiles,
 } from '@nestjs/common';
 import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
-import {AnyFilesInterceptor, FileInterceptor, FilesInterceptor} from "@nestjs/platform-express";
-import {JwtAuthGuard} from "../auth/guards/jwt.guard";
-import {CreateCommentDto} from "./dto/createComment-dto";
-import {LikeCommentDto} from "./dto/likeComment-dto";
-import {VideoService} from "../video/video-service";
-import {CreateCommentOnUserDto} from "../comment/dto/create-comment.dto";
-import {CommentService} from "../comment/comment.service";
-import {IdValidationpipe} from "../pipes/idValidation.pipe";
-import {VideoByIdNotFount} from "../video/video.constants";
-import {MusicService} from "../music/music.service";
-import {CreateMusicDto} from "../music/dto/create-music.dto";
-import {createVideoDto} from "../video/dto/create-video.dto";
-import {path} from "app-root-path";
-import {writeFile} from "fs-extra";
-import * as ffmpeg from "fluent-ffmpeg";
-import multer from "multer";
+import {
+  AnyFilesInterceptor,
+  FileInterceptor,
+  FilesInterceptor,
+} from '@nestjs/platform-express';
+import { JwtAuthGuard } from '../auth/guards/jwt.guard';
+import { CreateCommentDto } from './dto/createComment-dto';
+import { LikeCommentDto } from './dto/likeComment-dto';
+import { VideoService } from '../video/video-service';
+import { CreateCommentOnUserDto } from '../comment/dto/create-comment.dto';
+import { CommentService } from '../comment/comment.service';
+import { IdValidationpipe } from '../pipes/idValidation.pipe';
+import {VideoByIdNotFount, VideoIdNotFoundForUpd} from '../video/video.constants';
+import { MusicService } from '../music/music.service';
+import { CreateMusicDto } from '../music/dto/create-music.dto';
+import { createVideoDto } from '../video/dto/create-video.dto';
+import { path } from 'app-root-path';
+import { writeFile } from 'fs-extra';
+import * as ffmpeg from 'fluent-ffmpeg';
+import multer from 'multer';
+import {VideoReportDto} from "../video/dto/report-video.dto";
 
 @Controller('user')
 export class UserController {
-  constructor(private readonly userService: UserService, private readonly videoService: VideoService, private  readonly commentService: CommentService, private readonly musicService: MusicService) {}
+  constructor(
+    private readonly userService: UserService,
+    private readonly videoService: VideoService,
+    private readonly commentService: CommentService,
+    private readonly musicService: MusicService,
+  ) {}
 
   // @Post('/createComment')
   // @UseGuards(JwtAuthGuard)
@@ -41,20 +58,22 @@ export class UserController {
   // }
   @UseGuards(JwtAuthGuard)
   @Post('createMusic')
-  @UseInterceptors(
-      AnyFilesInterceptor()
-  )
-  createMusic(@Req() query, @UploadedFiles() files: Array<Express.Multer.File>, @Body() createMusicDto: CreateMusicDto) {
-    console.log('user' +  query.user);
+  @UseInterceptors(AnyFilesInterceptor())
+  createMusic(
+    @Req() query,
+    @UploadedFiles() files: Array<Express.Multer.File>,
+    @Body() createMusicDto: CreateMusicDto,
+  ) {
+    console.log('user' + query.user);
     createMusicDto.userId = query.user.id;
     console.log(files);
-    return this.musicService.create(files[0], files[1],createMusicDto);
+    return this.musicService.create(files[0], files[1], createMusicDto);
   }
 
   @UseGuards(JwtAuthGuard)
   @Post('createComment')
   createComment(@Req() request, @Body() createCommentDto: CreateCommentDto) {
-    createCommentDto.writtenById = request.user.id
+    createCommentDto.writtenById = request.user.id;
     return this.commentService.createCommentDto(createCommentDto);
   }
   // @Get('follows:id')
@@ -69,8 +88,8 @@ export class UserController {
   // }
   @UseGuards(JwtAuthGuard)
   @Get('recomendation')
-  async videosRecom(@Req() request ) {
-    const user = request.user.id
+  async videosRecom(@Req() request) {
+    const user = request.user.id;
     const product = await this.videoService.videosRecom(user);
     if (!product) {
       throw new NotFoundException(VideoByIdNotFount);
@@ -82,10 +101,9 @@ export class UserController {
   @Get('follows')
   @UseGuards(JwtAuthGuard)
   async getFollowing(@Req() req) {
-
     const userId = req.user.id;
     const folows = await this.userService.getFolows(userId);
-    if(!folows) {
+    if (!folows) {
       return new BadRequestException('failed');
     }
     return folows;
@@ -93,12 +111,12 @@ export class UserController {
   @Post('/likeComment')
   @UseGuards(JwtAuthGuard)
   likeComment(@Body() likeCommentDto: LikeCommentDto) {
-      return this.userService.likeComment(likeCommentDto);
+    return this.userService.likeComment(likeCommentDto);
   }
   @UseGuards(JwtAuthGuard)
   @Post('videoWatch')
-  async WatchVideo(@Req() request, @Body() {videoId}: {videoId: string} ) {
-    const user = request.user?.id
+  async WatchVideo(@Req() request, @Body() { videoId }: { videoId: string }) {
+    const user = request.user?.id;
     const product = await this.videoService.watchVideo(user, videoId);
     if (!product) {
       throw new NotFoundException(VideoByIdNotFount);
@@ -108,30 +126,38 @@ export class UserController {
   }
   @Post('createTag')
   @UseGuards(JwtAuthGuard)
-  createTag(@Body() dto: {name: string}) {
+  createTag(@Body() dto: { name: string }) {
     return this.userService.createTag(dto.name);
   }
   @Post('updateAvatar')
   @UseGuards(JwtAuthGuard)
   @UseInterceptors(FileInterceptor('file'))
-  async updateAvatar(@Req() query, @UploadedFile(
+  async updateAvatar(
+    @Req() query,
+    @UploadedFile(
       new ParseFilePipeBuilder()
-          .addMaxSizeValidator({ maxSize: 5242880 })
-          .build({
-            errorHttpStatusCode: HttpStatus.UNPROCESSABLE_ENTITY
-          }),
-  ) avatar: Express.Multer.File) {
+        .addMaxSizeValidator({ maxSize: 5242880 })
+        .build({
+          errorHttpStatusCode: HttpStatus.UNPROCESSABLE_ENTITY,
+        }),
+    )
+    avatar: Express.Multer.File,
+  ) {
     return this.userService.updateAvatar(query.user, avatar);
   }
   @Patch('updateProfile')
   @UseGuards(JwtAuthGuard)
   @UseInterceptors(FileInterceptor('file'))
-  async updateProfile(@Req() query, @UploadedFile(
-      new ParseFilePipeBuilder()
-          .build({
-            errorHttpStatusCode: HttpStatus.UNPROCESSABLE_ENTITY
-          }),
-  ) avatar: Express.Multer.File, @Body() body: UpdateUserDto) {
+  async updateProfile(
+    @Req() query,
+    @UploadedFile(
+      new ParseFilePipeBuilder().build({
+        errorHttpStatusCode: HttpStatus.UNPROCESSABLE_ENTITY,
+      }),
+    )
+    avatar: Express.Multer.File,
+    @Body() body: UpdateUserDto,
+  ) {
     console.log(body);
     return this.userService.updateProfile(query.user, avatar, body);
   }
@@ -141,7 +167,7 @@ export class UserController {
   }
   @Get(':id')
   findOne(@Param('id') id: string) {
-    return this.userService.user({id});
+    return this.userService.user({ id });
   }
   @Post('likeVideo')
   @UseGuards(JwtAuthGuard)
@@ -156,21 +182,34 @@ export class UserController {
     const userId = query.user.id;
     return this.userService.followChannel(userId, authorId);
   }
+  @UseGuards(JwtAuthGuard)
+  @Post('ReportOnVideo')
+  async reportOnVideo(@Body() dto: VideoReportDto) {
+    console.log(dto);
+    const reportVideo = await this.videoService.reportVideo(dto);
+    if (!reportVideo) {
+      throw new NotFoundException(VideoIdNotFoundForUpd);
+    }
+    return reportVideo;
+  }
   @Post('unfollowChannel')
   @UseGuards(JwtAuthGuard)
-  unfollowChannel(@Req() query, @Body() { id, authorId }: { id: string, authorId: string }) {
+  unfollowChannel(
+    @Req() query,
+    @Body() { id, authorId }: { id: string; authorId: string },
+  ) {
     const userId = query.user.id;
-    if(!userId) return;
-    return this.userService.unfollowChannel(id, userId, authorId );
+    if (!userId) return;
+    return this.userService.unfollowChannel(id, userId, authorId);
   }
   @Patch(':id')
   update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
-    return this.userService.updateUser({ where: {id}, data: updateUserDto});
+    return this.userService.updateUser({ where: { id }, data: updateUserDto });
   }
 
   @Delete(':id')
   remove(@Param('id') id: string) {
-    return this.userService.deleteUser({id});
+    return this.userService.deleteUser({ id });
   }
   @Delete('/deleteVideo/:id')
   @UseGuards(JwtAuthGuard)
@@ -186,8 +225,11 @@ export class UserController {
   }
   @UseGuards(JwtAuthGuard)
   @Post('createCommentOnUser')
-  createUserComment(@Req() request, @Body() createCommentOnUserDto: CreateCommentOnUserDto) {
-    createCommentOnUserDto.userId = request.user.id
+  createUserComment(
+    @Req() request,
+    @Body() createCommentOnUserDto: CreateCommentOnUserDto,
+  ) {
+    createCommentOnUserDto.userId = request.user.id;
     return this.commentService.createCommentOnUserDto(createCommentOnUserDto);
   }
 
@@ -203,15 +245,20 @@ export class UserController {
   @UseGuards(JwtAuthGuard)
   @Post('createVideo')
   @UseInterceptors(FileInterceptor('files'))
-  async createVideo(@Req() request, @UploadedFile(
+  async createVideo(
+    @Req() request,
+    @UploadedFile(
       new ParseFilePipeBuilder()
-          .addFileTypeValidator({
-            fileType: 'mp4',
-          })
-          .build({
-            errorHttpStatusCode: HttpStatus.UNPROCESSABLE_ENTITY
-          }),
-  ) video: Express.Multer.File, @Body() dto: createVideoDto) {
+        .addFileTypeValidator({
+          fileType: 'mp4',
+        })
+        .build({
+          errorHttpStatusCode: HttpStatus.UNPROCESSABLE_ENTITY,
+        }),
+    )
+    video: Express.Multer.File,
+    @Body() dto: createVideoDto,
+  ) {
     if (!video) {
       throw new BadRequestException('Please upload a video file.');
     }
@@ -224,28 +271,28 @@ export class UserController {
     const outputPath = `${inputPath}.mp4`;
     const UploadFolder = `${path}/uploads/videos`;
     await writeFile(`${UploadFolder}/${video.originalname}`, video.buffer);
-    const videopath = `${UploadFolder}/${video.originalname}`
+    const videopath = `${UploadFolder}/${video.originalname}`;
     console.log(videopath);
     console.log('start convert');
     await new Promise((resolve, reject) => {
       ffmpeg(videopath)
-          .output(UploadFolder + '/converted/' + video.originalname)
-          .audioCodec('copy')
-          .audioChannels(2)
-          .size('1080x1920')
-          .aspect('9:16')
-          .autopad(true, 'black')
-          .videoCodec('libx264')
-          .on('end', () => {
-            console.log('file has been converted successfully');
-            resolve('');
-          })
-          .on('error', (err) => {
-            console.log(`an error happened: ${err.message}`);
-            reject(`an error happened: ${err.message}`);
-          })
-          .run();
-    })
+        .output(UploadFolder + '/converted/' + video.originalname)
+        .audioCodec('copy')
+        .audioChannels(2)
+        .size('1080x1920')
+        .aspect('9:16')
+        .autopad(true, 'black')
+        .videoCodec('libx264')
+        .on('end', () => {
+          console.log('file has been converted successfully');
+          resolve('');
+        })
+        .on('error', (err) => {
+          console.log(`an error happened: ${err.message}`);
+          reject(`an error happened: ${err.message}`);
+        })
+        .run();
+    });
     console.log('end convert');
 
     dto.embed_link = UploadFolder + '/converted/' + video.originalname;

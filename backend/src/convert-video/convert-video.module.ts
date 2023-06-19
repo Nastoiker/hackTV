@@ -4,6 +4,6 @@ import { ConvertVideoController } from './convert-video.controller';
 
 @Module({
   controllers: [ConvertVideoController],
-  providers: [ConvertVideoService]
+  providers: [ConvertVideoService],
 })
 export class ConvertVideoModule {}

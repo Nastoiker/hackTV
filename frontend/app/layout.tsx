@@ -39,12 +39,12 @@ export default function RootLayout({ children }: RootLayoutProps) {
       <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
         <div
           className={cn(
-            "max-w-screen-2xl bg-background  mx-auto AutoMargin min-h-screen  font-sans  box-border antialiased ",
+            "max-w-screen-2xl  bg-background mx-auto AutoMargin min-h-screen  font-sans  box-border antialiased ",
             fontSans.variable
           )}
         >
           <Providers>
-            <div className={"flex  flex-col "}>
+            <div className={"flex  flex-col"}>
               <header className={"w-full z-40  fixed top-0"}>
                 <Header />
               </header>

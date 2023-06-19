@@ -1,3 +1,3 @@
 export class LikeCommentDto {
-    commentId: string;
+  commentId: string;
 }
