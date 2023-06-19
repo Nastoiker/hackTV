@@ -2,7 +2,7 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   images: {
-    domains: ['localhost'],
+    domains: ['95.163.241.148'],
   },
   reactStrictMode: true,
   experimental: {
