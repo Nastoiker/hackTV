@@ -1,5 +1,5 @@
 FROM node:alpine
-WORKDIR /app
+WORKDIR /app/backend
 COPY package*.json ./
 COPY prisma ./prisma
 RUN npm install
