@@ -25,6 +25,7 @@ import ProgressBar from "@/components/video/progress.video"
 import View from "./View.svg"
 import cn from 'classnames';
 import {IVideo} from "@/types/Video.interface";
+import {api_url} from "@/domen.api";
  interface VideoProps
   extends DetailedHTMLProps<HTMLAttributes<HTMLDivElement>, HTMLDivElement> {
   video: IVideo
@@ -56,7 +57,7 @@ export const VideoForAdmin = ({
   const [audio, setAudio] = useState<HTMLAudioElement | null>(null)
   useEffect(() => {
     const audioEl = new Audio(
-      "http://localhost:8000/user/" + video.music.music_url
+      `${api_url}/user/` + video.music.music_url
     )
     audioEl.addEventListener("ended", () => {
       setIsPlayingAudio(false)
@@ -167,7 +168,7 @@ export const VideoForAdmin = ({
       setTimeout(() => resolve(""), 1000)
     })
   }
-  const videoPath = "http://localhost:8000/video" + video.embed_link
+  const videoPath = `${api_url}/video` + video.embed_link
   return (
     <div className={cn(className, 'md:flex')}>
       <div className={"flex justify-center"}>

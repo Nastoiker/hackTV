@@ -9,13 +9,14 @@ import Profile2 from "@/components/user/Profile2.svg";
 import axios from "axios";
 import {LayoutVideoCheckUser} from "@/components/LayoutVideoCheckUser";
 import {notFound} from "next/navigation";
+import {api_url} from "@/domen.api";
 
 interface PageProps {
   params: { id: string }
 }
 async function getChannel(userId): Promise<IUser | null> {
   try {
-    const res = await axios.get("http://localhost:8000/user/" + userId)
+    const res = await axios.get(`${api_url}/user/` + userId)
     if (!res?.data) {
       return null
     }
@@ -45,7 +46,7 @@ export default async function PagePage({ params }: PageProps) {
               alt={"userSubs"}
                src={
               data.avatar?.length > 0
-                ? "http://localhost:8000/user" + data.avatar
+                ? `${api_url}/user` + data.avatar
                 : Profile2.src
             }
             />

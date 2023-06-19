@@ -10,6 +10,7 @@ import { LikeSimple } from "@/components/like/LikeSimple"
 import { Separator } from "@/components/ui/separator"
 import { ICommentProps } from "./Comment.props"
 import {useTheme} from "next-themes";
+import {api_url} from "@/domen.api";
 
 export const CommentCard = ({ comment }: ICommentProps): JSX.Element => {
   const {theme, setTheme} = useTheme();
@@ -27,7 +28,7 @@ export const CommentCard = ({ comment }: ICommentProps): JSX.Element => {
             width={30}
             src={
               comment.writtenBy.avatar
-                ? "http://localhost:8000/user" + comment.writtenBy.avatar
+                ? `${api_url}/user` + comment.writtenBy.avatar
                 :  theme==='light' ? UserIconBlack : UserIcon
             }
           />

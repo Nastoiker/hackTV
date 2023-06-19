@@ -13,6 +13,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import Profile from "@/components/user/Profile.svg"
 import Profile2 from "@/components/user/Profile2.svg"
 import {useTheme} from "next-themes";
+import {api_url} from "@/domen.api";
 
 export default function IndexPage() {
   const { data } = useCheckAuthQuery({})
@@ -36,7 +37,7 @@ export default function IndexPage() {
                 alt={"userSubs"}
                 src={
                   data.avatar?.length > 0
-                    ? "http://localhost:8000/user" + data.avatar
+                    ? `${api_url}/user` + data.avatar
                     : theme==='light' ? Profile.src : Profile2.src
                 }/>
               <div className={"my-5"}>

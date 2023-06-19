@@ -1,12 +1,13 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react"
 
 import { IVideo } from "@/types/Video.interface"
+import {api_url} from "@/domen.api";
 
 const getToken = () => localStorage.getItem("token")
 export const videoHostingApi = createApi({
   reducerPath: "videoHostingApi",
   baseQuery: fetchBaseQuery({
-    baseUrl: "http://localhost:8000/Video/",
+    baseUrl: `${api_url}/Video/`,
     headers: {
       "Content-Type": "application/json",
     },

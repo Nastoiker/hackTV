@@ -22,6 +22,7 @@ import {
 } from "@/components/ui/popover"
 import { ButtonDeleteVideo } from "@/components/video/ButtonDeleteVideo"
 import { VideoProps } from "@/components/video/VideoProps"
+import {api_url} from "@/domen.api";
 
 export const SubscribeChannel = ({
   video,
@@ -66,7 +67,7 @@ export const SubscribeChannel = ({
                     alt={"userSubs"}
                     src={
                       video.authorVideo.avatar
-                        ? "http://localhost:8000/user" +
+                        ? `${api_url}/user` +
                           video.authorVideo.avatar
                         : UserIcon
                     }
@@ -117,7 +118,7 @@ export const SubscribeChannel = ({
                     alt={"userSubs"}
                     src={
                       video.authorVideo.avatar
-                        ? "http://localhost:8000/user" +
+                        ? `${api_url}/user` +
                           video.authorVideo.avatar
                         : UserIcon
                     }

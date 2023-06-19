@@ -15,6 +15,7 @@ import { SubscribeChannel } from "@/components/video/SubscribeChannel"
 import { VideoProps } from "@/components/video/VideoProps"
 import ProgressBar from "@/components/video/progress.video"
 import View from "./View.svg"
+import {api_url} from "@/domen.api";
 
 export const VideoPreview = ({
   video,
@@ -87,7 +88,7 @@ export const VideoPreview = ({
       setTimeout(() => resolve(""), 1000)
     })
   }
-  const videoPath = "http://localhost:8000/video" + video.embed_link
+  const videoPath = `${api_url}/video` + video.embed_link
   return (
     <div className={className}>
       <div className={"sm:flex justify-center"}>

@@ -10,6 +10,7 @@ import { Button } from "@/components/ui/button"
 import {useFollowChannelMutation, useUnfollowChannelMutation} from "@/stores/slices/user.api";
 import {useAuthorizationQuery} from "@/stores/slices/regapi";
 import Profile from "@/components/user/Profile.svg";
+import {api_url} from "@/domen.api";
 
 export const Channel = ({ userFollows, author }: { userFollows?: any, author: any }) => {
   const [followChannel ] = useFollowChannelMutation();
@@ -42,7 +43,7 @@ export const Channel = ({ userFollows, author }: { userFollows?: any, author: an
             <img
               src={
                 author.author.avatar?.length > 0
-                  ? "http://localhost:8000/user" + author.author.avatar
+                  ? `${api_url}/user` + author.author.avatar
                   : Profile.src
               }
               className="rounded-full w-24 h-24"

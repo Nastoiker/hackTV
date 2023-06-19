@@ -6,13 +6,14 @@ import { useCheckAuthQuery } from "@/stores/slices/regapi"
 import { IUser } from "@/types/User.interface"
 import { LayoutVideo } from "@/components/Layot.video"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
+import {api_url} from "@/domen.api";
 
 interface PageProps {
   params: { id: string }
 }
 async function getChannel(id: string): Promise<IUser | null> {
   try {
-    const res = await fetch("http://localhost:8000/user/" + id)
+    const res = await fetch(`${api_url}/user/` + id)
     if (!res?.ok) {
       return null
     }
@@ -43,7 +44,7 @@ export default async function FolowsUserPage({ params }: PageProps) {
               width={70}
               height={70}
               alt={"userSubs"}
-              src={"http://localhost:8000/user" + data.avatar}
+              src={`${api_url}/user` + data.avatar}
             />
             <div className={"my-5"}>
               <h1>{data.login}</h1>

@@ -9,6 +9,7 @@ import MusicIcon from "@/components/Music/MusicIcon.svg"
 import { Button } from "@/components/ui/button"
 import Profile from "@/components/user/Profile.svg"
 import ProgressBar from "@/components/video/progress.video"
+import {api_url} from "@/domen.api";
 
 export const Music = ({ music, setActiveMusic, activeMusic}: { music: IMusic, setActiveMusic: () => void, activeMusic: string }) => {
   const [isPlaying, setIsPlaying] = useState(false)
@@ -16,7 +17,7 @@ export const Music = ({ music, setActiveMusic, activeMusic}: { music: IMusic, se
   const [currentTime, setCurrentTime] = useState('0:00');
 const [durationTime, setDurationTime] = useState('0: 00');
   useEffect(() => {
-    const audioEl = new Audio("http://localhost:8000/user/" + music.music_url)
+    const audioEl = new Audio(`${api_url}/user/` + music.music_url)
     audioEl.addEventListener("ended", () => {
       setIsPlaying(false)
     })
@@ -72,7 +73,7 @@ const [durationTime, setDurationTime] = useState('0: 00');
             className={"w-20 h-20 rounded-md"}
             height={100}
             width={100}
-            src={"http://localhost:8000/user/" + music.img}
+            src={`${api_url}/user/` + music.img}
           />
           <div className={"absolute ml-10 bg-white rounded-full p-2 border  -my-6 flex items-center"}>
             <svg
@@ -96,7 +97,7 @@ const [durationTime, setDurationTime] = useState('0: 00');
               alt={"userSubs"}
               src={
                 music.user.avatar?.length > 0
-                  ? "http://localhost:8000/user" + music.user.avatar
+                  ? `${api_url}/user` + music.user.avatar
                   : Profile.src
               }
             />

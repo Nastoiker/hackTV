@@ -1,9 +1,10 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/dist/query/react"
+import {api_url} from "@/domen.api";
 
 export const VideoUserApi = createApi({
   reducerPath: "videoApi",
   baseQuery: fetchBaseQuery({
-    baseUrl: "http://localhost:8000/video",
+    baseUrl: `${api_url}/video`,
     prepareHeaders: (headers) => {
       const token = localStorage.getItem("token")
       if (token) {

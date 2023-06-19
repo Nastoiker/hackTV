@@ -1,9 +1,10 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/dist/query/react"
+import {api_url} from "@/domen.api";
 
 export const MusicApi = createApi({
   reducerPath: "MusicApi",
   baseQuery: fetchBaseQuery({
-    baseUrl: "http://localhost:8000/music",
+    baseUrl: `${api_url}/music`,
     prepareHeaders: (headers) => {
       const token = localStorage.getItem("token")
       if (token) {

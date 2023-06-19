@@ -29,6 +29,7 @@ import axios from "axios";
 import {Alert, AlertDescription, AlertTitle} from "@/components/ui/alert";
 import {AlertCircle} from "lucide-react";
 import {IState} from "@/components/forms/createVideo/createVideo";
+import {api_url} from "@/domen.api";
 
 export default function IndexPage() {
   const { data, isLoading, error } = useCheckAuthQuery({});
@@ -92,7 +93,7 @@ export default function IndexPage() {
     // await EditProfile(formData);
     try {
       setState({error: false, loading: false, success: false});
-      const res = await axios.patch('http://localhost:8000/user/updateProfile', { ...formData}, {
+      const res = await axios.patch(`${api_url}/user/updateProfile`, { ...formData}, {
         headers: {
           Accept: 'application/json',
           "Content-Type": "multipart/form-data;",
@@ -135,7 +136,7 @@ export default function IndexPage() {
                     height={100}
                     src={
                       data?.avatar?.length > 0
-                        ? "http://localhost:8000/user" + data?.avatar
+                        ? `${api_url}/user` + data?.avatar
                         : Profile.src
                     }
                   />

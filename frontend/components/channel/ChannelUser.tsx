@@ -3,6 +3,7 @@ import {Button} from "@/components/ui/button";
 import {useEffect, useState} from "react";
 import Profile from "@/components/user/Profile.svg";
 import {IUser} from "@/types/User.interface";
+import {api_url} from "@/domen.api";
 
 interface IChannelUser {
   id: string,
@@ -36,7 +37,7 @@ export const ChannelUser = ({channel, userFollows, user}: {channel: IChannelUser
 
             src={
               channel.avatar?.length > 0
-                ? "http://localhost:8000/user" + channel.avatar
+                ? `${api_url}/user` + channel.avatar
                 : Profile.src
             }
             className="rounded-full w-24 h-24"

@@ -26,6 +26,7 @@ import {
 import {CreateTags} from "@/components/forms/createVideo/createTags";
 import axios from "axios";
 import {AlertCircle, Terminal} from "lucide-react";
+import {api_url} from "@/domen.api";
 export  interface  IState{
   loading: boolean;
   error: boolean;
@@ -142,7 +143,7 @@ export const CreateVideo = () => {
     // await CreateVideo(data)
     try {
       setState({error: false, loading: true, success: false});
-      const res = await axios.post('http://localhost:8000/Video/create', { ...formData}, {
+      const res = await axios.post(`${api_url}/Video/create`, { ...formData}, {
         headers: {
           Accept: 'application/json',
           "Content-Type": "multipart/form-data;",

@@ -5,6 +5,7 @@ import { IUser } from "@/types/User.interface"
 import { ProfileIconProps } from "@/components/user/ProfileIcon.props"
 import Profile from "./Profile.svg"
 import Profile2 from "./Profile2.svg"
+import {api_url} from "@/domen.api";
 
 export const ProfileIcon = ({ theme='light',  user }: ProfileIconProps) => {
   return (
@@ -15,7 +16,7 @@ export const ProfileIcon = ({ theme='light',  user }: ProfileIconProps) => {
               className={"rounded-full w-12 h-12"}
               width={12}
               height={12}
-              src={"http://localhost:8000/user" + user.avatar}
+              src={`${api_url}/user` + user.avatar}
             />
       ) : (
 

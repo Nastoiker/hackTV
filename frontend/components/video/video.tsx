@@ -25,6 +25,7 @@ import { VideoProps } from "@/components/video/VideoProps"
 import ProgressBar from "@/components/video/progress.video"
 import View from "./View.svg"
 import cn from 'classnames';
+import {api_url} from "@/domen.api";
 export const Video = ({
   user,
   video,
@@ -52,7 +53,7 @@ export const Video = ({
   const [audio, setAudio] = useState<HTMLAudioElement | null>(null)
   useEffect(() => {
     const audioEl = new Audio(
-      "http://localhost:8000/user/" + video.music.music_url
+      `${api_url}/user/` + video.music.music_url
     )
     audioEl.addEventListener("ended", () => {
       setIsPlayingAudio(false)
@@ -170,7 +171,7 @@ export const Video = ({
       setTimeout(() => resolve(""), 1000)
     })
   }
-  const videoPath = "http://localhost:8000/video" + video.embed_link
+  const videoPath = `${api_url}/video` + video.embed_link
   return (
     <div className={cn(className, 'md:flex')}>
       <div className={"flex justify-center"}>
