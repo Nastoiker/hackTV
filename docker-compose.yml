@@ -12,10 +12,12 @@ services:
       - ./env:/opt/app/.env
       - ./uploads:/opt/app/uploads
   frontend:
-    image: frontend
     build:
       context: ./frontend
       dockerfile: Dockerfile
-    container_name: hackTv_frontend
+    image: front
+    container_name: hackTv_front
     ports:
       - "3000:3000"
+    volumes:
+          - ./env:/opt/app/.env
