@@ -7,6 +7,7 @@ services:
       - "8000:8000"
     volumes:
       - ./env:/opt/app/.env
+      - ./uploads:/opt/app/uploads
   frontend:
       image: frontend
       container_name: hackTv_frontend
