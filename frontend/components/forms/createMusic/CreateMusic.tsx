@@ -207,7 +207,7 @@ export const CreateMusicComponent = () => {
 
       </form>
       {state.loading &&
-        <div className="flex my-10 items-center text-4xl">Видео загружается <svg
+        <div className="flex my-10 items-center text-4xl">Музыка загружается <svg
           className="animate-spin  mx-3 h-16 w-16 text-white"
           xmlns="http://www.w3.org/2000/svg"
           fill="none"
@@ -232,7 +232,7 @@ export const CreateMusicComponent = () => {
         state.success && <Alert>
           <AlertTitle>Успешно</AlertTitle>
           <AlertDescription>
-            Вы создали видео
+            Вы создали музыку
           </AlertDescription>
         </Alert>
 
@@ -243,7 +243,7 @@ export const CreateMusicComponent = () => {
             <AlertCircle className="h-4 w-4" />
             <AlertTitle>Error</AlertTitle>
             <AlertDescription>
-              Ошибка создания видео
+              Ошибка создания музыки
             </AlertDescription>
           </Alert>
         </h1>

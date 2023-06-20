@@ -30,9 +30,10 @@ export default function IndexPage() {
   const video = useVideoWithReportQuery({});
   const [searchtUser, setSearchUser] = useState<string>('');
   const [searchVideo, setSearchVideo] = useState<string>('');
-  // if( data && data.role !== 'admin') {
-  //    router.push('/');
-  // }
+  const {data, isLoading, error} = useCheckAuthQuery({});
+   if( data && data.role !== 'admin' || error) {
+     router.push('/');
+   }
   return <div className={"mx-auto w-full"}>
     <h1 className="inline-block my-10 text-4xl font-extrabold tracking-tight lg:text-5xl">
      Admin

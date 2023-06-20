@@ -8,7 +8,7 @@ import {useAppDispatch} from "@/stores";
 import {setTag} from "@/stores/slices/tag.slice";
 
 export const PopularTags = () => {
-  const { data, isLoading } = useTagsQuery({ limit: 10 })
+  const { data, isLoading } = useTagsQuery({ limit: 8 })
   const dispatch = useAppDispatch();
   console.log(data);
   if (!data) return <div></div>

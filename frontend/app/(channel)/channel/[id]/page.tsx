@@ -10,6 +10,9 @@ import axios from "axios";
 import {LayoutVideoCheckUser} from "@/components/LayoutVideoCheckUser";
 import {notFound} from "next/navigation";
 import {api_url} from "@/domen.api";
+import {Tabs, TabsContent, TabsList, TabsTrigger} from "@/components/ui/tabs";
+import {LayoutVideo} from "@/components/Layot.video";
+import {LayoutMusic} from "@/components/Layout.music";
 
 interface PageProps {
   params: { id: string }
@@ -57,15 +60,31 @@ export default async function PagePage({ params }: PageProps) {
             </div>
           </div>
           <div className={"px-8 sm:text-end my-5"}>
-            <h1>Пидписчиков: {data.subscribers_count}</h1>
+            <h1>Подписчиков: {data.subscribers_count}</h1>
             <h1>Лайков: {data.LikeCount}</h1>
             <Link href={"/folows"}>Подписки: {data.following_count}</Link>
           </div>
         </div>
+        <Tabs defaultValue="account" className="w-full sm:mx-0 mx-2">
+          <TabsList>
+            <TabsTrigger value="video">
+              <h1>видео</h1>
+            </TabsTrigger>
+            <TabsTrigger value="music">
+              <h1>музыка</h1>
+            </TabsTrigger>
+          </TabsList>
+          <TabsContent value="video">
+            <LayoutVideo videos={data.videos} user={data} />
+          </TabsContent>
+          <TabsContent value="music">
+            <LayoutMusic user={data} musics={data.music} />
+          </TabsContent>
+        </Tabs>
       </div>
-      <div className={"border flex flex-col  rounded-xl p-2 sm:p-10 my-10"}>
-        <LayoutVideoCheckUser videos={data.videos} />
-      </div>
+      {/*<div className={"border flex flex-col  rounded-xl p-2 sm:p-10 my-10"}>*/}
+      {/*  <LayoutVideoCheckUser videos={data.videos} />*/}
+      {/*</div>*/}
     </div>
   )
 }

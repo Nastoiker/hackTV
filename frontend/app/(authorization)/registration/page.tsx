@@ -43,7 +43,7 @@ const PageRegistration = () => {
        console.log(dataAuth);
        await registrationFunc(dataAuth);
        setError(false);
-       await router.push('/');
+       window.location.href = '/'
      } catch (e) {
        console.log(e.message);
         setError(true);

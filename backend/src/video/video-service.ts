@@ -275,6 +275,7 @@ export class VideoService {
             extension[extension.length - 1]
           }`,
         )
+          .noAudio()
         .audioCodec('copy')
         .audioChannels(2)
         .size('1080x1920')
