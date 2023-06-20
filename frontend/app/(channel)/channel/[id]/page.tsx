@@ -75,10 +75,10 @@ export default async function PagePage({ params }: PageProps) {
             </TabsTrigger>
           </TabsList>
           <TabsContent value="video">
-            <LayoutVideo videos={data.videos} user={data} />
+            <LayoutVideoCheckUser videos={data.videos} />
           </TabsContent>
           <TabsContent value="music">
-            <LayoutMusic user={data} musics={data.music} />
+            <LayoutMusic musics={data.music} />
           </TabsContent>
         </Tabs>
       </div>
