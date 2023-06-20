@@ -21,7 +21,7 @@ export const CommentCard = ({ comment }: ICommentProps): JSX.Element => {
           href={"/channel/" + comment.writtenById}
           className={"flex space-x-2"}
         >
-          <Image
+          <img
             alt={"avatar"}
             className={"rounded-3xl w-12 h-12"}
             height={30}

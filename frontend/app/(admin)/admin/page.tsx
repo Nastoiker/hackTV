@@ -31,6 +31,9 @@ export default function IndexPage() {
   const [searchtUser, setSearchUser] = useState<string>('');
   const [searchVideo, setSearchVideo] = useState<string>('');
   const {data, isLoading, error} = useCheckAuthQuery({});
+  if(isLoading) {
+    return <div></div>;
+  }
    if( data && data.role !== 'admin' || error) {
      router.push('/');
    }
