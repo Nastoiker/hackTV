@@ -39,7 +39,12 @@ export class UserService {
             Comment: true,
           },
         },
-        music: true,
+        music: {
+          include: {
+            videos: true,
+            user: true,
+          },
+        },
       },
     });
   }

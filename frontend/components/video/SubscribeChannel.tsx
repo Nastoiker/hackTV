@@ -111,7 +111,7 @@ export const SubscribeChannel = ({
                   href={"/channel/" + video.authorVideo.id}
                 >
                   {" "}
-                  <Image
+                  <img
                     className={"rounded-full w-12 h-12"}
                     width={50}
                     height={50}
