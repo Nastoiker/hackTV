@@ -45,21 +45,21 @@ export default function PageFounded({ params }: PageProps) {
   return (
     <div className="  w-full">
       <LayoutFounded active={activeFound} setActiveFounded={(s) => setActiveFound(s)} />
-      <div className="space-y-4">
+      <div className="space-y-4 border rounded-lg p-2 sm:p-5">
         <h1 className="inline-block text-4xl font-extrabold tracking-tight lg:text-5xl">
           {searchState}
         </h1>
         {
-          activeFound==='video' && <LayoutVideo user={user.data && user.data} videos={video.videos} />
+          activeFound==='video' && <LayoutVideo user={user.data?.email && user.data} videos={video.videos} />
         }
         {
           activeFound==='channels' && <LayoutChannels channels={video.channels} />
         }
          {
-          activeFound==='tags' && <LayoutVideo user={user.data && user.data}  videos={video.tags} />
+          activeFound==='tags' && <LayoutVideo user={user.data?.email && user.data}  videos={video.tags} />
         }
         {
-          activeFound === 'musics' && <LayoutMusic user={user.data && user.data} musics={video.musics} />
+          activeFound === 'musics' && <LayoutMusic user={user.data?.email && user.data} musics={video.musics} />
         }
       </div>
     </div>

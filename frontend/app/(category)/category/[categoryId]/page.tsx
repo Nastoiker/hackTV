@@ -49,14 +49,16 @@ export default async function PageCategory({ params }: PageProps) {
   console.log(slug);
   const result = videos.videos;
   return (
-    <article className="container max-w-3xl py-6 lg:py-10">
+    <section className={"grid  "}>
+    <div className={"flex max-w-[980px] mx-auto flex-col gap-2"}  >
       <div className="space-y-4">
         <h1 className="inline-block text-4xl font-extrabold tracking-tight  lg:text-5xl">
           {slug}
         </h1>
-          <LayoutVideoCategory videos={result} />
       </div>
+      <LayoutVideoCategory videos={result} />
       <hr className="my-4 border-slate-200" />
-    </article>
+    </div>
+    </section>
   )
 }

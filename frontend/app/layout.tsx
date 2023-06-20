@@ -16,6 +16,7 @@ import { PopularTags } from "@/components/Header/PopularTags"
 import { Search } from "@/components/search/search"
 import {ThemeProvider} from "@/components/ThemeProvider";
 import "@/styles/globals.css"
+import {Up} from "@/components/Up/Up";
 
 const fontSans = FontSans({
   subsets: ["latin"],
@@ -60,6 +61,8 @@ export default function RootLayout({ children }: RootLayoutProps) {
               >
                 {children}
               </div>
+              <Up />
+
             </div>
           </Providers>
         </div>

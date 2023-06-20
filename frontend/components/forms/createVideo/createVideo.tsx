@@ -152,15 +152,10 @@ export const CreateVideo = () => {
       });
       setState({...state, loading: false, success: true});
     } catch(e) {
-      setState({error: true, loading: false, success: true});
+      setState({error: true, loading: false, success: false});
     }
 
   }
-  const colourOptions = [
-    { value: 'red', label: 'Red' },
-    { value: 'green', label: 'Green' },
-    { value: 'blue', label: 'Blue' },
-  ];
   return (
     <div>
       <form

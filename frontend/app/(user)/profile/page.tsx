@@ -55,7 +55,7 @@ export default function IndexPage() {
               </Button>
             </div>
           </div>
-          <div className={"flex flex-wrap"}>
+          <div className={"mx-5 sm:mx-0 flex flex-wrap"}>
             <Link href={"/editProfile"}>
               <Button>Изменить профиль</Button>
             </Link>
@@ -82,7 +82,7 @@ export default function IndexPage() {
             }
 
           </div>
-          <Tabs defaultValue="account" className="w-full">
+          <Tabs defaultValue="account" className="w-full sm:mx-0 mx-2">
             <TabsList>
               <TabsTrigger value="video">
                 <h1>Ваши видео</h1>

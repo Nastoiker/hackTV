@@ -14,9 +14,9 @@ export const Report = ({ videoId, userId }: {videoId: string, userId?: string}) 
     await reportVideo({reportId, userId, videoId});
   }
   return (
-    <div>
+    <div className={'w-fit relative'}>
       <motion.svg
-        className={"outline-0"}
+        className={" outline-0 z-50"}
         onClick={() => setIsOpen((o) => !o)}
         width="36"
         whileHover={{ scale: 0.9, border: 0 }}
@@ -31,7 +31,7 @@ export const Report = ({ videoId, userId }: {videoId: string, userId?: string}) 
           fill="currentcolor"
         />
       </motion.svg>
-      {isOpen && <div className={"absolute border bg-background rounded-lg p-2 flex flex-col space-y-5"}>
+      {isOpen && <div className={"fixed sm:absolute z-50 top-56 w-fit mx-auto left-0 right-0 border bg-background rounded-lg p-2 flex flex-col space-y-5"}>
         {reports.data && reports.data.map( r => <button key={r.id} onClick={() => HandleReportVideo(r.id)} ><h1 className={"block hover:border-b-2 transition-all"}>{r.message}</h1></button> )}
       </div>}
     </div>

@@ -63,7 +63,7 @@ export function LayoutMusic({
         )}
       </div>
       <SortButton
-        className="fixed top-25 right-5 xl:right-44"
+        className=" top-25 right-5 xl:right-44"
         sortByLike={() => {}}
         sortByDate={() => {setFilteredVideo(filterByDate)}}
       />

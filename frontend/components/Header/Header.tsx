@@ -21,6 +21,7 @@ import {
   MenubarShortcut,
   MenubarTrigger,
 } from "@/components/ui/menubar";
+import './header.module.css';
 import { AuthComponent } from "@/components/Auth/Auth"
 import { IHeaderProps } from "@/components/Header/HeaderProps"
 import { Search } from "@/components/search/search"
@@ -104,7 +105,7 @@ export const Header = () => {
 
           {
             isOpenMenu &&
-            <div className={'absolute p-2 right-[10px] border rounded-lg  z-50'}>
+            <div className={'absolute p-2 visibleHeader right-[10px] bg-background border rounded-lg '}>
             <Button className={'block'}>
               <Link href={"registration"}> Регистрация </Link>
             </Button>

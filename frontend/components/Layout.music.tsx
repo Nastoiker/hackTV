@@ -64,12 +64,12 @@ export function LayoutMusic({
   }
   return (
     <div className={"mx-auto flex"}>
-      <div className={"w-full mr-20"}>
+      <div className={"w-full space-y-10 mr-20"}>
         {(filteredMusic && filteredMusic.length>0)  ? (
           musics.map((m) => <>
             <Music activeMusic={activeMusicValue} setActiveMusic={() => setActiveMusicValue(m.id)} music={m} />
             {
-              user.id === m.user.id &&
+              user?.id === m.user.id &&
               <Button onClick={() => deleteMusicHandler(m.id)} className={'my-8'}>Удалить музыку</Button>
             }
           </> )

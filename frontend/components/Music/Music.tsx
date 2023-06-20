@@ -10,6 +10,7 @@ import { Button } from "@/components/ui/button"
 import Profile from "@/components/user/Profile.svg"
 import ProgressBar from "@/components/video/progress.video"
 import {api_url} from "@/domen.api";
+import Link from "next/link";
 
 export const Music = ({ music, setActiveMusic, activeMusic}: { music: IMusic, setActiveMusic: () => void, activeMusic: string }) => {
   const [isPlaying, setIsPlaying] = useState(false)
@@ -89,7 +90,7 @@ const [durationTime, setDurationTime] = useState('0: 00');
         </div>
         <div>
           <Htag type={"h1"}>{music.name}</Htag>
-          <div className={"flex items-center"}>
+          <Link   href={"/channel/" + music.user.id} className={"flex items-center"}>
             <img
               className={"rounded-full w-6 h-6"}
               width={70}
@@ -102,7 +103,7 @@ const [durationTime, setDurationTime] = useState('0: 00');
               }
             />
             <Htag type={"h3"} className={'text-gray-600'}>{music.user.login}</Htag>
-          </div>
+          </Link>
           <input
             type="range"
             min="0"

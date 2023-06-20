@@ -46,7 +46,7 @@ export const AuthComponent = () => {
       <DialogTrigger asChild>
         <Button variant="outline">Авторизация</Button>
       </DialogTrigger>
-      <DialogContent className="sm:max-w-[425px]">
+      <DialogContent className="sm:max-w-[425px] ">
         <DialogHeader>
           <DialogTitle>Авторизация</DialogTitle>
           <DialogDescription>
@@ -55,12 +55,12 @@ export const AuthComponent = () => {
         </DialogHeader>
         <form  className="my-5" onSubmit={handleSubmit(onSubmit)}>
           <Label htmlFor={"email"}>Emal</Label>
-          <Input error={errors.email} {...register("email", { required: true, pattern: {
+          <Input error={errors.email} {...register("email", { required: {value: true,  message: "Заполните email"}, pattern: {
               value: /\S+@\S+\.\S+/,
               message: "Введите  email",
             } }, )} id={"email"} />
           <Label htmlFor={"password"}>Password</Label>
-          <Input type={"password"} {...register("password", { required: true })} id={"email"} />
+          <Input error={errors.password} type={"password"} {...register("password", { required: {value: true,  message: "Заполните пароль"} })} id={"password"} />
           <Button type={"submit"}>Авторизация</Button>
         </form>
         {

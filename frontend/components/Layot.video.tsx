@@ -79,7 +79,7 @@ export function LayoutVideo({
         )}
       </div>
       <SortButton
-        className="fixed top-18 right-5 xl:right-44"
+        className=" top-18 right-5 xl:right-44"
         sortByLike={() => {setFilteredVideo(filterByLike)}}
         sortByDate={() => {setFilteredVideo(filterByDate)}}
       />

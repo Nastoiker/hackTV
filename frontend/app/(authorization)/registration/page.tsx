@@ -43,7 +43,7 @@ const PageRegistration = () => {
        console.log(dataAuth);
        await registrationFunc(dataAuth);
        setError(false);
-       await router.push('/authorization');
+       await router.push('/');
      } catch (e) {
        console.log(e.message);
         setError(true);
@@ -63,14 +63,15 @@ const PageRegistration = () => {
         </p>
 
         <Label htmlFor={"email"}>Emal</Label>
-        <Input error={errors.email} {...register("email", { required: true, pattern: {
+        <Input error={errors.email} {...register("email", { required:  {value: true,  message: "Заполните email"}, pattern: {
             value: /\S+@\S+\.\S+/,
             message: "Введите  email",
           }, })} id={"email"} />
         <Label htmlFor={"login"}>Login</Label>
-        <Input {...register("login", { required:  {value: true,  message: "Заполните login"} })} id={"login"} />
+        <Input error={errors.login} {...register("login", { required:  {value: true,  message: "Заполните login"} })} id={"login"} />
         <Label htmlFor={"number"}>Номер телефона</Label>
         <Input
+          error={errors.phone}
           type={"string"}
           {...register("phone", { required: {value: true,  message: "Заполните номер"},  pattern: {
               value: /^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$/,
@@ -79,13 +80,13 @@ const PageRegistration = () => {
           id={"number"}
         />
         <Label htmlFor={"password"}>Пароль</Label>
-        <Input type={"password"} {...register("hashpassword", { required: true })} id={"password"} />
+        <Input type={"password"} error={errors.hashpassword} {...register("hashpassword", { required: {value: true,  message: "Заполните пароль"} })} id={"password"} />
         <Label htmlFor={"passwordVerif"}>Подтверждение пароля</Label>
-        <Input type={"password"} id={"passwordVerif"} {...register("confirm_password", {
-          required: true,
+        <Input error={errors.confirm_password} type={"password"} id={"passwordVerif"} {...register("confirm_password", {
+          required: {value: true,  message: "Подтвердите пароль"},
           validate: (val: string) => {
             if (watch('hashpassword') != val) {
-              return "Your passwords do no match";
+              return "Пароль должен совпадать";
             }
           },
         })} />
