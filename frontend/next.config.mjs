@@ -2,8 +2,8 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   images: {
-   // domains: ['95.163.241.148:8000'],
-     domains: ['localhost'],
+   domains: ['95.163.241.148:8000'],
+   //   domains: ['localhost'],
 
   },
   reactStrictMode: true,

@@ -23,7 +23,8 @@
 
 # CMake
 cmake-build-debug/
-/uploads/*/*
+uploads/*/*
+!uploads/*/.gitignore
 # Mongo Explorer plugin:
 .idea/**/mongoSettings.xml
 
