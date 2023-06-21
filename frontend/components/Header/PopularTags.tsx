@@ -21,7 +21,7 @@ export const PopularTags = () => {
         "rounded-2xl my-8  bg-background  mr-4 border-4 p-4 border-gray-400"
       }
     >
-      {data.map((t) => {
+      {data.slice(0, 8).map((t) => {
         const link = t.name.replace('#', '');
         return (
         <Link
