@@ -276,7 +276,7 @@ export class VideoService {
           }`,
         )
           .noAudio()
-        .size('1080x1920')
+        .size('720x1280')
         .aspect('9:16')
         .autopad(true, 'black')
         .videoCodec('libx264')
