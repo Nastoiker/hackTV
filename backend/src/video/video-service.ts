@@ -276,8 +276,6 @@ export class VideoService {
           }`,
         )
           .noAudio()
-        .audioCodec('copy')
-        .audioChannels(2)
         .size('1080x1920')
         .aspect('9:16')
         .autopad(true, 'black')
