@@ -1,4 +1,4 @@
-import { Injectable, UnauthorizedException } from '@nestjs/common';
+import {Injectable, InternalServerErrorException, UnauthorizedException} from '@nestjs/common';
 import { AuthDto } from './dto/auth.dto';
 import { UserModel } from '@prisma/client';
 import { genSalt, hash, compare } from 'bcryptjs';
@@ -23,12 +23,16 @@ export class AuthService {
     const password = dto.hashpassword;
     dto.hashpassword = await hash(password, salt);
     console.log(dto.hashpassword);
-    const user = await this.prisma.userModel.create({ data: { ...dto } });
-    fs.mkdirSync('uploads/users/' + user.id);
-    fs.mkdirSync('uploads/users/' + user.id + '/video');
-    fs.mkdirSync('uploads/users/' + user.id + '/music');
-    fs.mkdirSync('uploads/users/' + user.id + '/avatar');
-    return user;
+    try {
+      const createdUser = await this.prisma.userModel.create({ data: user });
+      fs.mkdirSync('uploads/users/' + createdUser.id);
+      fs.mkdirSync('uploads/users/' + createdUser.id + '/video');
+      fs.mkdirSync('uploads/users/' + createdUser.id + '/music');
+      fs.mkdirSync('uploads/users/' + createdUser.id + '/avatar');
+      return createdUser;
+    } catch (error) {
+      throw new InternalServerErrorException(error);
+    }
   }
   async findUser(email: string): Promise<UserModel | null> {
     return this.prisma.userModel.findFirst({ where: { email } });
