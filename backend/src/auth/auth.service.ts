@@ -23,6 +23,7 @@ export class AuthService {
     const password = dto.hashpassword;
     dto.hashpassword = await hash(password, salt);
     console.log(dto.hashpassword);
+    const user = { ...dto, hashpassword: dto.hashpassword };
     try {
       const createdUser = await this.prisma.userModel.create({ data: user });
       fs.mkdirSync('uploads/users/' + createdUser.id);
